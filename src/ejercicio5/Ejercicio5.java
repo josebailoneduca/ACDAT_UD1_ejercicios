@@ -4,45 +4,34 @@ LICENCIA JOSE JAVIER BO
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
 Lista de paquetes:
  */
-package ejercicio5.vista;
 
-import java.util.Scanner;
+package ejercicio5;
+
+import ejercicio5.control.Control;
+import ejercicio5.vista.Menu;
 
 /**
- *
+ * Ejercicio 5
+ * Crea un programa que gestione y pruebe los siguientes métodos desde un menú:
+ *  a) Un método que visualice el contenido de un fichero de texto cuyo nombre3 se pasa como argumento. 
+ *  Hacerlo carácter a carácter.
+ * 
+ *  b) Un método que visualice el contenido de un fichero de texto cuyo nombre se pasa com argumento.
+ *     Hacerlo línea a línea utilizando la clase BufferedReader y su método readLine().
+ * 
+ *  c) Un método que guarde en un fichero de texto, un texto introducido desde una cadena de texto.
+ *     Hacerlo utilizando la clase BuffreredWriter y su método newLine() o el método Println de PrintWriter.
+ *     El texto a añadir será obtenido de: https://www.loremipzum.com/en/text-generator
+ *   
+ *  Nota:todo el programa debe ser seguro, e decir, realizar todas las comprobaciones necesarias sobre excepciones.
  * @author Jose Javier Bailón Ortiz
  */
-public class Menu {
-
-    /**
-     * Pide una opcion filtrando que sea valida
-     *
-     * @return la opcion elegida
-     */
-    public int pedirOpcion() {
-        int opcion = -1;
-        while (opcion < 1 || opcion > 4) {
-            Scanner s = Vista.getScanner();
-            mostrar();
-            System.out.println("Elije una opcion:");
+public class Ejercicio5 {
+ 
+    
+    public static void main(String[] args) {
         
-               try {
-                String respuesta = s.nextLine();
-                opcion = Integer.parseInt(respuesta);
-            } catch (NumberFormatException numberFormatException) {
-            }
-        }
-        return opcion;
+        //control del programa
+        Control control = new Control();
     }
-
-    private void mostrar() {
-        Vista.pasarPagina();
-        cabecera();
-        System.out.println("1)Ver contenido de archivo caracter a caracter");
-        System.out.println("2)Ver contenido de archivo linea a linea");
-        System.out.println("3)Guardar txt limitado a 20 caracteres por linea");
-        System.out.println("4)Salir");
-    }
-
-    private void cabecera() {
-        System.out.println("**************************************************")
+}//end Ejercicio5
