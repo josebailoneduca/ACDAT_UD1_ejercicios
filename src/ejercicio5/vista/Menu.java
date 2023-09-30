@@ -9,7 +9,7 @@ package ejercicio5.vista;
 import java.util.Scanner;
 
 /**
- *
+ * Se encarga de mostra el menu principal
  * @author Jose Javier Bailón Ortiz
  */
 public class Menu {
