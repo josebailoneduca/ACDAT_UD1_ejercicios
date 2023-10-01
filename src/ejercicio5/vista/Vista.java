@@ -77,6 +77,7 @@ public class Vista {
      * @return Lo introducido por el usuario
      */
     public String pedirEntrada(String msg) {
+        Vista.pasarPagina();
         System.out.println(msg + ":");
         return Vista.getScanner().nextLine();
     }
