@@ -14,15 +14,21 @@ import java.util.Scanner;
  */
 public class Vista {
 
-    /*
-     *  Atributos 
+    //ATRIBUTOS
+    /**
+     *  El menu de la aplicacion
      */
-    //El menu de la aplicacion
     Menu menu;
 
-    //El scanner de la vista
+    /**
+     * El scanner de la vista
+     */
     public static Scanner scanner;
 
+    
+    /**
+     * Constructor
+     */
     public Vista() {
         this.menu = new Menu();
     }
@@ -40,7 +46,7 @@ public class Vista {
     }
 
     /**
-     * Salta 100 lineas en la consola
+     * Salta 100 lineas en la consola simulando un salto de pagina
      */
     public static void pasarPagina() {
         for (int i = 0; i < 100; i++) {
@@ -49,9 +55,9 @@ public class Vista {
     }
 
     /**
-     * Pide una opcion del menu
+     * Pide al usuario la seleccion de una opcion del menu
      *
-     * @return La opcion elegida
+     * @return La opcion seleccionada
      */
     public int pedirOpcionMenu() {
         return menu.pedirOpcion();
@@ -66,19 +72,26 @@ public class Vista {
         return pedirEntrada("Introduzca la ruta de un archivo de texto");
     }
 
+    /**
+     * Pide la pulsacion de la tecla intro con un mensaje previo
+     * @param msg Mensaje extra a agregar
+     */
     public void pedirIntro(String msg) {
         System.out.println(msg);
         pedirIntro();
     }
 
 
-
+    /**
+     * Pide la pulsacion de la tecla intro sin mensaje previo
+     * @return 
+     */
     public String pedirIntro() {
         return pedirEntrada("Pulsa intro para continuar");
     }
 
     /**
-     * Pasa pagina, muestra un mensaje y pide una entrada
+     * Muestra un mensaje y pide una entrada
      *
      * @param msg El mensaje a mostrar
      * @return Lo introducido por el usuario
@@ -98,6 +111,10 @@ public class Vista {
         System.out.print(texto);
     }
     
+    /**
+     * Imprime un texto en pantlla usando nueva linea
+     * @param msg 
+     */
     public void imprimirConSalto(String msg){
         System.out.println(msg);
     }

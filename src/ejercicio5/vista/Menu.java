@@ -9,7 +9,7 @@ package ejercicio5.vista;
 import java.util.Scanner;
 
 /**
- * Se encarga de mostra el menu principal
+ * Se encarga de mostra el menu principal y gestionar la recogida de la respuesta
  * @author Jose Javier Bailón Ortiz
  */
 public class Menu {
@@ -35,19 +35,19 @@ public class Menu {
         return opcion;
     }
 
+    /**
+     * Muestra el menu en pantalla
+     */
     private void mostrar() {
         Vista.pasarPagina();
-        cabecera();
+        System.out.println("**************************************************");
+        System.out.println("*                    OPCIONES                    *");
+        System.out.println("**************************************************");
         System.out.println("1)Ver contenido de archivo caracter a caracter");
         System.out.println("2)Ver contenido de archivo linea a linea");
         System.out.println("3)Guardar txt limitado a 20 caracteres por linea");
         System.out.println("4)Salir");
     }
-
-    private void cabecera() {
-        System.out.println("**************************************************");
-        System.out.println("*                    OPCIONES                    *");
-        System.out.println("**************************************************");
-    }
+ 
 
 }//end Menu

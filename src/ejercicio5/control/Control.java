@@ -19,13 +19,20 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 /**
- *
+ * Controlador del programa
  * @author Jose Javier Bailon Ortiz
  */
 public class Control {
 
+    //ATRIBUTOS
+    /**
+     * Referencia a la vista
+     */
     Vista vista;
 
+    /**
+     * Constructor
+     */
     public Control() {
         //inicializacion de la vista
         this.vista = new Vista();
@@ -50,11 +57,13 @@ public class Control {
         }
     }
 
+    
     /**
-     * Metodo que visualiza el contenido de un fichero de texto cuyo nombre se
-     * pasa como argumento linea a linea.
+     * Metodo que visualiza linea a linea, el contenido de un fichero de texto cuyo nombre se
+     * pasa como argumento.
      */
     private void verLineaPorLinea() {
+        //1-PEDIR LA RUTA A CARGAR
         String ruta = vista.pedirRuta();
         if (ruta == null || ruta.length() == 0) {
             vista.pedirIntro("La ruta esta vacía");
@@ -63,6 +72,7 @@ public class Control {
 
         //2- GESTIÓN DEL FICHERO
         File fichero = new File(ruta);
+        //avisar de la apertura del archivo
         vista.pedirIntro("Abriendo archivo " + fichero.getAbsolutePath());
         FileReader fr = null;
         BufferedReader br = null;
@@ -70,8 +80,9 @@ public class Control {
             //3-Lectura
             fr = new FileReader(fichero);
             br = new BufferedReader(fr);
+            //limpiar pantalla antes de mostrar el texto
             Vista.pasarPagina();
-            //4-LEER texto caracter a caracter
+            //4-LEER texto linea a linea
             String linea;
             while ((linea = br.readLine()) != null) {
                 vista.imprimirConSalto(linea);
@@ -100,8 +111,8 @@ public class Control {
     }
 
     /**
-     * Metodo que visualiza el contenido de un fichero de texto cuyo nombre se
-     * pasa como argumento caracter a caracter.
+     * Metodo que visualiza caracter a caracter el contenido de un fichero de texto cuyo nombre se
+     * pasa como argumento.
      */
     private void verCaracterPorCaracter() {
         String ruta = vista.pedirRuta();
@@ -143,6 +154,12 @@ public class Control {
         vista.pedirIntro("----------FIN DE ARCHIVO------------");
     }
 
+    
+    /**
+     * Lee el arvhico texto.txt y lo guarda en disco como texto_20.txt formateandlo
+     * a un limite de 20 caracteres por linea y saltando linea tambien
+     * cuando encuentra un "." en el texto
+     */
     private void guardarTxt() {
 
         //archivos de lectura y escritura
@@ -157,11 +174,13 @@ public class Control {
                 + "\ny creara nueva linea tambien cuando aparezca un \".\""
                 + "\nSi el fichero existe sera sobreescrito.");
 
+        //1- preparacion de los readers y writters
         FileReader fr = null;
         BufferedReader br = null;
         FileWriter fw = null;
         BufferedWriter bw = null;
         try {
+            //2- lectura del archivo
             fr = new FileReader(archivoLectura);
             br = new BufferedReader(fr);
             String texto = "";
@@ -169,7 +188,7 @@ public class Control {
             while ((lineaLectura = br.readLine()) != null) {
                 texto += lineaLectura + " ";
             }
-            //generar las lineas
+            //3- generar las nuevas lineas segun el formato de 20 max y "."
             ArrayList<String> lineas = new ArrayList<String>();
 
             int contador = 0;
@@ -186,6 +205,7 @@ public class Control {
             if (lineaTemp.length() > 0) {
                 lineas.add(lineaTemp);
             }
+            //4- Escritura del archivo
             fw = new FileWriter(archivoEscritura);
             bw = new BufferedWriter(fw);
 
@@ -193,13 +213,14 @@ public class Control {
                 bw.write(linea);
                 bw.newLine();
             }
-            
+            //5- aviso de finalizacion
             vista.pedirIntro("Fichero creado: "+archivoEscritura.getAbsolutePath());
         } catch (FileNotFoundException fnf) {
             vista.pedirIntro("Archivo no encontrado: "+fnf.getMessage());
         } catch (IOException ioe) {
             vista.pedirIntro("Error de E/S:"+ioe.getMessage());
         } finally {
+            //6- Cierre de streams
             try {
                 if (br != null) 
                     br.close();
