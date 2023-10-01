@@ -8,11 +8,10 @@ Lista de paquetes:
 package ejercicio5;
 
 import ejercicio5.control.Control;
-import ejercicio5.vista.Menu;
 
 /**
  * Ejercicio 5
- * Crea un programa que gestione y pruebe los siguientes métodos desde un menú:
+ * Crea un programa que gestione y pru1ebe los siguientes métodos desde un menú:
  *  a) Un método que visualice el contenido de un fichero de texto cuyo nombre3 se pasa como argumento. 
  *  Hacerlo carácter a carácter.
  * 

@@ -6,7 +6,6 @@ Lista de paquetes:
  */
 package ejercicio5.vista;
 
-import ejercicio5.control.Control;
 import java.util.Scanner;
 
 /**
@@ -66,6 +65,14 @@ public class Vista {
     public String pedirRuta() {
         return pedirEntrada("Introduzca la ruta de un archivo de texto");
     }
+
+    public void pedirIntro(String msg) {
+        System.out.println(msg);
+        pedirIntro();
+    }
+
+
+
     public String pedirIntro() {
         return pedirEntrada("Pulsa intro para continuar");
     }
@@ -77,9 +84,22 @@ public class Vista {
      * @return Lo introducido por el usuario
      */
     public String pedirEntrada(String msg) {
-        Vista.pasarPagina();
+        System.out.println("******************************************************");
         System.out.println(msg + ":");
+        System.out.println("******************************************************");
         return Vista.getScanner().nextLine();
     }
 
+    /**
+     * Imprime en pantalla un texto sin usar nueva linea
+     * @param texto El texto a imprimir
+     */
+    public void imprimirSinSalto(String texto){
+        System.out.print(texto);
+    }
+    
+    public void imprimirConSalto(String msg){
+        System.out.println(msg);
+    }
+    
 }//end Vista
