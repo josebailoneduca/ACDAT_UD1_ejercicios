@@ -19,6 +19,7 @@ import ejercicio5.control.Control;
  *     Hacerlo línea a línea utilizando la clase BufferedReader y su método readLine().
  * 
  *  c) Un método que guarde en un fichero de texto, un texto introducido desde una cadena de texto.
+ *     Esta cadena de texto será separada en líneas de 20 caracteres o cuando se encuentre un "." en el texto.
  *     Hacerlo utilizando la clase BuffreredWriter y su método newLine() o el método Println de PrintWriter.
  *     El texto a añadir será obtenido de: https://www.loremipzum.com/en/text-generator
  *   
