@@ -36,7 +36,7 @@ public class Menu {
     }
 
     /**
-     * Muestra el menu en pantalla
+     * Muestra el menu en pantalla.
      */
     private void mostrar() {
         Vista.pasarPagina();
