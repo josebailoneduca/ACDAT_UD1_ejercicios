@@ -43,8 +43,8 @@ public class Menu {
         System.out.println("**************************************************");
         System.out.println("*                    OPCIONES                    *");
         System.out.println("**************************************************");
-        System.out.println("1)Ver contenido de archivo caracter a caracter");
-        System.out.println("2)Ver contenido de archivo linea a linea");
+        System.out.println("1)Ver contenido de archivo de texto caracter a caracter");
+        System.out.println("2)Ver contenido de archivo de texto linea a linea");
         System.out.println("3)Guardar txt limitado a 20 caracteres por linea");
         System.out.println("4)Salir");
     }
