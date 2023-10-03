@@ -48,6 +48,4 @@ public class Menu {
         System.out.println("3)Guardar txt limitado a 20 caracteres por linea");
         System.out.println("4)Salir");
     }
- 
-
 }//end Menu
