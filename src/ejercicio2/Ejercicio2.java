@@ -16,7 +16,7 @@ import java.io.File;
 *       *Nombre:build
 *       *Tamanio: 0
 *       *RutaAbs.:C:\Users....
-*           *Es un directorio
+*       *Es un directorio
 * 
 * @author Jose Javier Bailón Ortiz
 */

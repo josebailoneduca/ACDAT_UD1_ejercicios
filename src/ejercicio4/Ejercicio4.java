@@ -39,6 +39,7 @@ public class Ejercicio4 {
             String rutaRaiz = s.nextLine();
             //ruta por defecto a directorio actual
             if (rutaRaiz.length()<1) rutaRaiz="."+((esWindows)?"\\":"/");
+            
             //limpiar ruta introducida por el usuario
             rutaRaiz = limpiarRuta(rutaRaiz,esWindows);
             
@@ -52,6 +53,11 @@ public class Ejercicio4 {
 
     }
  
+    /**
+     * Lista el contenido de un directorio y el contenido del primer nivel 
+     * de directorios
+     * @param raiz  Ruta del directorio
+     */
     private static void listarDirectorios(File raiz) {
         //si es nulo o no es un directorio avisamo
         if (raiz==null || !raiz.isDirectory()){
@@ -72,32 +78,37 @@ public class Ejercicio4 {
 
     /**
      * Lista el contenido de un archivo si es un directorio
-     * @param directorio 
+     * @param archivo File a manejar
      */
-    private static void listarContenido(File directorio) {
-        if (!directorio.isDirectory())
+    private static void listarContenido(File archivo) {
+        if (!archivo.isDirectory())
             return;
-        System.out.println("Contenido de la carpeta: "+directorio.getName());
-        File[] archivos = directorio.listFiles();
+        System.out.println("Contenido de la carpeta: "+archivo.getName());
+        File[] archivos = archivo.listFiles();
         if (archivos.length==0)
             System.out.println("        --Directorio vacio");
                     
-        for (File archivo : archivos) {
-
-            if (archivo.isDirectory()){
-                System.out.println("        --Directorio:"+archivo.getName());
+        for (File arch : archivos) {
+            if (arch.isDirectory()){
+                System.out.println("        --Directorio:"+arch.getName());
             }else{
-                System.out.println("        --Fichero:"+archivo.getName());
+                System.out.println("        --Fichero:"+arch.getName());
             }
         }
     }
 
-    private static String limpiarRuta(String rutaRaiz, boolean esWindows) {
+    /**
+     * Sanitiza una ruta para windows o linux
+     * @param ruta Ruta a sanitizar
+     * @param esWindows True si se quiere la sanitizacion para windows o False si se quiere para linux
+     * @return La ruta sanitizada
+     */
+    private static String limpiarRuta(String ruta, boolean esWindows) {
         if (esWindows)
-             rutaRaiz = rutaRaiz.replace("/", "\\");
+             ruta = ruta.replace("/", "\\");
         else
-            rutaRaiz = rutaRaiz.replace("\\", "/");
+            ruta = ruta.replace("\\", "/");
                     
-        return rutaRaiz;
+        return ruta;
     }
 }//end Ejercicio4
