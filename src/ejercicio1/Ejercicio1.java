@@ -24,6 +24,7 @@ public class Ejercicio1 {
             File directorio = new File(args[0]);
             //crea la lista de archivos 
             String[] lista = directorio.list();
+            System.out.println("Ficheros del directorio: " +directorio.getAbsolutePath());
             //muestra la lista en pantalla
             for (String elemento : lista)
                 System.out.println(elemento);

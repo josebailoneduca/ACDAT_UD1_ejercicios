@@ -42,15 +42,15 @@ public class Ejercicio5 {
         public Ejercicio5() {
 
 
-        //Mostrarmenu mientras se elija opcion valida
+        //Mostrarmenu mientras se elija una opcion valida
         while (true) {
-            int opcionElegida = this.pedirOpcion();
+            int opcionElegida = this.mostrarMenu();
             switch (opcionElegida) {
                 case 1:
-                    verCaracterPorCaracter();
+                    verCaracterPorCaracter(this.pedirRuta());
                     break;
                 case 2:
-                    verLineaPorLinea();
+                    verLineaPorLinea(this.pedirRuta());
                     break;
                 case 3:
                     guardarTxt();
@@ -69,13 +69,13 @@ public class Ejercicio5 {
      * Metodo que visualiza caracter a caracter el contenido de un fichero de texto cuyo nombre se
      * pasa como argumento.
      */
-    private void verCaracterPorCaracter() {
-        String ruta = this.pedirRuta();
+    private void verCaracterPorCaracter(String ruta) {
+        //1- Comprobar ruta vacia
         if (ruta == null || ruta.length() == 0) {
             this.pedirIntro("La ruta esta vacía");
             return;
         }
-
+        
         //2- GESTIÓN DEL FICHERO
         File fichero = new File(ruta);
         this.pedirIntro("Se va a abrir el archivo " + fichero.getAbsolutePath());
@@ -91,7 +91,7 @@ public class Ejercicio5 {
             }
             System.out.println("");
         } catch (FileNotFoundException fnf) {
-            this.pedirIntro("Archivo no encontrado");
+            this.pedirIntro("Archivo de texto no encontrado");
             return;
         } catch (IOException io) {
             this.pedirIntro("Error accediendo al archivo: " + io.getMessage());
@@ -111,19 +111,18 @@ public class Ejercicio5 {
 
     
     
-        /**
+     /**
      * Metodo que visualiza linea a linea, el contenido de un fichero de texto cuyo nombre se
      * pasa como argumento.
      */
-    private void verLineaPorLinea() {
-        //1-PEDIR LA RUTA A CARGAR
-        String ruta = this.pedirRuta();
+    private void verLineaPorLinea(String ruta) {
+        //1-Comprobar ruta vacia
         if (ruta == null || ruta.length() == 0) {
             this.pedirIntro("La ruta esta vacía");
             return;
         }
 
-        //2- GESTIÓN DEL FICHERO
+        //- GESTIÓN DEL FICHERO
         File fichero = new File(ruta);
         //avisar de la apertura del archivo
         this.pedirIntro("Se va a abrir el archivo archivo " + fichero.getAbsolutePath());
@@ -142,7 +141,7 @@ public class Ejercicio5 {
             }
             System.out.println("");
         } catch (FileNotFoundException fnf) {
-            this.pedirIntro("Archivo no encontrado");
+            this.pedirIntro("Archivo de texto no encontrado");
             return;
         } catch (IOException io) {
             this.pedirIntro("Error accediendo al archivo: " + io.getMessage());
@@ -165,25 +164,26 @@ public class Ejercicio5 {
     
     
     /**
-     * Lee el arvhico texto.txt y lo guarda en disco como texto_20.txt formateandlo
+     * Lee el arvhico lorem.txt y lo guarda en disco como lorem_20.txt formateandlo
      * a un limite de 20 caracteres por linea y saltando linea tambien
      * cuando encuentra un "." en el texto
      */
     private void guardarTxt() {
 
-        //archivos de lectura y escritura
-        File archivoLectura = new File("texto.txt");
+        //Files de lectura y escritura
+        File archivoLectura = new File("lorem.txt");
         File archivoEscritura = new File("texto_20.txt");
 
+        //explicacion de la opcion
         this.pasarPagina();
         this.pedirIntro(
                 "Se va a intentar cargar el archivo " + archivoLectura.getAbsolutePath()
-                + "\nSeguidamente se guardara en el mismo directorio el archivo texto_20.txt"
+                + "\nSeguidamente se guardara en el mismo directorio el archivo lorem_20.txt"
                 + "\nEn ese nuevo archivo estara el contenido formateado de manera que haya 20 caracteres por linea"
                 + "\ny creara nueva linea tambien cuando aparezca un \".\""
                 + "\nSi el fichero existe sera sobreescrito.");
 
-        //1- preparacion de los readers y writters
+        //1- preparacion de readers y writters
         FileReader fr = null;
         BufferedReader br = null;
         FileWriter fw = null;
@@ -217,7 +217,7 @@ public class Ejercicio5 {
             //4- Escritura del archivo
             fw = new FileWriter(archivoEscritura);
             bw = new BufferedWriter(fw);
-
+            
             for (String linea : lineas) {
                 bw.write(linea);
                 bw.newLine();
@@ -256,7 +256,7 @@ public class Ejercicio5 {
      *
      * @return la opcion elegida
      */
-    public int pedirOpcion() {
+    public int mostrarMenu() {
         int opcion = -1;
         while (opcion < 1 || opcion > 4) {
                this.pasarPagina();
@@ -314,7 +314,7 @@ public class Ejercicio5 {
 
     /**
      * Pide la pulsacion de la tecla intro sin mensaje previo
-     * @return 
+     * @return  
      */
     public String pedirIntro() {
         return pedirEntrada("Pulsa intro para continuar");

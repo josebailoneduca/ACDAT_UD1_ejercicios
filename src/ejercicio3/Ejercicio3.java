@@ -25,13 +25,18 @@ import java.io.File;
 public class Ejercicio3 {
     
     public static void main(String[] args) {
+            //check args
+            if (args==null||args.length<1){
+                System.out.println("Agrege la ruta del directorio a explorar en la linea de comandos al ejecutar el programa");
+                System.exit(0);
+            }
             //crea el File a partir del parametro pasado en la ejecucion de la linea de comandos
             File directorio = new File(args[0]);
             //el filtro
             FiltroXML filtroXml=new FiltroXML();
             //crea la lista de archivos 
             String[] listaArchivos = directorio.list(filtroXml);
-            System.out.println("Ficheros en el directorio: "+directorio.getPath());
+            System.out.println("Ficheros XML en el directorio: "+directorio.getAbsolutePath());
             //muestra la lista en pantalla
             for (String archivo : listaArchivos)
                 verArchivo(new File(archivo));
