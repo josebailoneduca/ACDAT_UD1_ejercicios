@@ -13,8 +13,7 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.FileReader;
 import java.io.IOException;
-import java.nio.charset.Charset;
-import java.util.StringTokenizer;
+import java.nio.charset.StandardCharsets;
 
 /**
  * Crear un programa que lea el contenido de un fichero de texto y a partir de
@@ -67,6 +66,7 @@ public class Ejercicio9 {
             br = new BufferedReader(fr);
             while ((c = br.read()) != -1) {
                 System.out.print((char) c);
+                //lectura de caracter y cambio de vocal
                 salida += checkCaracter((char) c);
             }
         } catch (FileNotFoundException ex) {
@@ -85,7 +85,6 @@ public class Ejercicio9 {
                 System.out.println("Error de E/S: " + ex.getMessage());
             }
         }
-
         System.out.println("\n\n----------------FIN DE ARCHIVO-----------------");
 
         //RETORNO
@@ -98,13 +97,13 @@ public class Ejercicio9 {
      * @return Letra correspondiente
      */
     public static char checkCaracter(char c) {
-        String antes = "aeioAEIOáéíóÁÉÍÓäëïöÄËÏÖàèìòÀÈÌÒ";
-        String despues = "eiouEIOIéíóúÉÍÓÚëïöüËÏÖÜèìòùÈÌÒÙ";
+        String antes = "aeiouAEIOUáéíóúÁÉÍÓÚäëïöüÄËÏÖÜàèìòùÀÈÌÒÙ";
+        String despu = "eiouaEIOUAéíóúáÉÍÓÚÁëïöüäËÏÖÜÄèìòùàÈÌÒÙÀ";
         int pos = antes.indexOf(c);
         if (pos == -1) {
             return c;
         } else {
-            return despues.charAt(pos);
+            return despu.charAt(pos);
         }
     }
 
@@ -120,7 +119,7 @@ public class Ejercicio9 {
         String salida = "";
 
         String palabraActual = "";
-        //lectura del archivo cracter a caracter
+        //lectura del archivo caracter a caracter para ir extrayendo palabras
         for (int i = 0; i < texto.length(); i++) {
 
             String caracter = Character.toString(texto.charAt(i));
@@ -181,7 +180,7 @@ public class Ejercicio9 {
      * @param texto  El texto a guardar
      */
     private static void guardarFicheroBinario(String texto) {
-        System.out.println("\n-------------------------------------------------\nGuardando archivo\n-------------------------------------------------");
+        System.out.println("\n-------------------------------------------------\nGuardando archivo binario:\n-------------------------------------------------");
 
         //1- GESTIÓN DEL FICHERO       
         File archivo = new File("./src/ejercicio9/recursos/textoEjer9.cod");
@@ -209,8 +208,11 @@ public class Ejercicio9 {
         try {
             fileOS = new FileOutputStream("./src/ejercicio9/recursos/textoEjer9.cod");
             dataOS = new DataOutputStream(fileOS);
-            //4-INSERTAR DATOS 
-              dataOS.writeUTF(texto);
+            //4-INSERTAR DATOS RECORRIENDO EL TEXTO Y GUARDANDO CADA CARACTER COMO BYTE
+            for (int i = 0; i < texto.length(); i++) {
+                //guardar caracter como byte
+              dataOS.writeByte((byte)texto.charAt(i));
+            }
         } catch (IOException ioe) {
             System.out.println(" ---> ERROR EN ACCESO al fichero o en métodos escritura: "+archivo.getAbsolutePath());
             ioe.printStackTrace();
@@ -254,12 +256,16 @@ public class Ejercicio9 {
             fis = new FileInputStream(archivo);
             dis = new DataInputStream(fis);
             
-            //-Controlar lectura:            
-            int nPersonas = 6; //-Número de personas a leer
-            //-Mientras haya personas, leer: Nombre y Edad
-            String texto = dis.readUTF();
-            System.out.println(texto);
-            System.out.println("\n\n----------------FIN DE ARCHIVO-----------------");
+            // Bucle de lectura:          
+            // Se intenta leer de 2 en 2 bytes y 
+            // mientras la cantidad de bytes leidos no sea 0 se continua leyendo
+            //
+                byte[] b;
+                 while((b=dis.readNBytes(2)).length!=0){
+                   //convertir los dos bytes leidos a string segun el charset adecuado
+                   System.out.print(new String(b,StandardCharsets.ISO_8859_1));
+                }
+             System.out.println("\n\n----------------FIN DE ARCHIVO-----------------");
         }catch(FileNotFoundException fnfe){//Excepción del FileInputStream
             System.out.println(" ---> ERROR EN ACCESO al fichero: "+archivo.getAbsolutePath()+"\n");
             fnfe.printStackTrace();
