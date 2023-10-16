@@ -14,12 +14,10 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.nio.file.Path;
 import java.util.Scanner;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 /**
  * Ejercicio 7
- * 
+ *
  * @author Jose Javier BO
  */
 public class Ejercicio7 {
@@ -30,31 +28,24 @@ public class Ejercicio7 {
     private String rutaBloc = "./src/ejercicio7/recursos";
     private String nombreBloc = "bloc_notas.txt";
 
-    //almacena el nombre de pila usado para el bloc de notas
-    private String nombrePila = "";
-    
-    //guarda si esta inicializado o no el block
+    //guarda si esta inicializado o no el bloc
     private boolean inicializado = false;
     /**
      * Ultima linea del bloc
      */
     private int ultimaLinea = -1;
-    
+
     /**
      * Scanner para la entrada de teclado
      */
     Scanner s = new Scanner(System.in);
 
-    
-    
     /**
      * Constructor
      */
     public Ejercicio7() {
-        //inicializar el bloc de notas
-        inicializarBloc();
         //Muestra el menu mientras se elija una opcion del 1 al 3(acorde a las secciones del ejercicio). 
-        //Otras opciones terminan el programa
+        //La opcion 4 termina el programa
         while (true) {
             int opcionElegida = this.mostrarMenu();
             switch (opcionElegida) {
@@ -74,52 +65,118 @@ public class Ejercicio7 {
         }
     }
 
-    
     /**
-     * Hace las comprobaciones iniciales sobre el bloc de notas
-     * Comprobando si existe o no.
-     * Si no existe lo crea y pide el nombre de pila
-     * Si existe comprueba cual es la ultima linea
+     * Hace las comprobaciones iniciales sobre el bloc de notas Comprobando si
+     * existe o no. Si no existe lo crea y pide el nombre de pila para a
+     * continuacion agregarlo Si ya existe comprueba cual es la ultima linea
+     * para almacenar ese dato
+     *
+     * En ambos casos marca en la clase que el bloc esta inicializado
      */
-        private void inicializarBloc() {
+    private void inicializarBloc() {
         //parar si ya esta inicializado
         if (this.inicializado) {
             return;
         }
+
         //inicializarlo
         File archivo = new File(getRutaBloc());
         FileReader fr = null;
         BufferedReader br = null;
         try {
-            //ver si existe
-            if (!archivo.exists()) {
-                //si no existe crearlo y pedir el nombre de pila
+            //si no existe crearlo y pedir el nombre de pila
+            if (!archivo.exists()) 
                 archivo.createNewFile();
-                agregarLinea(pedirEntrada("Introduce tu nombre de pila"));
-                this.inicializado = true;
-            } else {
-                fr = new FileReader(archivo);
-                br = new BufferedReader(fr);
-                String linea = "";
-                pasarPagina();
-                while ((linea = br.readLine()) != null) {
-                    this.ultimaLinea++;
-                }
-                //si esta vacio pedimos igualmente el nombre de pila
-                if (this.ultimaLinea < 0) {
-                    agregarLinea(pedirEntrada("Introduce tu nombre de pila"));
-                }
-                //marcar que esta inicializado
-                this.inicializado = true;
+
+            //recorrer las lineas del bloc para contarlas
+            fr = new FileReader(archivo);
+            br = new BufferedReader(fr);
+
+            while (br.readLine() != null) {
+                this.ultimaLinea++;
             }
         } catch (IOException ex) {
-            pedirIntro("Error leyendo el archivo ("+archivo.getAbsolutePath()+"):"+ex.getMessage());
-        }finally{
+            pedirIntro("Error accediento al archivo (" + archivo.getAbsolutePath() + "):" + ex.getMessage());
+        } finally {
             try {
-                if (br!=null)
+                if (br != null) {
                     br.close();
-                if (fr!=null)
+                }
+                if (fr != null) {
                     fr.close();
+                }
+            } catch (IOException ex) {
+                pedirIntro(ex.getMessage());
+            }
+        }
+
+        //si esta vacio pedimos el nombre de pila
+        if (this.ultimaLinea < 0) {
+            agregarLinea(pedirEntrada("Introduce tu nombre de pila"));
+        }
+        //marcar que esta inicializado
+        this.inicializado = true;
+    }
+
+    /**
+     * Compone y devuelve el path al bloc
+     *
+     * @return La ruta
+     */
+    private String getRutaBloc() {
+        return Path.of(rutaBloc, nombreBloc).toString();
+    }
+
+    /**
+     * Agrega una nota al bloc pidiendo la entrada de la nota y luego
+     * agregandola Antes de agregar la nota inicializa el bloc
+     */
+    private void agregarNota() {
+        pasarPagina();
+        //inicializar el bloc
+        inicializarBloc();
+        //agregar la linea
+        agregarLinea(pedirEntrada("Introduce el contenido de la nota"));
+    }
+
+    /**
+     * Lee el contenido del bloc y lo muestra en pantalla. Antes de hacer la
+     * lectura inicializa el bloc
+     */
+    private void leerBloc() {
+        pasarPagina();
+        //inicializar el bloc
+        inicializarBloc();
+
+        //preparacion de variables
+        File archivo = new File(getRutaBloc());
+        FileReader fr = null;
+        BufferedReader br = null;
+
+        //recorrer el bloc e imprimirlo en pantalla
+        try {
+            System.out.println("******************************************************");
+            System.out.println("              INICIO DEL BLOC                 ");
+            System.out.println("******************************************************");
+
+            fr = new FileReader(archivo);
+            br = new BufferedReader(fr);
+            String linea = "";
+            while ((linea = br.readLine()) != null) {
+                System.out.println(linea);
+            }
+            pedirIntro("              FIN DEL BLOC                 ");
+
+        } catch (IOException ex) {
+            pedirIntro("Error leyendo el archivo(" + archivo.getAbsolutePath() + "): " + ex.getMessage());
+        } finally {
+            try {
+                if (br != null) {
+                    br.close();
+                }
+                if (fr != null) {
+                    fr.close();
+                }
             } catch (IOException ex) {
                 pedirIntro(ex.getMessage());
             }
@@ -127,37 +184,30 @@ public class Ejercicio7 {
     }
 
     /**
-     * Compone y retorna el path al bloc
-     * @return La ruta
-     */
-    private String getRutaBloc() {
-        return Path.of(rutaBloc, nombreBloc).toString();
-    }
-
-    
-    /**
      * Agrega una linea al bloc
+     *
      * @param texto Texto a agregar
      */
     private void agregarLinea(String texto) {
-        
+
         //prepara variables
         File archivo = new File(getRutaBloc());
         FileWriter fw = null;
         BufferedWriter bw = null;
         try {
             //prepara writters
-            fw = new FileWriter(archivo,true);
+            fw = new FileWriter(archivo, true);
             bw = new BufferedWriter(fw);
             //incrementa el numero de linea
             this.ultimaLinea++;
-            //prepara la cabecera
+            //prepara la cabecera de la linea
             String cabecera = "\n" + this.ultimaLinea + "-";
             //si es la primera linea implica que se trata del nombre del bloc
-            //por tanto no incluimos el numero de linea
+            //por tanto no incluimos el numero de linea si no un texto
             if (this.ultimaLinea == 0) {
                 cabecera = "Nombre del bloc:";
             }
+            //agrega la linea
             bw.append(cabecera + texto);
         } catch (IOException ex) {
             pedirIntro("Error de entrada salida escribiendo el fichero(" + archivo.getAbsolutePath() + "): " + ex.getMessage());
@@ -175,65 +225,29 @@ public class Ejercicio7 {
         }
     }
 
-    private void agregarNota() {
-        inicializarBloc();
-        agregarLinea(pedirEntrada("Introduce el contenido de la nota"));
-    }
-
-    private void leerBloc() {
-        inicializarBloc();
-        File archivo = new File(getRutaBloc());
-        FileReader fr = null;
-        BufferedReader br = null;
-        try {
-            System.out.println("******************************************************");
-            System.out.println("              INICIO DEL BLOC                 ");
-            System.out.println("******************************************************");
-            fr = new FileReader(archivo);// Envío datos texto
-            br = new BufferedReader(fr);
-            String linea = "";
-            while ((linea = br.readLine()) != null) {
-                System.out.println(linea);
-            }
-            pedirIntro("              FIN DEL BLOC                 ");
-        } catch (IOException ex) {
-            pedirIntro("Error leyendo el archivo(" + archivo.getAbsolutePath() + "): " + ex.getMessage());
-        } finally {
-            try {
-                if (br != null) {
-                    br.close();
-                }
-                if (fr != null) {
-                    fr.close();
-                }
-            } catch (IOException ex) {
-                pedirIntro(ex.getMessage());
-            }
-        }
-    }
-
+    /**
+     * Elimina el bloc
+     */
     private void eliminarBloc() {
         File archivo = new File(getRutaBloc());
-        if (archivo.exists())
-           archivo.delete();
-        
-        this.ultimaLinea=-1;
-        this.inicializado=false;
+        if (archivo.exists()) {
+            archivo.delete();
+        }
+
+        this.ultimaLinea = -1;
+        this.inicializado = false;
 
     }
-    
-    
-    
-    
+
     //UTILES DE ENTRADA DE DATOS POR CONSOLA Y MENU
     /**
-     * Pide una opcion filtrando que sea valida
+     * Pide una opcion filtrando que sea valida(de 1 a 4)
      *
      * @return la opcion elegida
      */
     public int mostrarMenu() {
         int opcion = -1;
-        while (opcion < 1 || opcion > 5) {
+        while (opcion < 1 || opcion > 4) {
             this.pasarPagina();
             System.out.println("**************************************************");
             System.out.println("*                    OPCIONES                    *");
@@ -274,20 +288,25 @@ public class Ejercicio7 {
         return this.s.nextLine();
     }
 
-        /**
-     * Muestra un mensaje y pide una entrada
+    /**
+     * Muestra un mensaje y pide pulsar intro
      *
      * @param msg El mensaje a mostrar
      * @return Lo introducido por el usuario
      */
     public String pedirIntro(String msg) {
         System.out.println("******************************************************");
-        System.out.println(msg + "");
+        System.out.println(msg);
         System.out.println("Pulsa intro para continuar");
         System.out.println("******************************************************");
         return this.s.nextLine();
     }
-    
+
+    /**
+     * Main del ejercicio. Simplemente crea una nueva instancia de la clase
+     *
+     * @param args
+     */
     public static void main(String[] args) {
         new Ejercicio7();
     }
