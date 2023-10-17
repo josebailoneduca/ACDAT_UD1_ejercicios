@@ -208,7 +208,7 @@ public class Ejercicio7 {
                 cabecera = "Nombre del bloc:";
             }
             //agrega la linea
-            bw.append(cabecera + texto);
+            bw.write(cabecera + texto);
         } catch (IOException ex) {
             pedirIntro("Error de entrada salida escribiendo el fichero(" + archivo.getAbsolutePath() + "): " + ex.getMessage());
         } finally {
