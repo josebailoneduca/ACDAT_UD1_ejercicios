@@ -5,7 +5,7 @@ LICENCIA JOSE JAVIER BO
 Lista de paquetes:
  */
 
-package ejercicio3;
+package ejercicio03;
 
 import java.io.File;
 import java.io.FilenameFilter;

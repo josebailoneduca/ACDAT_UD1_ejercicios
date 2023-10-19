@@ -5,7 +5,7 @@ LICENCIA JOSE JAVIER BO
 Lista de paquetes:
  */
 
-package ejercicio4;
+package ejercicio04;
 
 import java.io.File;
 import java.util.Scanner;

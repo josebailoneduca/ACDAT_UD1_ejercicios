@@ -5,7 +5,7 @@
  * Lista de paquetes:
  */
 
-package ejercicio1;
+package ejercicio01;
 
 import java.io.File;
 

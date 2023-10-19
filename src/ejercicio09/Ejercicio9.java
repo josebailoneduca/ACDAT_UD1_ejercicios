@@ -2,7 +2,7 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
-package ejercicio9;
+package ejercicio09;
 
 import java.io.BufferedReader;
 import java.io.DataInputStream;
@@ -19,22 +19,22 @@ import java.nio.charset.StandardCharsets;
  * Crear un programa que lea el contenido de un fichero de texto y a partir de
  * él cree un nuevo fichero binario con el mismo nombre, y con extensión cod. El
  * archivo COD, debe contener el mismo contenido que el fichero original, pero
- * cambiando las a por e, las e por i, las i por o, las o por u
- * y las u por a. Además, sí en el cambio, resulta que la palabra contiene
- * la e, la o y la u, ésta será puesta en mayúsculas. Muestra los
- * resultados por pantalla. Obtén el fichero original de algún texto de
- * internet, asegurándote que se puedan comprobar las condiciones anteriores e
- * incorpóralo al proyecto en una carpeta llamada recursos, con el nombre
- * textoEjer9.txt. El fichero binario .cod se guardará en ese mismo directorio.
+ * cambiando las a por e, las e por i, las i por o, las o por u y las u por a.
+ * Además, sí en el cambio, resulta que la palabra contiene la e, la o y la u,
+ * ésta será puesta en mayúsculas. Muestra los resultados por pantalla. Obtén el
+ * fichero original de algún texto de internet, asegurándote que se puedan
+ * comprobar las condiciones anteriores e incorpóralo al proyecto en una carpeta
+ * llamada recursos, con el nombre textoEjer9.txt. El fichero binario .cod se
+ * guardará en ese mismo directorio.
  *
  * @author Bailon
  */
 public class Ejercicio9 {
 
-    
     /**
      * MAIN INICIO DEL PROGRAMA
-     * @param args 
+     *
+     * @param args
      */
     public static void main(String[] args) {
         //leer fichero y cambiar vocales
@@ -47,15 +47,15 @@ public class Ejercicio9 {
         leerFicheroBinario();
     }
 
-    
     /**
      * Lee el fichero y cambia sus vocales segun el patron del ejercicio
+     *
      * @return El texto leido con las vocales cambiadas
      */
     private static String leerFicheroTexto() {
         //PREPARACION 
-        File archivo = new File("./src/ejercicio9/recursos/textoEjer9.txt");
-        System.out.println("\n-------------------------------------------------\nCargando archivo "+archivo.getAbsolutePath()+"\n-------------------------------------------------");
+        File archivo = new File("./src/ejercicio09/recursos/textoEjer9.txt");
+        System.out.println("\n-------------------------------------------------\nCargando archivo " + archivo.getAbsolutePath() + "\n-------------------------------------------------");
         FileReader fr = null;
         BufferedReader br = null;
         String salida = "";
@@ -93,6 +93,7 @@ public class Ejercicio9 {
 
     /**
      * Dada una letra devuelve la letra que toca según el ejercicio
+     *
      * @param c Letra a comprobar
      * @return Letra correspondiente
      */
@@ -109,8 +110,9 @@ public class Ejercicio9 {
 
     /**
      * Dado un texto cambia las palabras definidas por el ejercicio a mayusculas
+     *
      * @param texto Texto a analizar
-     * @return  Texto con las mayusculas ajustadas
+     * @return Texto con las mayusculas ajustadas
      */
     private static String cambiarMayusculasTexto(String texto) {
         //preparacion de variables
@@ -149,6 +151,7 @@ public class Ejercicio9 {
 
     /**
      * Comprueba una palabra y la cambia a mayusculas si corresponde
+     *
      * @param palabra Palabra a analizar
      * @return Palabra ajustada
      */
@@ -177,13 +180,14 @@ public class Ejercicio9 {
 
     /**
      * Guarda un texto como archivo binario
-     * @param texto  El texto a guardar
+     *
+     * @param texto El texto a guardar
      */
     private static void guardarFicheroBinario(String texto) {
         System.out.println("\n-------------------------------------------------\nGuardando archivo binario:\n-------------------------------------------------");
 
         //1- GESTIÓN DEL FICHERO       
-        File archivo = new File("./src/ejercicio9/recursos/textoEjer9.cod");
+        File archivo = new File("./src/ejercicio09/recursos/textoEjer9.cod");
         // 2- Creación del fichero:
         // Si estaba ANTES, lo eliminamos
         if (archivo.exists()) {
@@ -206,15 +210,15 @@ public class Ejercicio9 {
         DataOutputStream dataOS = null;
 
         try {
-            fileOS = new FileOutputStream("./src/ejercicio9/recursos/textoEjer9.cod");
+            fileOS = new FileOutputStream("./src/ejercicio09/recursos/textoEjer9.cod");
             dataOS = new DataOutputStream(fileOS);
             //4-INSERTAR DATOS RECORRIENDO EL TEXTO Y GUARDANDO CADA CARACTER COMO BYTE
             for (int i = 0; i < texto.length(); i++) {
                 //guardar caracter como byte
-              dataOS.writeByte((byte)texto.charAt(i));
+                dataOS.writeByte((byte) texto.charAt(i));
             }
         } catch (IOException ioe) {
-            System.out.println(" ---> ERROR EN ACCESO al fichero o en métodos escritura: "+archivo.getAbsolutePath());
+            System.out.println(" ---> ERROR EN ACCESO al fichero o en métodos escritura: " + archivo.getAbsolutePath());
             ioe.printStackTrace();
         } finally {
             try {
@@ -237,49 +241,53 @@ public class Ejercicio9 {
      * Lee un archivo binario y muestra su contenido en pantalla
      */
     private static void leerFicheroBinario() {
-        File archivo = new File("./src/ejercicio9/recursos/textoEjer9.cod");
-        System.out.println("\n-------------------------------------------------\nCargando archivo "+archivo.getAbsolutePath()+"\n-------------------------------------------------");
+        File archivo = new File("./src/ejercicio09/recursos/textoEjer9.cod");
+        System.out.println("\n-------------------------------------------------\nCargando archivo " + archivo.getAbsolutePath() + "\n-------------------------------------------------");
         //- Búsqueda del fichero:
         //Si no existe avisamos y terminamos
-        if(archivo.exists() == false){ 
-            System.out.println("El fichero: "+archivo.getAbsolutePath());
-            System.out.println("No existe en la ruta: "+archivo.getAbsolutePath());
+        if (archivo.exists() == false) {
+            System.out.println("El fichero: " + archivo.getAbsolutePath());
+            System.out.println("No existe en la ruta: " + archivo.getAbsolutePath());
             return;
         }
-              
+
         //3-PREPARACIÓN LECTURA: streams y datos        
         FileInputStream fis = null;
         DataInputStream dis = null;
-       
+
         //4-LECTURA DATOS por pares nombre-edad:
-        try{
+        try {
             fis = new FileInputStream(archivo);
             dis = new DataInputStream(fis);
-            
+
             // Bucle de lectura:          
             // Se intenta leer de 2 en 2 bytes y 
             // mientras la cantidad de bytes leidos no sea 0 se continua leyendo
             //
-                byte[] b;
-                 while((b=dis.readNBytes(2)).length!=0){
-                   //convertir los dos bytes leidos a string segun el charset adecuado
-                   System.out.print(new String(b,StandardCharsets.ISO_8859_1));
-                }
-             System.out.println("\n\n----------------FIN DE ARCHIVO-----------------");
-        }catch(FileNotFoundException fnfe){//Excepción del FileInputStream
-            System.out.println(" ---> ERROR EN ACCESO al fichero: "+archivo.getAbsolutePath()+"\n");
+            byte[] b;
+            while ((b = dis.readNBytes(2)).length != 0) {
+                //convertir los dos bytes leidos a string segun el charset adecuado
+                System.out.print(new String(b, StandardCharsets.ISO_8859_1));
+            }
+            System.out.println("\n\n----------------FIN DE ARCHIVO-----------------");
+        } catch (FileNotFoundException fnfe) {//Excepción del FileInputStream
+            System.out.println(" ---> ERROR EN ACCESO al fichero: " + archivo.getAbsolutePath() + "\n");
             fnfe.printStackTrace();
-        }catch(IOException ieo){////Excepción de métodos readUTF y readInt
-            System.out.println(" ---> ERROR métodos de lectura: "+archivo.getAbsolutePath()+"\n");
-            ieo.printStackTrace();        
-        }finally{            
+        } catch (IOException ieo) {////Excepción de métodos readUTF y readInt
+            System.out.println(" ---> ERROR métodos de lectura: " + archivo.getAbsolutePath() + "\n");
+            ieo.printStackTrace();
+        } finally {
             try {
-        //5-CERRAR STREAMS
-                dis.close();
-                fis.close(); 
-            }catch (IOException ioe) {
-                System.out.println(" ---> ERROR en el cierre: "+archivo.getAbsolutePath()+"\n");
-                ioe.printStackTrace();                
+                //5-CERRAR STREAMS
+                if (dis != null) {
+                    dis.close();
+                }
+                if (fis != null) {
+                    fis.close();
+                }
+            } catch (IOException ioe) {
+                System.out.println(" ---> ERROR en el cierre: " + archivo.getAbsolutePath() + "\n");
+                ioe.printStackTrace();
             }
         }//end finally
     }

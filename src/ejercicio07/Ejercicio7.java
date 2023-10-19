@@ -4,7 +4,7 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  Lista de paquetes
  */
-package ejercicio7;
+package ejercicio07;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
@@ -25,7 +25,8 @@ public class Ejercicio7 {
     /**
      * Ruta y nombre donde se guardara el block de notas
      */
-    private String rutaBloc = "./src/ejercicio7/recursos";
+    
+    private String rutaBloc = "./src/ejercicio07/recursos";
     private String nombreBloc = "bloc_notas.txt";
 
     //guarda si esta inicializado o no el bloc
@@ -73,7 +74,7 @@ public class Ejercicio7 {
      *
      * En ambos casos marca en la clase que el bloc esta inicializado
      */
-    private void inicializarBloc() {
+    private void inicializarBloc() throws IOException {
         //parar si ya esta inicializado
         if (this.inicializado) {
             return;
@@ -96,7 +97,7 @@ public class Ejercicio7 {
                 this.ultimaLinea++;
             }
         } catch (IOException ex) {
-            pedirIntro("Error accediento al archivo (" + archivo.getAbsolutePath() + "):" + ex.getMessage());
+            throw new IOException("Error accediento al archivo (" + archivo.getAbsolutePath() + "):" + ex.getMessage());
         } finally {
             try {
                 if (br != null) {
@@ -106,7 +107,7 @@ public class Ejercicio7 {
                     fr.close();
                 }
             } catch (IOException ex) {
-                pedirIntro(ex.getMessage());
+                throw new IOException(ex.getMessage());
             }
         }
 
@@ -133,10 +134,14 @@ public class Ejercicio7 {
      */
     private void agregarNota() {
         pasarPagina();
+        try{
         //inicializar el bloc
         inicializarBloc();
         //agregar la linea
         agregarLinea(pedirEntrada("Introduce el contenido de la nota"));
+        }catch(IOException ioe){
+            pedirIntro(ioe.getMessage());
+        }
     }
 
     /**
@@ -145,8 +150,13 @@ public class Ejercicio7 {
      */
     private void leerBloc() {
         pasarPagina();
+        try{
         //inicializar el bloc
         inicializarBloc();
+        }catch(IOException ioe){
+            pedirIntro(ioe.getMessage());
+            return;
+        }
 
         //preparacion de variables
         File archivo = new File(getRutaBloc());

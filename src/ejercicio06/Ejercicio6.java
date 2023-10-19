@@ -4,7 +4,7 @@ LICENCIA JOSE JAVIER BO
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
 Lista de paquetes:
  */
-package ejercicio6;
+package ejercicio06;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
@@ -301,7 +301,7 @@ public class Ejercicio6 {
             long tamano = arch.length();
             
             //imprimir en pantalla el resultado
-            System.out.println(nombre + " " + tamano + " KB - " + nPalabras);
+            System.out.println(nombre + " " + tamano + " KB - " + nPalabras+" palabras");
             
         } catch (FileNotFoundException ex) {
             System.out.println("Archivo no encontrado " + ex.getMessage());

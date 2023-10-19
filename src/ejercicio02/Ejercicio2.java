@@ -4,7 +4,7 @@ LICENCIA JOSE JAVIER BO
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
 Lista de paquetes:
  */
-package ejercicio2;
+package ejercicio02;
 import java.io.File;
 /**
 * Ejercicio 2

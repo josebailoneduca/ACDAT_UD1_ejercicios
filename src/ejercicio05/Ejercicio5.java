@@ -5,7 +5,7 @@ LICENCIA JOSE JAVIER BO
 Lista de paquetes:
  */
 
-package ejercicio5;
+package ejercicio05;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.File;
@@ -172,7 +172,7 @@ public class Ejercicio5 {
 
         //Files de lectura y escritura
         File archivoLectura = new File("lorem.txt");
-        File archivoEscritura = new File("texto_20.txt");
+        File archivoEscritura = new File("lorem_20.txt");
 
         //explicacion de la opcion
         this.pasarPagina();
