@@ -16,8 +16,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Scanner;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+
 
 /**
  *
@@ -26,18 +25,82 @@ import java.util.logging.Logger;
 public class Ejercicio10B {
 
     private void pedirNumerosPrimos() {
-        if (ultimoPrimoEnArchivo()<97)
+        if (ultimoPrimoEnArchivo() < 97) 
             pedirPorRango();
-        else
-            //pedirLimitado();
-
+        else 
+            pedirHasta3();
+        
     }
 
     private void pedirPorRango() {
         pasarPagina();
         System.out.println("");
-        int limite 
+        boolean pedido = false;
+        int limiteSuperior = 0;
+        while (!pedido) {
+            System.out.println("Introduzca el limite al que llegar con los numeros primos (limite inferior actual " + (ultimoPrimoEnArchivo() + 1)+")" );
+            String respuesta=s.nextLine();
+            try {
+                limiteSuperior = Integer.parseInt(respuesta);
+                if (limiteSuperior > ultimoPrimoEnArchivo()) {
+                    pedido = true;
+                }else{
+                    System.out.println("Debe ser más alto");
+                }
+            } catch (NumberFormatException ex) {
+                System.out.println(respuesta+" no es un numero");
+            }
+        }
+        
+        ArrayList<Integer> numeros=calculaPrimosDeRango(limiteSuperior);
+        if (numeros.size()==0)
+            System.out.println("No hay numeros primos de "+ultimoPrimoEnArchivo()+" a "+limiteSuperior);
+        else
+            guardarEntrada(new Entrada(nombreUsuario,numeros));
+       
+    }
+    
+    
+    
+    private void pedirHasta3() {
+        pasarPagina();
+        System.out.println("");
+        boolean pedido = false;
+        int cantidad = 0;
+        while (!pedido) {
+            System.out.println("Introduzca la cantidad de numeros primos que quiere (1,2 o 3):" );
+            String respuesta = s.nextLine();
+            try {
+                cantidad = Integer.parseInt(respuesta);
+                if (cantidad > 0 && cantidad < 4) {
+                    pedido = true;
+                }else{
+                    System.out.println("Debes pedir de 1 a 3");
+                }
+            } catch (NumberFormatException ex) {
+                System.out.println(respuesta+" no es un numero");
+            }
+        }
+        
+        ArrayList<Integer> numeros=calculaCantidadPrimos(cantidad);
+        if (numeros.size()==0)
+            pedirIntro("No se han calculado numeros primos");
+        else
+            guardarEntrada(new Entrada(nombreUsuario,numeros));
+    }
 
+    private ArrayList<Integer> calculaPrimosDeRango(int limiteSuperior) {
+        ArrayList<Integer> numeros =new ArrayList<Integer>();
+        for (int i=(ultimoPrimoEnArchivo()+1);i<=limiteSuperior;i++){
+            if (i>100){
+                pedirIntro("Se ha llegado al limite de 100. Se han generado "+numeros.size()+" numeros primos. A partir de ahora solo podrá pedir 3 numeros como máximo");
+                return numeros;
+            }
+            else
+                if(esPrimo(i))
+                    numeros.add(i);
+        }
+        return numeros;
     }
 
 
@@ -115,11 +178,11 @@ public class Ejercicio10B {
         }
     }
 
-    
     /**
      * Lista en pantalla los datos almacenados en el archivo
      */
     private void listarDatosDelArchivo() {
+        inicializarArchivo();
         File f = new File(ruta);
         FileInputStream fis = null;
         DataInputStream dis = null;
@@ -127,49 +190,82 @@ public class Ejercicio10B {
         try {
             //preparar streams
             fis = new FileInputStream(f);
-            dis = new DataInputStream(dis);
+            dis = new DataInputStream(fis);
             //lectura y almacenamiento de los datos
             ArrayList<Entrada> entradas = new ArrayList<Entrada>();
             Entrada entrada = null;
             while ((entrada = leerSiguienteEntrada(dis)) != null) {
                 entradas.add(entrada);
             }
-            
+
             //si no hay entradas se avisa
-            if (entradas.size()==0)
+            if (entradas.size() == 0) {
                 pedirIntro("No hay datos almacenados. Pida numeros primos para agregarlos a " + f.getAbsolutePath());
-            else{
-                for (Entrada e:entradas){
-                    System.out.println(e.usuario+":");
-                    for(int p : e.numeros){
+            } else {
+                for (Entrada e : entradas) {
+                    System.out.println(e.usuario + ":");
+                    for (int p : e.numeros) {
                         System.out.println(p);
                     }
                 }
                 pedirIntro("Fin del archivo");
             }
-            
+
         } catch (FileNotFoundException ex) {
             pedirIntro("No hay numeros almacenados. Pida numeros primos para agregarlos a " + f.getAbsolutePath());
         } catch (IOException ex) {
             pedirIntro("Error leyendo el archivo " + f.getAbsolutePath());
-        }finally{
-             try {
-         if(dis!=null)
-             dis.close();
-         if (fis!=null)
-                 fis.close();
-         } catch (IOException ex) {
-                 pedirIntro("Error cerrando streams");
-         }
+        } finally {
+            try {
+                if (dis != null) {
+                    dis.close();
+                }
+                if (fis != null) {
+                    fis.close();
+                }
+            } catch (IOException ex) {
+                pedirIntro("Error cerrando streams");
+            }
         }
     }
     
+    
+    
+    private void inicializarArchivo(){
+    File f=new File(ruta);
+    if (!f.exists())
+        try {
+            f.createNewFile();
+    } catch (IOException ex) {
+            System.out.println("Error creando archivo "+f.getAbsolutePath());
+    }
+    }
+    /**
+     * Devuelve si un numero es primo o no mirando si es divisible por algun
+     * numero menor o igual que su raiz cuadrada
+     *
+     * @param num El numero a comprobar
+     * @return True si es primo, False si no es primo
+     */
+    private boolean esPrimo(int num) {
+        int divisor = 2;
+        double raiz2 = Math.sqrt(num);
+        while (num != 1 && divisor <= raiz2) {
+            if (num % divisor == 0) {
+                return false;
+            } else {
+                divisor++;
+            }
+        }
+        return true;
+    }
     /**
      * Graba una nueva entrada en el archivo conteniendo el usuario y los primos
      *
      * @param entrada Entrada a guardar en el archivo
      */
     private void guardarEntrada(Entrada entrada) {
+        inicializarArchivo();
         File f = new File(ruta);
 
         FileOutputStream fos = null;
@@ -237,6 +333,7 @@ public class Ejercicio10B {
      * @return El ultimo primo
      */
     private int ultimoPrimoEnArchivo() {
+        inicializarArchivo();
         File f = new File(ruta);
 
         FileInputStream fis = null;
