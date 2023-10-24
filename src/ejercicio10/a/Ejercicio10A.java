@@ -25,9 +25,21 @@ import java.util.logging.Logger;
  */
 public class Ejercicio10A {
 
+    //ATRIBUTOS
+    
+    /**
+     * Scanner de consola
+     */
     Scanner s = new Scanner(System.in);
+    
+    /**
+     * Ruta del archivo binario
+     */
     String ruta = "./src/ejercicio10/recursos/PrimosA.dat";
 
+    /**
+     * Constructor
+     */
     public Ejercicio10A() {
         //pedir el limite
 
@@ -113,7 +125,7 @@ public class Ejercicio10A {
                     fos.close();
                 }
             } catch (IOException ex) {
-                Logger.getLogger(Ejercicio10A.class.getName()).log(Level.SEVERE, null, ex);
+                System.out.println("Error cerrando streams");
             }
         }
 
@@ -140,11 +152,11 @@ public class Ejercicio10A {
         } finally {
             //cierre de outputstreams
             try {
-                if (dos != null) {
-                    dos.close();
+                if (dis != null) {
+                    dis.close();
                 }
-                if (fos != null) {
-                    fos.close();
+                if (fis != null) {
+                    fis.close();
                 }
             } catch (IOException ex) {
                 System.out.println("Error cerrando streams");
