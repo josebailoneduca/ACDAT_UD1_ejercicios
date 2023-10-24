@@ -17,110 +17,11 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Scanner;
 
-
 /**
  *
  * @author Jose Javier BO
  */
 public class Ejercicio10B {
-
-    private void pedirNumerosPrimos() {
-        if (ultimoPrimoEnArchivo() < 97) 
-            pedirPorRango();
-        else 
-            pedirHasta3();
-        
-    }
-
-    private void pedirPorRango() {
-        pasarPagina();
-        System.out.println("");
-        boolean pedido = false;
-        int limiteSuperior = 0;
-        while (!pedido) {
-            System.out.println("Introduzca el limite máximo al que llegar con los numeros primos (al menos " + (ultimoPrimoEnArchivo() + 1)+")" );
-            String respuesta=s.nextLine();
-            try {
-                limiteSuperior = Integer.parseInt(respuesta);
-                if (limiteSuperior > ultimoPrimoEnArchivo()) {
-                    pedido = true;
-                }else{
-                    System.out.println("Debe ser más alto");
-                }
-            } catch (NumberFormatException ex) {
-                System.out.println(respuesta+" no es un numero");
-            }
-        }
-        
-        ArrayList<Integer> numeros=calculaPrimosDeRango(limiteSuperior);
-        if (numeros.size()==0)
-            pedirIntro("No hay numeros primos de "+ultimoPrimoEnArchivo()+" a "+limiteSuperior);
-        else{
-            guardarEntrada(new Entrada(nombreUsuario,numeros));
-            pedirIntro("Se han guardado "+numeros.size()+" numeros primos");
-        }
-       
-    }
-    
-    
-    
-    private void pedirHasta3() {
-        pasarPagina();
-        System.out.println("");
-        boolean pedido = false;
-        int cantidad = 0;
-        while (!pedido) {
-            System.out.println("Introduzca la cantidad de numeros primos que quiere (1,2 o 3):" );
-            String respuesta = s.nextLine();
-            try {
-                cantidad = Integer.parseInt(respuesta);
-                if (cantidad > 0 && cantidad < 4) {
-                    pedido = true;
-                }else{
-                    System.out.println("Debes pedir de 1 a 3");
-                }
-            } catch (NumberFormatException ex) {
-                System.out.println(respuesta+" no es un numero");
-            }
-        }
-        
-        ArrayList<Integer> numeros=calculaCantidadPrimos(cantidad);
-        if (numeros.size()==0)
-            pedirIntro("No se han calculado numeros primos");
-        else{
-            guardarEntrada(new Entrada(nombreUsuario,numeros));
-            pedirIntro("Se han guardado "+numeros.size()+" numeros primos");
-        }
-        
-    }
-
-    private ArrayList<Integer> calculaPrimosDeRango(int limiteSuperior) {
-        ArrayList<Integer> numeros =new ArrayList<Integer>();
-        for (int i=(ultimoPrimoEnArchivo()+1);i<=limiteSuperior;i++){
-            if (i>100){
-                pedirIntro("Se ha llegado al limite de 100. Se han generado "+numeros.size()+" numeros primos. A partir de ahora solo podrá pedir 3 numeros como máximo");
-                return numeros;
-            }
-            else
-                if(esPrimo(i))
-                    numeros.add(i);
-        }
-        return numeros;
-    }
-
-    private ArrayList<Integer> calculaCantidadPrimos(int cantidad) {
-
-        ArrayList<Integer> numeros =new ArrayList<Integer>();
-        int inicio = ultimoPrimoEnArchivo()+1;
-        
-        while (numeros.size()<cantidad){
-            if(esPrimo(inicio))
-                    numeros.add(inicio);
-            inicio++;
-        }
-        return numeros;
-    }
-
 
     /**
      * Estructura para guardar los datos de una entrada
@@ -197,6 +98,144 @@ public class Ejercicio10B {
     }
 
     /**
+     * Gestiona la seleccion de que tipo de peticion de primos lanzar. Si el
+     * ultimo primo guardado es menor de 97 lanza la peticion de un rango. En
+     * caso contrario lanza la peticion de 1 a 3 primos
+     */
+    private void pedirNumerosPrimos() {
+        if (ultimoPrimoEnArchivo() < 97) {
+            pedirPorRango();
+        } else {
+            pedirHasta3();
+        }
+    }
+
+    /**
+     * Pide un numero máximo para generar los numeros primos. Si el rango
+     * ingroducido es menor que el primo actual avisa y vuelve a pedir Tras
+     * recoger el rango solicitado lanza el calculo de los primos y el guardado
+     */
+    private void pedirPorRango() {
+        pasarPagina();
+        System.out.println("");
+
+        //Peticion del rango al usuario
+        boolean pedido = false;
+        int limiteSuperior = 0;
+        while (!pedido) {
+            System.out.println("Introduzca el limite máximo al que llegar con los numeros primos (al menos " + (ultimoPrimoEnArchivo() + 1) + ")");
+            String respuesta = s.nextLine();
+            try {
+                limiteSuperior = Integer.parseInt(respuesta);
+                if (limiteSuperior > ultimoPrimoEnArchivo()) {
+                    pedido = true;
+                } else {
+                    System.out.println("Debe ser más alto");
+                }
+            } catch (NumberFormatException ex) {
+                System.out.println(respuesta + " no es un numero");
+            }
+        }
+
+        //calcular los numeros primos
+        ArrayList<Integer> numeros = calculaPrimosDeRango(limiteSuperior);
+
+        //si no hay numeros primos en el rango se avisa
+        if (numeros.size() == 0) {
+            pedirIntro("No hay numeros primos de " + ultimoPrimoEnArchivo() + " a " + limiteSuperior);
+        } else {
+            //si hay primos los guarda a archivo
+            guardarEntrada(new Entrada(nombreUsuario, numeros));
+            pedirIntro("Se han guardado " + numeros.size() + " numeros primos");
+        }
+
+    }
+
+    /**
+     * Pide un numero concreto de numero primos de 1 a 3
+     *
+     * Tras recoger el rango solicitado lanza el calculo de los primos y el
+     * guardado
+     */
+    private void pedirHasta3() {
+        pasarPagina();
+        System.out.println("");
+        boolean pedido = false;
+        int cantidad = 0;
+        //peticion de cuantos numeros primos se quiere
+        while (!pedido) {
+            System.out.println("Introduzca la cantidad de numeros primos que quiere (1,2 o 3):");
+            String respuesta = s.nextLine();
+            try {
+                cantidad = Integer.parseInt(respuesta);
+                if (cantidad > 0 && cantidad < 4) {
+                    pedido = true;
+                } else {
+                    System.out.println("Debes pedir de 1 a 3");
+                }
+            } catch (NumberFormatException ex) {
+                System.out.println(respuesta + " no es un numero");
+            }
+        }
+
+        //calculo de los numeros primos que se han pedido
+        ArrayList<Integer> numeros = calculaCantidadPrimos(cantidad);
+
+        // guardado a disco de los numeros
+        guardarEntrada(new Entrada(nombreUsuario, numeros));
+        pedirIntro("Se han guardado " + numeros.size() + " numeros primos");
+    }
+
+    /**
+     * Calcula los numeros primos mayores que el ultimo numero primo que hay en
+     * el archivo y menor o igual que el limite que se suministra. Si se pasa de
+     * 100 solo calcula hasta el 100 y para de calcular. Devuelve los primos
+     * calculados en una arraylist de enteros.
+     *
+     * @param limiteSuperior Limite máximo al que llegar
+     *
+     * @return La lista de numeros primos encontrados
+     */
+    private ArrayList<Integer> calculaPrimosDeRango(int limiteSuperior) {
+        ArrayList<Integer> numeros = new ArrayList<Integer>();
+        //chequeo de si es primo cada numero entre el maximo actual y el limite superior
+        for (int i = (ultimoPrimoEnArchivo() + 1); i <= limiteSuperior; i++) {
+            if (i > 100) {
+                pedirIntro("Se ha llegado al limite de 100. Se han generado " + numeros.size() + " numeros primos. A partir de ahora solo podrá pedir 3 numeros como máximo");
+                return numeros;
+            } else //si es primo se agrega a la lista resultado
+            if (esPrimo(i)) {
+                numeros.add(i);
+            }
+        }
+
+        //devolver la lista de numeros primos encontrados en el rango
+        return numeros;
+    }
+
+    /**
+     * Calcula una cantidad determinada de numeros primos. Los calcula los
+     * siguiente al ultimo que exite ya en el archivo
+     *
+     * @param cantidad Cantidad de primos a generar
+     *
+     * @return La lista de primos calculados
+     */
+    private ArrayList<Integer> calculaCantidadPrimos(int cantidad) {
+
+        ArrayList<Integer> numeros = new ArrayList<Integer>();
+        int inicio = ultimoPrimoEnArchivo() + 1;
+
+        while (numeros.size() < cantidad) {
+            if (esPrimo(inicio)) {
+                numeros.add(inicio);
+            }
+            inicio++;
+        }
+        return numeros;
+    }
+
+    /**
      * Lista en pantalla los datos almacenados en el archivo
      */
     private void listarDatosDelArchivo() {
@@ -246,18 +285,9 @@ public class Ejercicio10B {
             }
         }
     }
-    
-    
-    
-    private void inicializarArchivo(){
-    File f=new File(ruta);
-    if (!f.exists())
-        try {
-            f.createNewFile();
-    } catch (IOException ex) {
-            System.out.println("Error creando archivo "+f.getAbsolutePath());
-    }
-    }
+
+
+
     /**
      * Devuelve si un numero es primo o no mirando si es divisible por algun
      * numero menor o igual que su raiz cuadrada
@@ -266,8 +296,9 @@ public class Ejercicio10B {
      * @return True si es primo, False si no es primo
      */
     private boolean esPrimo(int num) {
-        if (num<2)
+        if (num < 2) {
             return false;
+        }
         int divisor = 2;
         double raiz2 = Math.sqrt(num);
         while (num != 1 && divisor <= raiz2) {
@@ -279,6 +310,7 @@ public class Ejercicio10B {
         }
         return true;
     }
+
     /**
      * Graba una nueva entrada en el archivo conteniendo el usuario y los primos
      *
@@ -389,6 +421,23 @@ public class Ejercicio10B {
         return ultimoPrimo;
     }
 
+     /**
+     * Comprueba si existe el archivo y si no existe lo crea
+     */
+    private void inicializarArchivo() {
+        File f = new File(ruta);
+        if (!f.exists())
+        try {
+            f.createNewFile();
+        } catch (IOException ex) {
+            System.out.println("Error creando archivo " + f.getAbsolutePath());
+        }
+    }
+    
+    
+    
+    
+    
     //UTILES DE ENTRADA DE DATOS POR CONSOLA Y MENU
     /**
      * Pide una opcion filtrando que sea valida(de 1 a 4)
@@ -425,8 +474,7 @@ public class Ejercicio10B {
         System.out.println("******************************************************");
         this.nombreUsuario = this.s.nextLine();
     }
-
-    //UTILES DE CONSOLA
+ 
     /**
      * Salta 100 lineas en la consola simulando un salto de pagina
      */
@@ -450,6 +498,8 @@ public class Ejercicio10B {
         return this.s.nextLine();
     }
 
+    
+    
     /**
      * INICIO DEL PROGRAMA
      *
