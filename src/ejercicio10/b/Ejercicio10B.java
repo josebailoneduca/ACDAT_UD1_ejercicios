@@ -40,7 +40,7 @@ public class Ejercicio10B {
 
         public Entrada() {
             this.usuario = "";
-            this.numeros = new ArrayList<Integer>();
+            this.numeros = new ArrayList<>();
         }
     }
 
@@ -56,20 +56,14 @@ public class Ejercicio10B {
     String ruta = "./src/ejercicio10/recursos/PrimosB.dat";
 
     /**
-     * Almacerna el ultimo numero primo que hay en el archivo
-     */
-    int ultimoNumeroPrimo = 0;
-
-    /**
      * Usuario actual
      */
     String nombreUsuario = "";
 
     /**
-     * Muestra el menu apropiado segun se haya llegado al limite de los primos
-     * por debajo de 100 o no
+     * Muestra el menu y gestiona la ejecucioin de la opcion seleccionada
      */
-    private void menu() {
+    public void menu() {
         while (true) {
             //si no hay usuario pedirlo
             if (nombreUsuario.equals("")) {
@@ -79,13 +73,13 @@ public class Ejercicio10B {
             } else {
                 int opcionElegida = this.mostrarMenu();
                 switch (opcionElegida) {
-                    //agregar nota
+                    //pedir numeros primos
                     case 1 ->
                         pedirNumerosPrimos();
-                    //leer bloc
+                    //Listar contenido del archivo
                     case 2 ->
                         listarDatosDelArchivo();
-                    //leer bloc
+                    //Cambiar usuario
                     case 3 ->
                         pedirUsuario();
                     //salir del programa
@@ -93,14 +87,13 @@ public class Ejercicio10B {
                         System.exit(0);
                 }
             }
-            //menuSobre100()
         }
     }
 
     /**
-     * Gestiona la seleccion de que tipo de peticion de primos lanzar. Si el
-     * ultimo primo guardado es menor de 97 lanza la peticion de un rango. En
-     * caso contrario lanza la peticion de 1 a 3 primos
+     * Gestiona qué tipo de peticion de primos debe lanzar. Si el
+     * ultimo primo guardado es menor de 97(ultimo antes del 100) lanza la peticion 
+     * de un rango. En caso contrario lanza la peticion de 1 a 3 primos
      */
     private void pedirNumerosPrimos() {
         if (ultimoPrimoEnArchivo() < 97) {
@@ -122,6 +115,7 @@ public class Ejercicio10B {
         //Peticion del rango al usuario
         boolean pedido = false;
         int limiteSuperior = 0;
+        //repetir hasta que haya dado un rango valido(que sea numero y mayor que el ultimo primo agregado)
         while (!pedido) {
             System.out.println("Introduzca el limite máximo al que llegar con los numeros primos (al menos " + (ultimoPrimoEnArchivo() + 1) + ")");
             String respuesta = s.nextLine();
@@ -138,17 +132,16 @@ public class Ejercicio10B {
         }
 
         //calcular los numeros primos
-        ArrayList<Integer> numeros = calculaPrimosDeRango(limiteSuperior);
+        ArrayList<Integer> numeros = calcularPrimosDeRango(limiteSuperior);
 
         //si no hay numeros primos en el rango se avisa
-        if (numeros.size() == 0) {
+        if (numeros.isEmpty()) {
             pedirIntro("No hay numeros primos de " + ultimoPrimoEnArchivo() + " a " + limiteSuperior);
         } else {
             //si hay primos los guarda a archivo
             guardarEntrada(new Entrada(nombreUsuario, numeros));
             pedirIntro("Se han guardado " + numeros.size() + " numeros primos");
         }
-
     }
 
     /**
@@ -179,7 +172,7 @@ public class Ejercicio10B {
         }
 
         //calculo de los numeros primos que se han pedido
-        ArrayList<Integer> numeros = calculaCantidadPrimos(cantidad);
+        ArrayList<Integer> numeros = calcularCantidadPrimos(cantidad);
 
         // guardado a disco de los numeros
         guardarEntrada(new Entrada(nombreUsuario, numeros));
@@ -196,8 +189,8 @@ public class Ejercicio10B {
      *
      * @return La lista de numeros primos encontrados
      */
-    private ArrayList<Integer> calculaPrimosDeRango(int limiteSuperior) {
-        ArrayList<Integer> numeros = new ArrayList<Integer>();
+    private ArrayList<Integer> calcularPrimosDeRango(int limiteSuperior) {
+        ArrayList<Integer> numeros = new ArrayList<>();
         //chequeo de si es primo cada numero entre el maximo actual y el limite superior
         for (int i = (ultimoPrimoEnArchivo() + 1); i <= limiteSuperior; i++) {
             if (i > 100) {
@@ -214,16 +207,16 @@ public class Ejercicio10B {
     }
 
     /**
-     * Calcula una cantidad determinada de numeros primos. Los calcula los
+     * Calcula una cantidad determinada de numeros primos. Calcula los
      * siguiente al ultimo que exite ya en el archivo
      *
      * @param cantidad Cantidad de primos a generar
      *
      * @return La lista de primos calculados
      */
-    private ArrayList<Integer> calculaCantidadPrimos(int cantidad) {
+    private ArrayList<Integer> calcularCantidadPrimos(int cantidad) {
 
-        ArrayList<Integer> numeros = new ArrayList<Integer>();
+        ArrayList<Integer> numeros = new ArrayList<>();
         int inicio = ultimoPrimoEnArchivo() + 1;
 
         while (numeros.size() < cantidad) {
@@ -249,21 +242,24 @@ public class Ejercicio10B {
             fis = new FileInputStream(f);
             dis = new DataInputStream(fis);
             //lectura y almacenamiento de los datos
-            ArrayList<Entrada> entradas = new ArrayList<Entrada>();
+            ArrayList<Entrada> entradas = new ArrayList<>();
             Entrada entrada = null;
             while ((entrada = leerSiguienteEntrada(dis)) != null) {
                 entradas.add(entrada);
             }
 
             //si no hay entradas se avisa
-            if (entradas.size() == 0) {
+            if (entradas.isEmpty()) {
                 pedirIntro("No hay datos almacenados. Pida numeros primos para agregarlos a " + f.getAbsolutePath());
             } else {
                 for (Entrada e : entradas) {
-                    System.out.println(e.usuario + ":");
+                    String textoEntrada=e.usuario + ": ";
                     for (int p : e.numeros) {
-                        System.out.println(p);
+                        textoEntrada+=p+",";
                     }
+                //quitar ultima coma
+                textoEntrada=textoEntrada.substring(0, (textoEntrada.length()-1));
+                    System.out.println(textoEntrada);
                 }
                 pedirIntro("Fin del archivo");
             }
@@ -285,8 +281,6 @@ public class Ejercicio10B {
             }
         }
     }
-
-
 
     /**
      * Devuelve si un numero es primo o no mirando si es divisible por algun
@@ -364,16 +358,17 @@ public class Ejercicio10B {
         try {
             //leer el usuario
             String usuario = dis.readUTF();
-            //leer la cantidad de primos
+            //leer la cantidad de primos que siguen
             int cantidad = dis.readInt();
-            ArrayList<Integer> numeros = new ArrayList<Integer>();
-            //leer los numeros primos
+            ArrayList<Integer> numeros = new ArrayList<>();
+            //leer los numeros primos en si
             for (int i = 0; i < cantidad; i++) {
                 numeros.add(dis.readInt());
             }
+            //devolver la entrada con los datos de usuario y primos
             return new Entrada(usuario, numeros);
         } catch (EOFException eof) {
-            //Si se ha llegado al final del archivo leemos null
+            //Si se ha llegado al final del archivo devolvemos null
             return null;
         }
     }
@@ -398,6 +393,8 @@ public class Ejercicio10B {
 
             //lectura
             Entrada e = new Entrada();
+            //leer entradas del archivo hasta que sean null(habra llegado al final)
+            //para cada entrada cogemos el ultimo primo
             while ((e = leerSiguienteEntrada(dis)) != null) {
                 ultimoPrimo = e.numeros.get(e.numeros.size() - 1);
             }
@@ -418,10 +415,12 @@ public class Ejercicio10B {
                 System.out.println("Error cerrando streams");
             }
         }
+        
+        //devolver el ultimo primo leido
         return ultimoPrimo;
     }
 
-     /**
+    /**
      * Comprueba si existe el archivo y si no existe lo crea
      */
     private void inicializarArchivo() {
@@ -433,18 +432,14 @@ public class Ejercicio10B {
             System.out.println("Error creando archivo " + f.getAbsolutePath());
         }
     }
-    
-    
-    
-    
-    
+
     //UTILES DE ENTRADA DE DATOS POR CONSOLA Y MENU
     /**
      * Pide una opcion filtrando que sea valida(de 1 a 4)
      *
      * @return la opcion elegida
      */
-    public int mostrarMenu() {
+    private int mostrarMenu() {
         int opcion = -1;
         while (opcion < 1 || opcion > 4) {
             this.pasarPagina();
@@ -466,15 +461,24 @@ public class Ejercicio10B {
         return opcion;
     }
 
+    /**
+     * Solicita un nombre de usuario no vacio
+     */
     private void pedirUsuario() {
-        pasarPagina();
-        System.out.println("******************************************************");
-        System.out.println("Usuario actual: " + nombreUsuario);
-        System.out.println("Pulsa intro para continuar");
-        System.out.println("******************************************************");
-        this.nombreUsuario = this.s.nextLine();
+        while (true) {
+            pasarPagina();
+            System.out.println("******************************************************");
+            System.out.println("Usuario actual: " + ((nombreUsuario.length() > 0) ? nombreUsuario : "Ninguno"));
+            System.out.println("******************************************************");
+            System.out.println("Escribir nuevo usuario:");
+            String nuevoNombre = this.s.nextLine();
+            if (nuevoNombre.length() > 0) {
+                this.nombreUsuario = nuevoNombre;
+                return;
+            }
+        }
     }
- 
+
     /**
      * Salta 100 lineas en la consola simulando un salto de pagina
      */
@@ -498,8 +502,6 @@ public class Ejercicio10B {
         return this.s.nextLine();
     }
 
-    
-    
     /**
      * INICIO DEL PROGRAMA
      *
