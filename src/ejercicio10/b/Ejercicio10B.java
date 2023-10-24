@@ -38,7 +38,7 @@ public class Ejercicio10B {
         boolean pedido = false;
         int limiteSuperior = 0;
         while (!pedido) {
-            System.out.println("Introduzca el limite al que llegar con los numeros primos (limite inferior actual " + (ultimoPrimoEnArchivo() + 1)+")" );
+            System.out.println("Introduzca el limite máximo al que llegar con los numeros primos (al menos " + (ultimoPrimoEnArchivo() + 1)+")" );
             String respuesta=s.nextLine();
             try {
                 limiteSuperior = Integer.parseInt(respuesta);
@@ -54,9 +54,11 @@ public class Ejercicio10B {
         
         ArrayList<Integer> numeros=calculaPrimosDeRango(limiteSuperior);
         if (numeros.size()==0)
-            System.out.println("No hay numeros primos de "+ultimoPrimoEnArchivo()+" a "+limiteSuperior);
-        else
+            pedirIntro("No hay numeros primos de "+ultimoPrimoEnArchivo()+" a "+limiteSuperior);
+        else{
             guardarEntrada(new Entrada(nombreUsuario,numeros));
+            pedirIntro("Se han guardado "+numeros.size()+" numeros primos");
+        }
        
     }
     
@@ -85,8 +87,11 @@ public class Ejercicio10B {
         ArrayList<Integer> numeros=calculaCantidadPrimos(cantidad);
         if (numeros.size()==0)
             pedirIntro("No se han calculado numeros primos");
-        else
+        else{
             guardarEntrada(new Entrada(nombreUsuario,numeros));
+            pedirIntro("Se han guardado "+numeros.size()+" numeros primos");
+        }
+        
     }
 
     private ArrayList<Integer> calculaPrimosDeRango(int limiteSuperior) {
@@ -99,6 +104,19 @@ public class Ejercicio10B {
             else
                 if(esPrimo(i))
                     numeros.add(i);
+        }
+        return numeros;
+    }
+
+    private ArrayList<Integer> calculaCantidadPrimos(int cantidad) {
+
+        ArrayList<Integer> numeros =new ArrayList<Integer>();
+        int inicio = ultimoPrimoEnArchivo()+1;
+        
+        while (numeros.size()<cantidad){
+            if(esPrimo(inicio))
+                    numeros.add(inicio);
+            inicio++;
         }
         return numeros;
     }
@@ -248,6 +266,8 @@ public class Ejercicio10B {
      * @return True si es primo, False si no es primo
      */
     private boolean esPrimo(int num) {
+        if (num<2)
+            return false;
         int divisor = 2;
         double raiz2 = Math.sqrt(num);
         while (num != 1 && divisor <= raiz2) {
