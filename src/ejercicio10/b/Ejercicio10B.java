@@ -18,13 +18,15 @@ import java.util.ArrayList;
 import java.util.Scanner;
 
 /**
- *
+ * Ejercicio 10B. Generar numeros primos y guardarlos en disco en forma binaria.
+ * 
  * @author Jose Javier BO
  */
 public class Ejercicio10B {
 
     /**
-     * Estructura para guardar los datos de una entrada
+     * Estructura para guardar los datos de una entrada.
+     * Cada entrada contiene el nombre de usuario y la lista de primos que ha pedido
      */
     class Entrada {
 
@@ -105,7 +107,7 @@ public class Ejercicio10B {
 
     /**
      * Pide un numero máximo para generar los numeros primos. Si el rango
-     * ingroducido es menor que el primo actual avisa y vuelve a pedir Tras
+     * ingroducido es menor que el primo actual avisa y vuelve a pedir. Tras
      * recoger el rango solicitado lanza el calculo de los primos y el guardado
      */
     private void pedirPorRango() {
