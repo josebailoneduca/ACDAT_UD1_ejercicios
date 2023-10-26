@@ -6,9 +6,19 @@ Lista de paquetes:
  */
 package ejercicio11;
 
+import java.io.EOFException;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Scanner;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  * Realiza un mismo programa: A. Cree un fichero binario con objetos
@@ -21,31 +31,95 @@ import java.util.Scanner;
  */
 public class Ejercicio11A {
 
-    /**
-     * Clase para almacenar estructura de datos de alumno
-     */
-    class Alumno implements Serializable {
+    private Alumno pedirAlumno() {
+        pasarPagina();
+        System.out.println("Introducir alumno");
+        System.out.println("*****************");
+        System.out.print("Nombre: ");
+        String nombre = s.nextLine();
+        System.out.print("Apellidos: ");
+        String apellidos = s.nextLine();
+        System.out.print("fechaNac: ");
+        String fechaNac = s.nextLine();
+        System.out.print("Telefono: ");
+        String telefono = s.nextLine();
+        System.out.print("Curso: ");
+        String curso = s.nextLine();
+        float notaMediaFinal = 0;
+        boolean recogido = false;
+        while (!recogido) {
+            System.out.print("Nota media final: ");
+            try {
+                notaMediaFinal = Float.parseFloat(s.nextLine().replace(',', '.'));
+                recogido = true;
+            } catch (NumberFormatException ex) {
+            }
+        }
+        return new Alumno(nombre, apellidos, fechaNac, telefono, curso, notaMediaFinal);
+    }
 
-        String nombre;
-        String apellidos;
-        String fechaNac;
-        String telefono;
-        String curso;
-        float notaMediaFinal;
+    private void guardarAlumno(Alumno alumno) {
+        File f = new File(ruta);
+        FileOutputStream fos = null;
+        ObjectOutputStream oos = null;
 
-        public Alumno(String nombre, String apellidos, String fechaNac, String telefono, String curso, float notaMediaFinal) {
-            this.nombre = nombre;
-            this.apellidos = apellidos;
-            this.fechaNac = fechaNac;
-            this.telefono = telefono;
-            this.curso = curso;
-            this.notaMediaFinal = notaMediaFinal;
+        try {
+            fos = new FileOutputStream(f, true);
+            //comprobar si ya hay alumnos
+            if (leerUsuariosDeDisco().size() == 0) {
+                //Si no hay alumnos crear un objectoutputstream normal
+                oos = new ObjectOutputStream(fos);
+            } else {
+                //guardar siguientes
+                oos = new AgregarObjectOutputStream(fos);
+            }
+
+            oos.writeObject(alumno);
+        } catch (FileNotFoundException ex) {
+            Logger.getLogger(Ejercicio11A.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (IOException ex) {
+            Logger.getLogger(Ejercicio11A.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+
+    private ArrayList<Alumno> leerUsuariosDeDisco() {
+        ArrayList<Alumno> alumnos = new ArrayList<Alumno>();
+        File f = new File(ruta);
+        //si no existe retorna lista vacia
+        if (!f.exists()) {
+            return alumnos;
         }
 
-        @Override
-        public String toString() {
-            return "Alumno{" + "nombre=" + nombre + ", apellidos=" + apellidos + ", fechaNac=" + fechaNac + ", telefono=" + telefono + ", curso=" + curso + ", notaMediaFinal=" + notaMediaFinal + '}';
+        FileInputStream fis = null;
+        ObjectInputStream ois = null;
+
+        try {
+            fis = new FileInputStream(f);
+            ois = new ObjectInputStream(fis);
+            while(true){
+                alumnos.add((Alumno) ois.readObject());
+            }
+        } catch (EOFException eofe) {
+        } catch (IOException ex) {
+            Logger.getLogger(Ejercicio11A.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (ClassNotFoundException ex) {
+            Logger.getLogger(Ejercicio11A.class.getName()).log(Level.SEVERE, null, ex);
         }
+
+        return alumnos;
+    }
+
+    private void leerUsuarios() {
+        pasarPagina();
+        ArrayList<Alumno> alumnos = leerUsuariosDeDisco();
+        if (alumnos.size() == 0) {
+            System.out.println("No hay alumnos almacenados");
+        }
+
+        for (Alumno alumno : alumnos) {
+            System.out.println(alumno);
+        }
+        pedirIntro("");
     }
 
     //ATRIBUTOS
@@ -54,31 +128,22 @@ public class Ejercicio11A {
      */
     Scanner s = new Scanner(System.in);
 
-    ArrayList<Alumno> alumnos = new ArrayList<Alumno>();
+    String ruta = "./src/ejercicio11/recursos/Alumnos.dat";
 
-    
-    
-    
     //METODOS
-    
     /**
      * Constructor
      */
-    
-
     public void menu() {
         while (true) {
             int opcionElegida = this.mostrarMenu();
             switch (opcionElegida) {
-                //pedir numeros primos
+                //introducir alumnos
                 case 1 ->
-                    pedirNumerosPrimos();
-                //Listar contenido del archivo
+                    guardarAlumno(pedirAlumno());
+                //Leer alumnos en disco
                 case 2 ->
-                    listarDatosDelArchivo();
-                //Cambiar usuario
-                case 3 ->
-                    pedirUsuario();
+                    leerUsuarios();
                 //salir del programa
                 default ->
                     System.exit(0);
@@ -86,16 +151,11 @@ public class Ejercicio11A {
             }
         }
 
-        entradaDeDatos();
         //escribir();
         //leer(alumnos);
     }
 
-    private void entradaDeDatos() {
-
-    }
 //UTILES DE ENTRADA DE DATOS POR CONSOLA Y MENU
-
     /**
      * Pide una opcion filtrando que sea valida(de 1 a 4)
      *
@@ -103,16 +163,15 @@ public class Ejercicio11A {
      */
     private int mostrarMenu() {
         int opcion = -1;
-        while (opcion < 1 || opcion > 4) {
+        while (opcion < 1 || opcion > 3) {
             this.pasarPagina();
             System.out.println("**************************************************");
             System.out.println("*                    OPCIONES                    *");
             System.out.println("**************************************************");
-            System.out.println("Usuarios actuales: " + alumnos.size());
+            System.out.println("Alumnos almacenados: " + leerUsuariosDeDisco().size());
             System.out.println("1)Introducir alumno");
-            System.out.println("2)Guardar alumnos en archivo");
-            System.out.println("3)Leer archivo de alumnos");
-            System.out.println("4)Salir");
+            System.out.println("2)Leer archivo de alumnos");
+            System.out.println("3)Salir");
             System.out.println("Elije una opcion:");
             try {
                 String respuesta = this.s.nextLine();
@@ -140,7 +199,9 @@ public class Ejercicio11A {
      */
     private String pedirIntro(String msg) {
         System.out.println("******************************************************");
-        System.out.println(msg);
+        if (msg != null && msg.length() > 0) {
+            System.out.println(msg);
+        }
         System.out.println("Pulsa intro para continuar");
         System.out.println("******************************************************");
         return this.s.nextLine();
