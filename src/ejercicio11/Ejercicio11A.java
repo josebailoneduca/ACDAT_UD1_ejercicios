@@ -14,7 +14,6 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
-import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Scanner;
 import java.util.logging.Level;
@@ -31,6 +30,44 @@ import java.util.logging.Logger;
  */
 public class Ejercicio11A {
 
+    //ATRIBUTOS
+    /**
+     * Scanner de consola
+     */
+    Scanner s = new Scanner(System.in);
+
+    /**
+     * Ruta del archivo binario
+     */
+    String ruta = "./src/ejercicio11/recursos/Alumnos.dat";
+
+    //METODOS
+    /**
+     * Ordena que se muestre el menu y lanza la accion que se ha elegido en el
+     * mismo
+     */
+    public void menu() {
+        while (true) {
+            int opcionElegida = this.mostrarMenu();
+            switch (opcionElegida) {
+                //introducir alumnos en archivo
+                case 1 ->
+                    guardarAlumno(pedirAlumno());
+                //Leer alumnos en disco
+                case 2 ->
+                    leerAlumnos();
+                //salir del programa
+                default ->
+                    System.exit(0);
+
+            }
+        }
+    }
+
+    /**
+     * Pide los datos para un alumno
+     * @return Un objeto Alumno con los datos
+     */
     private Alumno pedirAlumno() {
         pasarPagina();
         System.out.println("Introducir alumno");
@@ -55,37 +92,59 @@ public class Ejercicio11A {
             } catch (NumberFormatException ex) {
             }
         }
+        
+        //retorno del alumno recogido
         return new Alumno(nombre, apellidos, fechaNac, telefono, curso, notaMediaFinal);
     }
 
+    /**
+     * Guarda un alumno a disco
+     * @param alumno  El objeto alumno a guardar
+     */
     private void guardarAlumno(Alumno alumno) {
         File f = new File(ruta);
         FileOutputStream fos = null;
         ObjectOutputStream oos = null;
 
         try {
+            //preparacion de streams
             fos = new FileOutputStream(f, true);
             //comprobar si ya hay alumnos
-            if (leerUsuariosDeDisco().size() == 0) {
+            if (leerAlumnosDeDisco().isEmpty()) {
                 //Si no hay alumnos crear un objectoutputstream normal
                 oos = new ObjectOutputStream(fos);
             } else {
-                //guardar siguientes
+                 //Si ya hay alumnos crear un AgregarObjectOuputStream que evita la escritura de cabecera
                 oos = new AgregarObjectOutputStream(fos);
             }
-
+            
+            //escribir el alumno en disco
             oos.writeObject(alumno);
+            
         } catch (FileNotFoundException ex) {
-            Logger.getLogger(Ejercicio11A.class.getName()).log(Level.SEVERE, null, ex);
+            System.out.println("Archivo no encontrado "+f.getAbsolutePath());
         } catch (IOException ex) {
-            Logger.getLogger(Ejercicio11A.class.getName()).log(Level.SEVERE, null, ex);
+            System.out.println("Error escribiendo a archivo "+f.getAbsolutePath());
+        }finally{
+            try {
+            if(oos!=null)
+                oos.close();
+            if (fos!=null)
+                fos.close();
+            } catch (IOException ex) {
+                Logger.getLogger(Ejercicio11A.class.getName()).log(Level.SEVERE, null, ex);
+            }
         }
     }
 
-    private ArrayList<Alumno> leerUsuariosDeDisco() {
+    /**
+     * Lee los alumnos desde el archivo binario y devuelve un arraylist con ellos
+     * @return Un arraylist conteniendo los alumos recogidos o un arraylist vacio si no ha encontrado ninguno
+     */
+    private ArrayList<Alumno> leerAlumnosDeDisco() {
         ArrayList<Alumno> alumnos = new ArrayList<Alumno>();
         File f = new File(ruta);
-        //si no existe retorna lista vacia
+        //si no existe el archivo retorna lista vacia
         if (!f.exists()) {
             return alumnos;
         }
@@ -94,9 +153,11 @@ public class Ejercicio11A {
         ObjectInputStream ois = null;
 
         try {
+            //preparacion de streams
             fis = new FileInputStream(f);
             ois = new ObjectInputStream(fis);
-            while(true){
+            //recoger alumnos hasta EOF exception
+            while (true) {
                 alumnos.add((Alumno) ois.readObject());
             }
         } catch (EOFException eofe) {
@@ -104,55 +165,36 @@ public class Ejercicio11A {
             Logger.getLogger(Ejercicio11A.class.getName()).log(Level.SEVERE, null, ex);
         } catch (ClassNotFoundException ex) {
             Logger.getLogger(Ejercicio11A.class.getName()).log(Level.SEVERE, null, ex);
+        }finally{
+            try {
+            if(ois!=null)
+                ois.close();
+            if (fis!=null)
+                fis.close();
+            } catch (IOException ex) {
+                Logger.getLogger(Ejercicio11A.class.getName()).log(Level.SEVERE, null, ex);
+            }
         }
-
         return alumnos;
     }
 
-    private void leerUsuarios() {
+    /**
+     * Lee los alumnos y los muestra en pantalla
+     */
+    private void leerAlumnos() {
         pasarPagina();
-        ArrayList<Alumno> alumnos = leerUsuariosDeDisco();
+        //recoger alumnos del archivo
+        ArrayList<Alumno> alumnos = leerAlumnosDeDisco();
+        //si no hay alumnos avisamos
         if (alumnos.size() == 0) {
             System.out.println("No hay alumnos almacenados");
         }
 
+        //recorrer alumnos en imprimirlos en pantalla
         for (Alumno alumno : alumnos) {
             System.out.println(alumno);
         }
         pedirIntro("");
-    }
-
-    //ATRIBUTOS
-    /**
-     * Scanner de consola
-     */
-    Scanner s = new Scanner(System.in);
-
-    String ruta = "./src/ejercicio11/recursos/Alumnos.dat";
-
-    //METODOS
-    /**
-     * Constructor
-     */
-    public void menu() {
-        while (true) {
-            int opcionElegida = this.mostrarMenu();
-            switch (opcionElegida) {
-                //introducir alumnos
-                case 1 ->
-                    guardarAlumno(pedirAlumno());
-                //Leer alumnos en disco
-                case 2 ->
-                    leerUsuarios();
-                //salir del programa
-                default ->
-                    System.exit(0);
-
-            }
-        }
-
-        //escribir();
-        //leer(alumnos);
     }
 
 //UTILES DE ENTRADA DE DATOS POR CONSOLA Y MENU
@@ -168,7 +210,7 @@ public class Ejercicio11A {
             System.out.println("**************************************************");
             System.out.println("*                    OPCIONES                    *");
             System.out.println("**************************************************");
-            System.out.println("Alumnos almacenados: " + leerUsuariosDeDisco().size());
+            System.out.println("Alumnos almacenados: " + leerAlumnosDeDisco().size());
             System.out.println("1)Introducir alumno");
             System.out.println("2)Leer archivo de alumnos");
             System.out.println("3)Salir");

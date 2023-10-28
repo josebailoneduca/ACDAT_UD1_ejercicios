@@ -17,7 +17,7 @@ import java.io.Serializable;
      * Clase para almacenar estructura de datos de alumno
      */
     class Alumno implements Serializable {
-
+        //ATRIBUTOS
         String nombre;
         String apellidos;
         String fechaNac;
@@ -25,6 +25,15 @@ import java.io.Serializable;
         String curso;
         float notaMediaFinal;
 
+        /**
+         * Constructor 
+         * @param nombre
+         * @param apellidos
+         * @param fechaNac
+         * @param telefono
+         * @param curso
+         * @param notaMediaFinal 
+         */
         public Alumno(String nombre, String apellidos, String fechaNac, String telefono, String curso, float notaMediaFinal) {
             this.nombre = nombre;
             this.apellidos = apellidos;
@@ -35,6 +44,7 @@ import java.io.Serializable;
             
         }
 
+        //GETTERS Y SETTERS
         public String getNombre() {
             return nombre;
         }

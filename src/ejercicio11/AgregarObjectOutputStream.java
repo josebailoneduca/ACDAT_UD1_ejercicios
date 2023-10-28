@@ -12,7 +12,7 @@ import java.io.ObjectOutputStream;
 import java.io.OutputStream;
 
 /**
- *
+ * Extension de ObjectOutputStream que anula la escritura de la cabecera
  * @author Jose Javier Bailon Ortiz
  */
 public class AgregarObjectOutputStream extends ObjectOutputStream {
