@@ -243,13 +243,16 @@ public class Ejercicio10B {
             //preparar streams
             fis = new FileInputStream(f);
             dis = new DataInputStream(fis);
-            //lectura y almacenamiento de los datos
+            //lectura de disco e impresion en pantalla de los datos
+            
+            //lectura
             ArrayList<Entrada> entradas = new ArrayList<>();
             Entrada entrada = null;
             while ((entrada = leerSiguienteEntrada(dis)) != null) {
                 entradas.add(entrada);
             }
 
+            //impresion
             //si no hay entradas se avisa
             if (entradas.isEmpty()) {
                 pedirIntro("No hay datos almacenados. Pida numeros primos para agregarlos a " + f.getAbsolutePath());
@@ -394,7 +397,7 @@ public class Ejercicio10B {
             dis = new DataInputStream(fis);
 
             //lectura
-            Entrada e = new Entrada();
+            Entrada e = null;
             //leer entradas del archivo hasta que sean null(habra llegado al final)
             //para cada entrada cogemos el ultimo primo
             while ((e = leerSiguienteEntrada(dis)) != null) {
