@@ -6,7 +6,6 @@ Lista de paquetes:
  */
 package ejercicio12;
 
-import ejercicio11.*;
 import java.io.EOFException;
 import java.io.File;
 import java.io.FileInputStream;
@@ -24,11 +23,6 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 /**
- * Realiza un mismo programa: A. Cree un fichero binario con objetos
- * serializados llamado ?Alumnos.dat? para guardar los datos de alumnos. Los
- * datos a guardar de cada alumno son: Nombre, Apellidos, FechaNac, Teléfono,
- * Curso, NotaMediaFinal B. Crear programa que lea fichero anterior y muestre
- * los datos por pantalla.
  *
  * @author Jose Javier BO
  */
@@ -45,45 +39,80 @@ public class Ejercicio12 {
      */
     String ruta = "./src/ejercicio12/recursos/ListaTrabajos.dat";
 
+    /**
+     * Constructor. Agrega los datos iniciales al archivo y muestra el menu
+     */
+    public Ejercicio12() {
+        agregarIniciales();
+        menu();
+    }
+
     //METODOS
+    /**
+     * Agregar datos iniciales si no hay trabajos en el archivo
+     */
+    private void agregarIniciales() {
+        //si ya tiene contenido no se agrega el inicial
+        if (leerTrabajosDeDisco(false)) {
+            return;
+        }
+        //T1
+        escribirTrabajo(new Trabajo("T1", "1/8/2023", 2));
+        escribirEmpleado(new Empleado("Pepe", "Pepillos", 2000));
+        escribirEmpleado(new Empleado("Juan", "Juanillos", 2000));
+        //T2
+        escribirTrabajo(new Trabajo("T2", "15/8/2023", 3));
+        escribirEmpleado(new Empleado("Antonio", "Antonillos", 1700));
+        escribirEmpleado(new Empleado("Laura", "Laurillas", 1700));
+        escribirEmpleado(new Empleado("Jose", "Joselillos", 1500));
+        //T3
+        escribirTrabajo(new Trabajo("T3", "1/9/2023", 2));
+        escribirEmpleado(new Empleado("Sandra", "Sandrilla", 1450));
+        escribirEmpleado(new Empleado("Rodrigo", "Rodriguillo", 1450));
+    }
+
     /**
      * Ordena que se muestre el menu y lanza la accion que se ha elegido en el
      * mismo
      */
-    public void menu() {
+    private void menu() {
         while (true) {
             int opcionElegida = this.mostrarMenu();
             switch (opcionElegida) {
+                //Leer todos los trabajos del disco
+                case 1 -> {
+                    pasarPagina();
+                    leerTrabajosDeDisco(true);
+                }
                 //introducir trabajo en archivo
-                case 1 ->
-                    introducirTrabajo();
-                //Leer alumnos en disco
-//                case 2 ->
-//                    leerAlumnos();
+                case 2 -> {
+                    pasarPagina();
+                    pedirDatosTrabajo();
+                }
                 //salir del programa
                 default ->
                     System.exit(0);
-
             }
         }
     }
 
     /**
-     * Pide los datos para un trabajo
-     *
-     * @return Un objeto Alumno con los datos
+     * Pide los datos para un trabajo. Seguidamente pide los datos de los
+     * empleados. Una vez tiene los datos de los empleados crea el objeto
+     * Trabajo Por ultimo lanza el grabado a disco del trabajo y de los
+     * empleados
      */
-    private void introducirTrabajo() {
+    private void pedirDatosTrabajo() {
         pasarPagina();
-        
-        //RECOGER TRABAJO
+
+        //1 PEDIR DATOS DEL TRABAJO
         System.out.println("Introducir trabajo");
         System.out.println("*****************");
-        
+
         //recoger nombre
         System.out.print("Nombre: ");
         String nombreTrabajo = s.nextLine();
-        
+
         //recoger fecha
         String fecha = "";
         boolean fechaRecogida = false;
@@ -106,22 +135,22 @@ public class Ejercicio12 {
             }
         }
 
-        //RECOGER EMPLEADOS
+        //2 PEDIR DATOS DE EMPLEADOS
         ArrayList<Empleado> empleados = new ArrayList<Empleado>();
-        boolean terminarEmpleados = false;
+        boolean pedirEmpleado = true;
         //bucle para pedir varios empleados
-        while (!terminarEmpleados) {
+        while (pedirEmpleado) {
             System.out.println("Introducir empleado");
             System.out.println("*****************");
-            
+
             //nombre del empleado
             System.out.print("Nombre: ");
             String nombreEmpleado = s.nextLine();
-            
+
             //apellidos del empleado
             System.out.print("Apellidos: ");
             String apellidosEmpleado = s.nextLine();
-            
+
             //sueldo del empleado
             int sueldo = 0;
             boolean sueldoRecogido = false;
@@ -133,43 +162,38 @@ public class Ejercicio12 {
                 } catch (NumberFormatException ex) {
                 }
             }
-            
-            //agregar empleado al array
+
+            //agregar empleado al array de empleados
             empleados.add(new Empleado(nombreEmpleado, apellidosEmpleado, sueldo));
-            
-            //preguntar si se quieren agregar mas empleados
+
+            //pregunta si se quiere seguir agregando empleados
             System.out.println("¿Desea introducir mas empleados?(s/n)");
             String acepta = s.nextLine();
             if (acepta.toLowerCase().equals("n")) {
-                terminarEmpleados = true;
+                pedirEmpleado = false;
             }
         }
 
-        //Calculo del numero de empleados para el trabajo
-        Trabajo trabajo = new Trabajo(nombreTrabajo, fecha, empleados.size());
-        
-        //ordenar la escritura del trabajo y empleados
-        escribitTrabajo(trabajo, empleados);
+        //3 ESCRIBIR TRABAJO Y EMPLEADOS EN DISCO
+        escribirTrabajo(new Trabajo(nombreTrabajo, fecha, empleados.size()));
+        for (Empleado empleado : empleados) {
+            escribirEmpleado(empleado);
+        }
     }
 
-    /**
-     * Guarda un trabajo y lista de empleados
-     * @param trabajo Trabajo a guardar
-     * @param empleados  Empleados a guardar
-     */
-    private void escribitTrabajo(Trabajo trabajo, ArrayList<Empleado> empleados) {
-
+    private void escribirTrabajo(Trabajo trabajo) {
         File f = new File(ruta);
         FileOutputStream fos = null;
         ObjectOutputStream oos = null;
-        
+
         //ESCRIBIR TRABAJO
         try {
             //TRABAJO
+            boolean archivoTieneDatos = leerTrabajosDeDisco(false);
             //preparacion de streams
             fos = new FileOutputStream(f, true);
             //comprobar si ya hay trabajos
-            if (leerTrabajosDeDisco(false)) {
+            if (!archivoTieneDatos) {
                 //Si no hay trabajos crear un objectoutputstream normal
                 oos = new ObjectOutputStream(fos);
             } else {
@@ -194,15 +218,11 @@ public class Ejercicio12 {
                 Logger.getLogger(Ejercicio12.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
-        
-        //guardar empleados
-        for (Empleado empleado : empleados) {
-            escribirEmpleado(empleado);
-        }
     }
 
     /**
      * Escribe un empleado a disco
+     *
      * @param empleado El empleado a escribir
      */
     private void escribirEmpleado(Empleado empleado) {
@@ -216,7 +236,7 @@ public class Ejercicio12 {
             //preparacion de streams
             fos = new FileOutputStream(f, true);
             oos = new AgregarObjectOutputStream(fos);
-            
+
             //escribir el trabajo en disco
             oos.writeObject(empleado);
         } catch (FileNotFoundException ex) {
@@ -236,18 +256,16 @@ public class Ejercicio12 {
             }
         }
     }
-    
-    
 
     /**
      * Lee los trabajos y empleados de disco.
-     * 
+     *
      * @param imprimir True imprimir los trabajos
      * @return true si hay algun trabajo, false si no lo hay
      */
     private boolean leerTrabajosDeDisco(boolean imprimir) {
-        int cantidadDeTrabajos=0;
-        
+        int cantidadDeTrabajos = 0;
+
         File f = new File(ruta);
         //si no existe el archivo retorna lista vacia
         if (!f.exists()) {
@@ -263,18 +281,25 @@ public class Ejercicio12 {
             ois = new ObjectInputStream(fis);
             //recoger trabajos hasta EOF exception
             while (true) {
-                Trabajo t =(Trabajo) ois.readObject();
+
+                Trabajo t = (Trabajo) ois.readObject();
                 cantidadDeTrabajos++;
-                if (imprimir)
+                if (imprimir) {
+                    System.out.println("*********************************************");
                     System.out.println(t);
-                
-                for (int i=0;i<t.getNumsEmpleados();i++){
-                    System.out.println((Empleado) ois.readObject());
                 }
+
+                for (int i = 0; i < t.getNumsEmpleados(); i++) {
+                    Empleado e = (Empleado) ois.readObject();
+                    if (imprimir) {
+                        System.out.println(e);
+                    }
+                }
+
             }
         } catch (EOFException eofe) {
         } catch (IOException ex) {
-            Logger.getLogger(Ejercicio12.class.getName()).log(Level.SEVERE, null, ex);
+            return false;
         } catch (ClassNotFoundException ex) {
             Logger.getLogger(Ejercicio12.class.getName()).log(Level.SEVERE, null, ex);
         } finally {
@@ -289,28 +314,13 @@ public class Ejercicio12 {
                 Logger.getLogger(Ejercicio12.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
-        return cantidadDeTrabajos<0;
-  
+        if (imprimir) {
+            pedirIntro("");
+        }
+        return cantidadDeTrabajos > 0;
+
     }
 
-    /**
-     * Lee los alumnos y los muestra en pantalla
-     */
-//    private void leerAlumnos() {
-//        pasarPagina();
-//        //recoger alumnos del archivo
-//        ArrayList<Alumno> alumnos = leerTrabajosDeDisco();
-//        //si no hay alumnos avisamos
-//        if (alumnos.size() == 0) {
-//            System.out.println("No hay alumnos almacenados");
-//        }
-//
-//        //recorrer alumnos en imprimirlos en pantalla
-//        for (Alumno alumno : alumnos) {
-//            System.out.println(alumno);
-//        }
-//        pedirIntro("");
-//    }
 //UTILES DE ENTRADA DE DATOS POR CONSOLA Y MENU
     /**
      * Pide una opcion filtrando que sea valida(de 1 a 4)
@@ -324,8 +334,8 @@ public class Ejercicio12 {
             System.out.println("**************************************************");
             System.out.println("*                    OPCIONES                    *");
             System.out.println("**************************************************");
-            System.out.println("1)Introducir trabajo");
-            System.out.println("2)Leer trabajos");
+            System.out.println("1)Leer todos los trabajos");
+            System.out.println("2)Introducir un nuevo trabajo");
             System.out.println("3)Salir");
             System.out.println("Elije una opcion:");
             try {
@@ -363,9 +373,7 @@ public class Ejercicio12 {
     }
 
     public static void main(String[] args) {
-        new Ejercicio12().menu();
+        new Ejercicio12();
     }
-
-
 
 }

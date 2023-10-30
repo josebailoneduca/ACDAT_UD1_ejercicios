@@ -12,18 +12,26 @@ import java.io.Serializable;
  *
  * @author Jose Javier BO
  */
-public class Empleado implements Serializable{
-    
+public class Empleado implements Serializable {
+
+    private static final long serialVersionUID = 1;
     private String nombre;
     private String apellidos;
     private int sueldo;
 
+    /**
+     * Constructor. 
+     * @param nombre Nombre del empleado
+     * @param apellidos Apellidos del empleado
+     * @param sueldo Sueldo del empleado
+     */
     public Empleado(String nombre, String apellidos, int sueldo) {
         this.nombre = nombre;
         this.apellidos = apellidos;
         this.sueldo = sueldo;
     }
 
+    //GETTERS Y SETTERS
     public String getNombre() {
         return nombre;
     }
@@ -47,5 +55,10 @@ public class Empleado implements Serializable{
     public void setSueldo(int sueldo) {
         this.sueldo = sueldo;
     }
-    
+
+    @Override
+    public String toString() {
+        return "Empleado: " + nombre + " " + apellidos + ", sueldo: " + sueldo;
+    }
+
 }

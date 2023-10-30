@@ -13,16 +13,35 @@ import java.io.Serializable;
  * @author Jose Javier BO
  */
 public class Trabajo implements Serializable {
+
+    private static final long serialVersionUID = 1;
+    
+    /**
+     * Nombre del trabajo
+     */
     private String nombre;
+    /**
+     * Fecha del trabajo
+     */
     private String fecha;
+    /**
+     * Numero de empleados
+     */
     private int numsEmpleados;
 
+    /**
+     * Constructor de trabajo
+     * @param nombre Nombre del trabajo
+     * @param fecha Fecha del trabajo
+     * @param numsEmpleados Numero de empleados
+     */
     public Trabajo(String nombre, String fecha, int numsEmpleados) {
         this.nombre = nombre;
         this.fecha = fecha;
         this.numsEmpleados = numsEmpleados;
     }
 
+    //GETTERS Y SETTERS
     public String getNombre() {
         return nombre;
     }
@@ -46,6 +65,10 @@ public class Trabajo implements Serializable {
     public void setNumsEmpleados(int numsEmpleados) {
         this.numsEmpleados = numsEmpleados;
     }
-    
-    
+
+    @Override
+    public String toString() {
+        return "Trabajo: " + nombre + ", fecha: " + fecha + ", Empleados: " + numsEmpleados;
+    }
+
 }
