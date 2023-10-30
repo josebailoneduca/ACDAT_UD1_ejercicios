@@ -68,7 +68,7 @@ public class Trabajo implements Serializable {
 
     @Override
     public String toString() {
-        return "Trabajo: " + nombre + ", fecha: " + fecha + ", Empleados: " + numsEmpleados;
+        return "Nombre del trabajo: " + nombre + ", fecha: " + fecha + ", Empleados: " + numsEmpleados;
     }
 
 }
