@@ -14,6 +14,9 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Scanner;
 import java.util.logging.Level;
@@ -66,6 +69,7 @@ public class Ejercicio11A {
 
     /**
      * Pide los datos para un alumno
+     *
      * @return Un objeto Alumno con los datos
      */
     private Alumno pedirAlumno() {
@@ -76,30 +80,53 @@ public class Ejercicio11A {
         String nombre = s.nextLine();
         System.out.print("Apellidos: ");
         String apellidos = s.nextLine();
-        System.out.print("fechaNac: ");
-        String fechaNac = s.nextLine();
+
+        //recoger fecha
+        String fechaNac = "";
+        boolean fechaRecogida = false;
+        while (!fechaRecogida) {
+            try {
+                System.out.print("Fecha de nacimiento (dia/mes/año): ");
+                DateFormat df = new SimpleDateFormat("dd/MM/yyyy");
+                String tmpFecha = s.nextLine();
+                //si el string introducido no es legible por el formato saltara una excepcion
+                //recalcula la fecha segun los valores introducidos sumando los excedentes a los limites
+                //por ejemplo si se escribe 1/13/2020 pondra el 1/1/2021 al escribir un mes mas
+                fechaNac = df.format(df.parse(tmpFecha));
+                System.out.println("¿La fecha " + fechaNac + " es correcta?(s/n)");
+                String acepta = s.nextLine();
+                if (acepta.toLowerCase().equals("s")) {
+                    fechaRecogida = true;
+                }
+            } catch (ParseException ex) {
+            }
+        }
+        //telefono
         System.out.print("Telefono: ");
         String telefono = s.nextLine();
+        //curso
         System.out.print("Curso: ");
         String curso = s.nextLine();
+        //nota
         float notaMediaFinal = 0;
-        boolean recogido = false;
-        while (!recogido) {
+        boolean notaRecogida = false;
+        while (!notaRecogida) {
             System.out.print("Nota media final: ");
             try {
                 notaMediaFinal = Float.parseFloat(s.nextLine().replace(',', '.'));
-                recogido = true;
+                notaRecogida = true;
             } catch (NumberFormatException ex) {
             }
         }
-        
+
         //retorno del alumno recogido
         return new Alumno(nombre, apellidos, fechaNac, telefono, curso, notaMediaFinal);
     }
 
     /**
      * Guarda un alumno a disco
-     * @param alumno  El objeto alumno a guardar
+     *
+     * @param alumno El objeto alumno a guardar
      */
     private void guardarAlumno(Alumno alumno) {
         File f = new File(ruta);
@@ -114,23 +141,25 @@ public class Ejercicio11A {
                 //Si no hay alumnos crear un objectoutputstream normal
                 oos = new ObjectOutputStream(fos);
             } else {
-                 //Si ya hay alumnos crear un AgregarObjectOuputStream que evita la escritura de cabecera
+                //Si ya hay alumnos crear un AgregarObjectOuputStream que evita la escritura de cabecera
                 oos = new AgregarObjectOutputStream(fos);
             }
-            
+
             //escribir el alumno en disco
             oos.writeObject(alumno);
-            
+
         } catch (FileNotFoundException ex) {
-            System.out.println("Archivo no encontrado "+f.getAbsolutePath());
+            System.out.println("Archivo no encontrado " + f.getAbsolutePath());
         } catch (IOException ex) {
-            System.out.println("Error escribiendo a archivo "+f.getAbsolutePath());
-        }finally{
+            System.out.println("Error escribiendo a archivo " + f.getAbsolutePath());
+        } finally {
             try {
-            if(oos!=null)
-                oos.close();
-            if (fos!=null)
-                fos.close();
+                if (oos != null) {
+                    oos.close();
+                }
+                if (fos != null) {
+                    fos.close();
+                }
             } catch (IOException ex) {
                 Logger.getLogger(Ejercicio11A.class.getName()).log(Level.SEVERE, null, ex);
             }
@@ -138,8 +167,11 @@ public class Ejercicio11A {
     }
 
     /**
-     * Lee los alumnos desde el archivo binario y devuelve un arraylist con ellos
-     * @return Un arraylist conteniendo los alumos recogidos o un arraylist vacio si no ha encontrado ninguno
+     * Lee los alumnos desde el archivo binario y devuelve un arraylist con
+     * ellos
+     *
+     * @return Un arraylist conteniendo los alumos recogidos o un arraylist
+     * vacio si no ha encontrado ninguno
      */
     private ArrayList<Alumno> leerAlumnosDeDisco() {
         ArrayList<Alumno> alumnos = new ArrayList<Alumno>();
@@ -165,12 +197,14 @@ public class Ejercicio11A {
             Logger.getLogger(Ejercicio11A.class.getName()).log(Level.SEVERE, null, ex);
         } catch (ClassNotFoundException ex) {
             Logger.getLogger(Ejercicio11A.class.getName()).log(Level.SEVERE, null, ex);
-        }finally{
+        } finally {
             try {
-            if(ois!=null)
-                ois.close();
-            if (fis!=null)
-                fis.close();
+                if (ois != null) {
+                    ois.close();
+                }
+                if (fis != null) {
+                    fis.close();
+                }
             } catch (IOException ex) {
                 Logger.getLogger(Ejercicio11A.class.getName()).log(Level.SEVERE, null, ex);
             }
