@@ -6,6 +6,8 @@ Lista de paquetes:
  */
 package ejercicio14.gui.ventanas;
 
+import ejercicio14.dto.Empleado;
+import ejercicio14.gui.dialogos.DEmpleado;
 import ejercicio14.logica.ControlEmpleados;
 import javax.swing.JOptionPane;
 
@@ -32,10 +34,13 @@ public class VPrincipal extends javax.swing.JFrame {
     private void initComponents() {
 
         btnResetear = new javax.swing.JButton();
-        btnLeerFichero = new javax.swing.JButton();
-        btnObtenerEmpleado = new javax.swing.JButton();
+        btnListarEmpleados = new javax.swing.JButton();
+        btnVerEmpleado = new javax.swing.JButton();
+        btnAnadirEmpleado = new javax.swing.JButton();
+        btnEditarEmpleado = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setResizable(false);
 
         btnResetear.setText("Resetear fichero");
         btnResetear.setToolTipText("Resetea el fichero a sus datos iniciales");
@@ -45,19 +50,35 @@ public class VPrincipal extends javax.swing.JFrame {
             }
         });
 
-        btnLeerFichero.setText("Leer Fichero");
-        btnLeerFichero.setToolTipText("Resetea el fichero a sus datos iniciales");
-        btnLeerFichero.addActionListener(new java.awt.event.ActionListener() {
+        btnListarEmpleados.setText("Listar Empleados");
+        btnListarEmpleados.setToolTipText("Muestra todos los empleados");
+        btnListarEmpleados.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnLeerFicheroActionPerformed(evt);
+                btnListarEmpleadosActionPerformed(evt);
             }
         });
 
-        btnObtenerEmpleado.setText("Obtener Empleado");
-        btnObtenerEmpleado.setToolTipText("Resetea el fichero a sus datos iniciales");
-        btnObtenerEmpleado.addActionListener(new java.awt.event.ActionListener() {
+        btnVerEmpleado.setText("Ver Empleado");
+        btnVerEmpleado.setToolTipText("Muestra un empleado");
+        btnVerEmpleado.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnObtenerEmpleadoActionPerformed(evt);
+                btnVerEmpleadoActionPerformed(evt);
+            }
+        });
+
+        btnAnadirEmpleado.setText("Añadir Empleado");
+        btnAnadirEmpleado.setToolTipText("Crea un nuevo empleado");
+        btnAnadirEmpleado.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnAnadirEmpleadoActionPerformed(evt);
+            }
+        });
+
+        btnEditarEmpleado.setText("Editar Empleado");
+        btnEditarEmpleado.setToolTipText("Crea un nuevo empleado");
+        btnEditarEmpleado.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnEditarEmpleadoActionPerformed(evt);
             }
         });
 
@@ -69,8 +90,10 @@ public class VPrincipal extends javax.swing.JFrame {
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(btnResetear, javax.swing.GroupLayout.DEFAULT_SIZE, 205, Short.MAX_VALUE)
-                    .addComponent(btnLeerFichero, javax.swing.GroupLayout.DEFAULT_SIZE, 205, Short.MAX_VALUE)
-                    .addComponent(btnObtenerEmpleado, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 205, Short.MAX_VALUE))
+                    .addComponent(btnListarEmpleados, javax.swing.GroupLayout.DEFAULT_SIZE, 205, Short.MAX_VALUE)
+                    .addComponent(btnVerEmpleado, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 205, Short.MAX_VALUE)
+                    .addComponent(btnAnadirEmpleado, javax.swing.GroupLayout.DEFAULT_SIZE, 205, Short.MAX_VALUE)
+                    .addComponent(btnEditarEmpleado, javax.swing.GroupLayout.DEFAULT_SIZE, 205, Short.MAX_VALUE))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
@@ -79,10 +102,14 @@ public class VPrincipal extends javax.swing.JFrame {
                 .addContainerGap()
                 .addComponent(btnResetear)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(btnLeerFichero)
+                .addComponent(btnListarEmpleados)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(btnObtenerEmpleado)
-                .addContainerGap(117, Short.MAX_VALUE))
+                .addComponent(btnVerEmpleado)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(btnAnadirEmpleado)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(btnEditarEmpleado)
+                .addContainerGap(9, Short.MAX_VALUE))
         );
 
         pack();
@@ -92,28 +119,65 @@ public class VPrincipal extends javax.swing.JFrame {
         ControlEmpleados.resetearFichero();
     }//GEN-LAST:event_btnResetearActionPerformed
 
-    private void btnLeerFicheroActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLeerFicheroActionPerformed
+    private void btnListarEmpleadosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnListarEmpleadosActionPerformed
         ControlEmpleados.leerFichero();
-    }//GEN-LAST:event_btnLeerFicheroActionPerformed
+    }//GEN-LAST:event_btnListarEmpleadosActionPerformed
 
-    private void btnObtenerEmpleadoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnObtenerEmpleadoActionPerformed
-        int id = pedirId();
-    }//GEN-LAST:event_btnObtenerEmpleadoActionPerformed
+    private void btnVerEmpleadoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnVerEmpleadoActionPerformed
+        int id = pedirIdTrabajador("Obtener información de empleado");
+        Empleado e = ControlEmpleados.getEmpleado(id);
+        if (e == null) {
+            JOptionPane.showMessageDialog(this, "No existe el empleado buscado: "+id, "Error", JOptionPane.ERROR_MESSAGE);
+        } else {
+            DEmpleado dialogo = new DEmpleado(this, true, e,DEmpleado.Tipo.VER);
+            dialogo.setLocationRelativeTo(this);
+            dialogo.setVisible(true);
+        }
+    }//GEN-LAST:event_btnVerEmpleadoActionPerformed
+
+    private void btnAnadirEmpleadoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAnadirEmpleadoActionPerformed
+        DEmpleado dialogo = new DEmpleado(this, true, null,DEmpleado.Tipo.CREAR);
+        dialogo.setLocationRelativeTo(this);
+        dialogo.setVisible(true);
+    }//GEN-LAST:event_btnAnadirEmpleadoActionPerformed
+
+    private void btnEditarEmpleadoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEditarEmpleadoActionPerformed
+        int id = pedirIdTrabajador("Editar empleado");
+        Empleado e = ControlEmpleados.getEmpleado(id);
+        if (e == null) {
+            JOptionPane.showMessageDialog(this, "No existe el empleado buscado: "+id, "Error", JOptionPane.ERROR_MESSAGE);
+        } else {
+        DEmpleado dialogo = new DEmpleado(this, true, e,DEmpleado.Tipo.EDITAR);
+        dialogo.setLocationRelativeTo(this);
+        dialogo.setVisible(true);
+        }
+    }//GEN-LAST:event_btnEditarEmpleadoActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton btnLeerFichero;
-    private javax.swing.JButton btnObtenerEmpleado;
+    private javax.swing.JButton btnAnadirEmpleado;
+    private javax.swing.JButton btnEditarEmpleado;
+    private javax.swing.JButton btnListarEmpleados;
     private javax.swing.JButton btnResetear;
+    private javax.swing.JButton btnVerEmpleado;
     // End of variables declaration//GEN-END:variables
 
-    private int pedirId() {
-        String id = JOptionPane.showInputDialog(this, "Introduzca la ID del trabajador");
-        if (id !=null && id!="")
-            try{
-            
-            }catch(NumberFormatException e){
-            JOptionPane.showInputDialog(this, "Introduzca la ID del trabajador");
+    private int pedirIdTrabajador(String titulo) {
+
+        boolean recogida = false;
+        int idSeleccionada = -1;
+        while (!recogida) {
+            String idStr = JOptionPane.showInputDialog(this, "Introduzca la ID del trabajador", titulo, JOptionPane.PLAIN_MESSAGE);
+            if (idStr == null) {
+                return -1;
             }
+            try {
+                idSeleccionada = Integer.parseInt(idStr);
+                recogida = true;
+            } catch (NumberFormatException e) {
+                JOptionPane.showMessageDialog(this, "Debe introducir una id válida", "Error", JOptionPane.ERROR_MESSAGE);
+            }
+        }
+        return idSeleccionada;
     }
 }

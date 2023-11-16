@@ -3,6 +3,7 @@
 <Form version="1.3" maxVersion="1.9" type="org.netbeans.modules.form.forminfo.JFrameFormInfo">
   <Properties>
     <Property name="defaultCloseOperation" type="int" value="3"/>
+    <Property name="resizable" type="boolean" value="false"/>
   </Properties>
   <SyntheticProperties>
     <SyntheticProperty name="formSizePolicy" type="int" value="1"/>
@@ -27,8 +28,10 @@
               <EmptySpace max="-2" attributes="0"/>
               <Group type="103" groupAlignment="0" attributes="0">
                   <Component id="btnResetear" alignment="0" pref="205" max="32767" attributes="0"/>
-                  <Component id="btnLeerFichero" alignment="0" pref="205" max="32767" attributes="0"/>
-                  <Component id="btnObtenerEmpleado" alignment="1" pref="205" max="32767" attributes="0"/>
+                  <Component id="btnListarEmpleados" alignment="0" pref="205" max="32767" attributes="0"/>
+                  <Component id="btnVerEmpleado" alignment="1" pref="205" max="32767" attributes="0"/>
+                  <Component id="btnAnadirEmpleado" alignment="0" pref="205" max="32767" attributes="0"/>
+                  <Component id="btnEditarEmpleado" alignment="0" pref="205" max="32767" attributes="0"/>
               </Group>
               <EmptySpace max="-2" attributes="0"/>
           </Group>
@@ -40,10 +43,14 @@
               <EmptySpace max="-2" attributes="0"/>
               <Component id="btnResetear" min="-2" max="-2" attributes="0"/>
               <EmptySpace max="-2" attributes="0"/>
-              <Component id="btnLeerFichero" min="-2" max="-2" attributes="0"/>
+              <Component id="btnListarEmpleados" min="-2" max="-2" attributes="0"/>
               <EmptySpace max="-2" attributes="0"/>
-              <Component id="btnObtenerEmpleado" min="-2" max="-2" attributes="0"/>
-              <EmptySpace pref="117" max="32767" attributes="0"/>
+              <Component id="btnVerEmpleado" min="-2" max="-2" attributes="0"/>
+              <EmptySpace max="-2" attributes="0"/>
+              <Component id="btnAnadirEmpleado" min="-2" max="-2" attributes="0"/>
+              <EmptySpace max="-2" attributes="0"/>
+              <Component id="btnEditarEmpleado" min="-2" max="-2" attributes="0"/>
+              <EmptySpace pref="9" max="32767" attributes="0"/>
           </Group>
       </Group>
     </DimensionLayout>
@@ -58,22 +65,40 @@
         <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnResetearActionPerformed"/>
       </Events>
     </Component>
-    <Component class="javax.swing.JButton" name="btnLeerFichero">
+    <Component class="javax.swing.JButton" name="btnListarEmpleados">
       <Properties>
-        <Property name="text" type="java.lang.String" value="Leer Fichero"/>
-        <Property name="toolTipText" type="java.lang.String" value="Resetea el fichero a sus datos iniciales"/>
+        <Property name="text" type="java.lang.String" value="Listar Empleados"/>
+        <Property name="toolTipText" type="java.lang.String" value="Muestra todos los empleados"/>
       </Properties>
       <Events>
-        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnLeerFicheroActionPerformed"/>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnListarEmpleadosActionPerformed"/>
       </Events>
     </Component>
-    <Component class="javax.swing.JButton" name="btnObtenerEmpleado">
+    <Component class="javax.swing.JButton" name="btnVerEmpleado">
       <Properties>
-        <Property name="text" type="java.lang.String" value="Obtener Empleado"/>
-        <Property name="toolTipText" type="java.lang.String" value="Resetea el fichero a sus datos iniciales"/>
+        <Property name="text" type="java.lang.String" value="Ver Empleado"/>
+        <Property name="toolTipText" type="java.lang.String" value="Muestra un empleado"/>
       </Properties>
       <Events>
-        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnObtenerEmpleadoActionPerformed"/>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnVerEmpleadoActionPerformed"/>
+      </Events>
+    </Component>
+    <Component class="javax.swing.JButton" name="btnAnadirEmpleado">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="A&#xf1;adir Empleado"/>
+        <Property name="toolTipText" type="java.lang.String" value="Crea un nuevo empleado"/>
+      </Properties>
+      <Events>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnAnadirEmpleadoActionPerformed"/>
+      </Events>
+    </Component>
+    <Component class="javax.swing.JButton" name="btnEditarEmpleado">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="Editar Empleado"/>
+        <Property name="toolTipText" type="java.lang.String" value="Crea un nuevo empleado"/>
+      </Properties>
+      <Events>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnEditarEmpleadoActionPerformed"/>
       </Events>
     </Component>
   </SubComponents>
