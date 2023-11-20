@@ -125,6 +125,8 @@ public class VPrincipal extends javax.swing.JFrame {
 
     private void btnVerEmpleadoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnVerEmpleadoActionPerformed
         int id = pedirIdTrabajador("Obtener información de empleado");
+        if (id<0)
+            return;
         Empleado e = ControlEmpleados.getEmpleado(id);
         if (e == null) {
             JOptionPane.showMessageDialog(this, "No existe el empleado buscado: "+id, "Error", JOptionPane.ERROR_MESSAGE);
@@ -143,6 +145,8 @@ public class VPrincipal extends javax.swing.JFrame {
 
     private void btnEditarEmpleadoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEditarEmpleadoActionPerformed
         int id = pedirIdTrabajador("Editar empleado");
+        if (id<0)
+            return;
         Empleado e = ControlEmpleados.getEmpleado(id);
         if (e == null) {
             JOptionPane.showMessageDialog(this, "No existe el empleado buscado: "+id, "Error", JOptionPane.ERROR_MESSAGE);
