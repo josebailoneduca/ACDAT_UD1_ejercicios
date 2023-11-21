@@ -43,7 +43,7 @@ public class EmpleadosTableModel extends AbstractTableModel{
         Object value = null;
         switch (columnIndex) {
             case 0:
-                value = listaEmpleados.get(rowIndex).getId();
+                value = Math.abs(listaEmpleados.get(rowIndex).getId());
                 break;
             case 1:
                 value = listaEmpleados.get(rowIndex).getNombre();

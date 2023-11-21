@@ -7,12 +7,12 @@ Lista de paquetes:
 
 package ejercicio15.gui.ventanas;
 
-import ejercicio15.dto.Empleado;
+import ejercicio15.dto.ResultadoOperacion;
 import ejercicio15.gui.dialogos.DEmpleado;
 import ejercicio15.gui.dialogos.DTrabajo;
 import ejercicio15.gui.tablemodels.EmpleadosTableModel;
 import ejercicio15.gui.tablemodels.TrabajosTableModel;
-import ejercicio15.logica.Logica;
+import ejercicio15.logica.Control;
 import java.awt.CardLayout;
 import java.util.ArrayList;
 import java.util.List;
@@ -30,16 +30,10 @@ public class VPrincipal15 extends javax.swing.JFrame {
     /** Creates new form VPrincipal15 */
     public VPrincipal15() {
         initComponents();
-        compruebaVisibilidadBotonDatosIniciales();
         //enlaza las tablas con los modelos
         inicializarTablas();
     }
-
-    private void compruebaVisibilidadBotonDatosIniciales() {
-        //deshabilitar el boton de cargar datos iniciales
-        if (!Logica.getEmpleados().isEmpty()||!Logica.getTrabajos().isEmpty())
-            miResetDatosIniciales.setEnabled(false);
-    }
+ 
 
     /** This method is called from within the constructor to
      * initialize the form.
@@ -416,6 +410,11 @@ public class VPrincipal15 extends javax.swing.JFrame {
         mTrabajo.add(miEditarTrabajo);
 
         miEliminarTrabajo.setText("Eliminar trabajo...");
+        miEliminarTrabajo.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                miEliminarTrabajoActionPerformed(evt);
+            }
+        });
         mTrabajo.add(miEliminarTrabajo);
 
         miVerUnTrabajo.setText("Ver trabajo...");
@@ -453,6 +452,11 @@ public class VPrincipal15 extends javax.swing.JFrame {
         mEmpleados.add(miEditarEmpleado);
 
         miEliminarEmpleado.setText("Eliminar empleado...");
+        miEliminarEmpleado.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                miEliminarEmpleadoActionPerformed(evt);
+            }
+        });
         mEmpleados.add(miEliminarEmpleado);
 
         miVerEmpleado.setText("Ver empleado...");
@@ -493,8 +497,11 @@ public class VPrincipal15 extends javax.swing.JFrame {
     }//GEN-LAST:event_miVerTodosTrabajosActionPerformed
 
     private void miResetDatosInicialesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_miResetDatosInicialesActionPerformed
-        Logica.resetDatosIniciales();
-        compruebaVisibilidadBotonDatosIniciales();
+        int r = JOptionPane.showConfirmDialog(this, "¿Desea cargar los datos del archivo de texto? Se borrarán los datos actuales","Reset de datos iniciales", JOptionPane.YES_NO_OPTION,JOptionPane.WARNING_MESSAGE);
+        if (r==JOptionPane.YES_OPTION){
+            Control.resetDatosIniciales();
+            actualizarTablas();
+        }
     }//GEN-LAST:event_miResetDatosInicialesActionPerformed
 
     private void miVerTodosEmpleadosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_miVerTodosEmpleadosActionPerformed
@@ -505,25 +512,76 @@ public class VPrincipal15 extends javax.swing.JFrame {
         DTrabajo dt=new DTrabajo(this,true,null,DTrabajo.Tipo.CREAR);
         dt.setLocationRelativeTo(this);
         dt.setVisible(true);
+        actualizarTablas();
     }//GEN-LAST:event_miAnadirTrabajoActionPerformed
 
     private void btnAnadirTrabajoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAnadirTrabajoActionPerformed
         DTrabajo dt=new DTrabajo(this,true,null,DTrabajo.Tipo.CREAR);
         dt.setLocationRelativeTo(this);
         dt.setVisible(true);
+        actualizarTablas();
     }//GEN-LAST:event_btnAnadirTrabajoActionPerformed
 
     private void btnAnadirEmpleadoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAnadirEmpleadoActionPerformed
         DEmpleado dt=new DEmpleado(this,true,null,DEmpleado.Tipo.CREAR);
         dt.setLocationRelativeTo(this);
         dt.setVisible(true);
+        actualizarTablas();
     }//GEN-LAST:event_btnAnadirEmpleadoActionPerformed
 
     private void miAnadirEmpleadoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_miAnadirEmpleadoActionPerformed
         DEmpleado dt=new DEmpleado(this,true,null,DEmpleado.Tipo.CREAR);
         dt.setLocationRelativeTo(this);
         dt.setVisible(true);
+        actualizarTablas();
     }//GEN-LAST:event_miAnadirEmpleadoActionPerformed
+
+    private void miEliminarTrabajoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_miEliminarTrabajoActionPerformed
+        int id=0;
+        boolean recogido=false;
+        while(!recogido){
+            String idSt = JOptionPane.showInputDialog(this, "Escriba la ID del trabajo", "Eliminar trabajo", JOptionPane.PLAIN_MESSAGE);
+            if (idSt==null)
+                return;
+            try{
+            id = Integer.parseInt(idSt);
+            recogido=true;
+            }catch(NumberFormatException ex){
+            }
+        }
+        ResultadoOperacion r = Control.eliminarTrabajo(id);
+        if (r.isOk()){
+                JOptionPane.showMessageDialog(this, "Trabajo eliminado", "", JOptionPane.PLAIN_MESSAGE);
+                actualizarTablas();
+        }
+        else{
+                JOptionPane.showMessageDialog(this, r.getMsg(), "Error", JOptionPane.ERROR_MESSAGE);
+        }
+
+    }//GEN-LAST:event_miEliminarTrabajoActionPerformed
+
+    private void miEliminarEmpleadoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_miEliminarEmpleadoActionPerformed
+               int id=0;
+        boolean recogido=false;
+        while(!recogido){
+            String idSt = JOptionPane.showInputDialog(this, "Escriba la ID del empleado", "Eliminar empleado", JOptionPane.PLAIN_MESSAGE);
+            if (idSt==null)
+                return;
+            try{
+            id = Integer.parseInt(idSt);
+            recogido=true;
+            }catch(NumberFormatException ex){
+            }
+        }
+        ResultadoOperacion r = Control.eliminarEmpleado(id);
+        if (r.isOk()){
+                JOptionPane.showMessageDialog(this, "Trabajo eliminado", "", JOptionPane.PLAIN_MESSAGE);
+                actualizarTablas();
+        }
+        else{
+                JOptionPane.showMessageDialog(this, r.getMsg(), "Error", JOptionPane.ERROR_MESSAGE);
+        }
+    }//GEN-LAST:event_miEliminarEmpleadoActionPerformed
 
 
     private void verPanel(String nombre){
@@ -585,7 +643,7 @@ public class VPrincipal15 extends javax.swing.JFrame {
 
     private void inicializarTablas() {
         //EMPLEADOS ACTIVOS
-        EmpleadosTableModel tmEA = new EmpleadosTableModel(Logica.getEmpleadosActivos());
+        EmpleadosTableModel tmEA = new EmpleadosTableModel(Control.getEmpleadosActivos());
         tblEmpleadosActivos.setModel(tmEA);
          //definir la tabla como no editable
         tblEmpleadosActivos.setEnabled(false);
@@ -599,7 +657,7 @@ public class VPrincipal15 extends javax.swing.JFrame {
         rowSorterEA.setSortKeys(sortKeysEA);
 
         //EMPLEADOS BORRADOS
-        EmpleadosTableModel tmEB = new EmpleadosTableModel(Logica.getEmpleadosBorrados());
+        EmpleadosTableModel tmEB = new EmpleadosTableModel(Control.getEmpleadosBorrados());
         tblEmpleadosBorrados.setModel(tmEB);
          //definir la tabla como no editable
         tblEmpleadosBorrados.setEnabled(false);
@@ -615,7 +673,7 @@ public class VPrincipal15 extends javax.swing.JFrame {
 
 
         //TRABAJOS ACTIVOS
-        TrabajosTableModel tmTA = new TrabajosTableModel(Logica.getTrabajosActivos());
+        TrabajosTableModel tmTA = new TrabajosTableModel(Control.getTrabajosActivos());
         tblTrabajosActivos.setModel(tmTA);
          //definir la tabla como no editable
         tblTrabajosActivos.setEnabled(false);
@@ -629,7 +687,7 @@ public class VPrincipal15 extends javax.swing.JFrame {
         rowSorterTA.setSortKeys(sortKeysTA);
 
         //TRABAJOS BORRADOS
-        TrabajosTableModel tmTB = new TrabajosTableModel(Logica.getTrabajosBorrados());
+        TrabajosTableModel tmTB = new TrabajosTableModel(Control.getTrabajosBorrados());
         tblTrabajosBorrados.setModel(tmTB);
          //definir la tabla como no editable
         tblTrabajosBorrados.setEnabled(false);
@@ -644,4 +702,18 @@ public class VPrincipal15 extends javax.swing.JFrame {
 
     }
 
+    private void actualizarTablas() {
+        actualizaTablasTrabajos();
+        actualizaTablasEmpleados();
+    }
+
+    private void actualizaTablasEmpleados() {
+        ((EmpleadosTableModel) tblEmpleadosActivos.getModel()).fireTableDataChanged();
+        ((EmpleadosTableModel) tblEmpleadosBorrados.getModel()).fireTableDataChanged();
+    }
+
+    private void actualizaTablasTrabajos() {
+        ((TrabajosTableModel) tblTrabajosActivos.getModel()).fireTableDataChanged();
+        ((TrabajosTableModel) tblTrabajosBorrados.getModel()).fireTableDataChanged();
+    }
 }//fin VPrincipal15

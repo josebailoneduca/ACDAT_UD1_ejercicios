@@ -8,7 +8,7 @@ Lista de paquetes:
 package ejercicio15.gui.dialogos;
 
 import ejercicio15.dto.Empleado;
- import ejercicio15.logica.Logica;
+ import ejercicio15.logica.Control;
  import javax.swing.JOptionPane;
 
 /**
@@ -211,7 +211,7 @@ public class DEmpleado extends javax.swing.JDialog {
         
         Empleado e = new Empleado(id, nombre, apellidos, sueldo, new int[Empleado.limiteTrabajos]);
        
-        Logica.agregarEmpleado(e);
+        Control.agregarEmpleado(e);
         JOptionPane.showMessageDialog(this, this.tipo==Tipo.CREAR?"Empleado añadido":"Empleado editado");
         this.dispose();
     }//GEN-LAST:event_btnGuardarActionPerformed

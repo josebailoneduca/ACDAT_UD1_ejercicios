@@ -9,6 +9,7 @@ package ejercicio15.logica;
 
 import ejercicio15.dto.Empleado;
 import ejercicio15.dto.Trabajo;
+import ejercicio15.dto.ResultadoOperacion;
 import ejercicio15.gui.ventanas.VPrincipal15;
 import java.util.ArrayList;
 import java.util.List;
@@ -17,7 +18,7 @@ import java.util.List;
  *
  * @author Jose Javier Bailon Ortiz
  */
-public class Logica {
+public class Control {
         public static VPrincipal15 ventanaPrincipal;
         public static String rutaEmpleados = ".\\src\\ejercicio15\\recursos\\Empleados.dat";
         public static String rutaTrabajos = ".\\src\\ejercicio15\\recursos\\Trabajos.dat";
@@ -93,12 +94,14 @@ public class Logica {
     public static void agregarTrabajo(Trabajo t) {
         t.setId(trabajos.size()+1);
         trabajos.add(t);
+        trabajosActivos.add(t);
         OperacionesArchivo.agregarTrabajo(t);
     }
 
     public static void agregarEmpleado(Empleado e) {
         e.setId(empleados.size()+1);
         empleados.add(e);
+        empleadosActivos.add(e);
         OperacionesArchivo.agregarEmpleado(e);    }
 
     public static List<Trabajo> getTrabajosActivos() {
@@ -126,26 +129,124 @@ public class Logica {
     }
 
     public static void setEmpleados(ArrayList<Empleado> empleados) {
-        Logica.empleados = empleados;
+        Control.empleados = empleados;
     }
 
     public static void setTrabajos(ArrayList<Trabajo> trabajos) {
-        Logica.trabajos = trabajos;
+        Control.trabajos = trabajos;
     }
 
     public static void resetDatosIniciales() {
+        empleados.clear();
+        empleadosActivos.clear();
+        empleadosBorrados.clear();
+        trabajos.clear();
+        trabajosActivos.clear();
+        trabajosBorrados.clear();
         OperacionesArchivo.resetArchivos();
-        empleados =  OperacionesArchivo.leerEmpleadosInicialesTXT();
-        for (Empleado empleado : empleados) {
+        ArrayList<Empleado> empleadosLeidos =  OperacionesArchivo.leerEmpleadosInicialesTXT();
+        for (Empleado empleado : empleadosLeidos) {
             OperacionesArchivo.agregarEmpleado(empleado);
+            empleados.add(empleado);
+            empleadosActivos.add(empleado);
         }
 
-        trabajos =  OperacionesArchivo.leerTrabajosInicialesTXT();
-        for (Trabajo trabajo : trabajos) {
+        ArrayList<Trabajo> trabajosLeidos =  OperacionesArchivo.leerTrabajosInicialesTXT();
+        for (Trabajo trabajo : trabajosLeidos) {
                         OperacionesArchivo.agregarTrabajo(trabajo);
+                        trabajos.add(trabajo);
+                        trabajosActivos.add(trabajo);
         }
-        
     }
     
     
+    /**
+     * Elimina un trabajo
+     * @param idTrabajo Id del trabajo a eliminar
+     * @return  El resultado de la operacion
+     */
+    public static ResultadoOperacion eliminarTrabajo(int idTrabajo){
+        //ver si el trabajo existe
+        if (idTrabajo>trabajos.size()||idTrabajo<1)
+            return new ResultadoOperacion(false, "El trabajo "+idTrabajo+" no existe");
+        
+        //ver si el trabajo ya esta borrado
+        Trabajo t = trabajos.get(idTrabajo-1);
+        if (t.getId()<0)
+             return new ResultadoOperacion(false, "El trabajo "+idTrabajo+" ya estaba eliminado");
+        
+        //si hemos llegado aquíi lo borramos
+        t.setId(-t.getId());
+        trabajosActivos.remove(t);
+        trabajosBorrados.add(t);
+        OperacionesArchivo.borrarTrabajo(idTrabajo);
+        
+        //actualizar empleados que tenian el trabajo asignado
+        for (int idEmpleado : t.getEmpleados()){
+            if (idEmpleado!=0)
+            desactivarTrabajoEnEmpleado(idEmpleado,idTrabajo);
+        }
+        
+        return new ResultadoOperacion(true, "");
+    }
+
+    /**
+     * Eliminar la asignacion de un trabajo a un empleado
+     * @param idEmpleado Id del empleado
+     * @param idTrabajo Id del trabajo
+     */
+    private static void desactivarTrabajoEnEmpleado(int idEmpleado, int idTrabajo) {
+        System.out.println(idEmpleado);
+        Empleado e = empleados.get(idEmpleado-1);
+        int[] trabajos=e.getTrabajos();
+        for (int i = 0; i<trabajos.length;i++){
+            if (trabajos[i]==idTrabajo)
+                trabajos[i]=0;
+        }
+        //actualizar los datos en el archivo
+        OperacionesArchivo.actualizarTrabajosDeEmpleado(e);
+    }
+
+    public static ResultadoOperacion eliminarEmpleado(int idEmpleado) {
+
+        //ver si el trabajo existe
+        if (idEmpleado>empleados.size()||idEmpleado<1)
+            return new ResultadoOperacion(false, "El empleado "+idEmpleado+" no existe");
+        
+        //ver si el trabajo ya esta borrado
+        Empleado e = empleados.get(idEmpleado-1);
+        if (e.getId()<0)
+             return new ResultadoOperacion(false, "El empleado "+idEmpleado+" ya estaba eliminado");
+        
+        //si hemos llegado aquíi lo borramos
+        e.setId(-e.getId());
+        empleadosActivos.remove(e);
+        empleadosBorrados.add(e);
+        OperacionesArchivo.borrarEmpleado(idEmpleado);
+        
+        //actualizar empleados que tenian el trabajo asignado
+        for (int idTrabajo : e.getTrabajos()){
+            if (idEmpleado!=0)
+            desactivarEmpleadoEnTrabajo(idTrabajo,idEmpleado);
+        }
+        
+        return new ResultadoOperacion(true, "");    
+    }
+        /**
+     * Eliminar la asignacion de un trabajo a un empleado
+     * @param idTtrabajo Id del trabajo
+     * @param idEmpleado Id del empleado
+     */
+    private static void desactivarEmpleadoEnTrabajo(int idTtrabajo, int idEmpleado) {
+        System.out.println(idTtrabajo);
+        Trabajo t = trabajos.get(idTtrabajo-1);
+        int[] empleados=t.getEmpleados();
+        for (int i = 0; i<empleados.length;i++){
+            if (empleados[i]==idEmpleado)
+                empleados[i]=0;
+        }
+        //actualizar los datos en el archivo
+        OperacionesArchivo.actualizarEmpleadosDeTrabajo(t);
+    }
+ 
 }//end LogicaEjercicio15

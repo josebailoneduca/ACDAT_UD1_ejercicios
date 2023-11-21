@@ -30,13 +30,15 @@ import javax.swing.JOptionPane;
  */
 public class OperacionesArchivo {
 
+
+    
     /**
      * Inicializa los archivos si no existen
      */
     static void inicializarArchivos() {
         //comprobar existencia
-        File ft = new File(Logica.rutaTrabajos);
-        File fe = new File(Logica.rutaEmpleados);
+        File ft = new File(Control.rutaTrabajos);
+        File fe = new File(Control.rutaEmpleados);
         //si no existen crear vacios
         boolean existen = ft.exists() && fe.exists();
         if (!existen) {
@@ -46,11 +48,11 @@ public class OperacionesArchivo {
 
     public static ArrayList<Trabajo> leerTrabajosInicialesTXT() {
     
-                //Lista de los leidos
+         //Lista de los leidos
         ArrayList<Trabajo> trabajos = new ArrayList<Trabajo>();
         
         //PREAPARAR READERS
-        File f = new File(Logica.rutaTrabajosIniciales);
+        File f = new File(Control.rutaTrabajosIniciales);
         FileReader fr = null;
         BufferedReader bis = null;
 
@@ -100,7 +102,7 @@ public class OperacionesArchivo {
         ArrayList<Empleado> empleados = new ArrayList<Empleado>();
         
         //PREAPARAR READERS
-        File f = new File(Logica.rutaEmpleadosIniciales);
+        File f = new File(Control.rutaEmpleadosIniciales);
         FileReader fr = null;
         BufferedReader bis = null;
 
@@ -147,7 +149,7 @@ public class OperacionesArchivo {
      * Actualiza el numero de empleados en disco
      */
     public static void inicializarNumeroEmpleadosEndisco() {
-        File fichero = new File(Logica.rutaEmpleados);
+        File fichero = new File(Control.rutaEmpleados);
         RandomAccessFile raf = null;
         try {
             raf = new RandomAccessFile(fichero, "rw");//Lectura y Escritura
@@ -172,7 +174,7 @@ public class OperacionesArchivo {
      * Actualiza el numero de trabajos en disco
      */
     public static void inicializarNumeroTrabajosEndisco() {
-        File fichero = new File(Logica.rutaTrabajos);
+        File fichero = new File(Control.rutaTrabajos);
         RandomAccessFile raf = null;
         try {
             raf = new RandomAccessFile(fichero, "rw");//Lectura y Escritura
@@ -200,7 +202,7 @@ public class OperacionesArchivo {
      */
     static ArrayList<Empleado> cargarEmpleados() {
         ArrayList<Empleado> lista = new ArrayList<Empleado>();
-        File fichero = new File(Logica.rutaEmpleados);
+        File fichero = new File(Control.rutaEmpleados);
 
         //3-PREPARACIÓN LECTURA: streams y datos        
         //Clases necesarias para envío de datos binarios:
@@ -260,7 +262,7 @@ public class OperacionesArchivo {
      */
     static ArrayList<Trabajo> cargarTrabajos() {
         ArrayList<Trabajo> lista = new ArrayList<Trabajo>();
-        File fichero = new File(Logica.rutaTrabajos);
+        File fichero = new File(Control.rutaTrabajos);
 
         //3-PREPARACIÓN LECTURA: streams y datos        
         //Clases necesarias para envío de datos binarios:
@@ -310,14 +312,14 @@ public class OperacionesArchivo {
     static void agregarTrabajo(Trabajo t) {
         
         RandomAccessFile raf = null;
-        File fichero = new File(Logica.rutaTrabajos);
+        File fichero = new File(Control.rutaTrabajos);
         try {
             //acceso a archivo
             raf = new RandomAccessFile(fichero, "rw");//Lectura y Escritura
             long lo = raf.length();
             //actualizar numero de trabajos
             raf.seek(0);
-            raf.writeInt(Logica.getTrabajos().size());
+            raf.writeInt(Control.getTrabajos().size());
             //ir al final
             raf.seek(raf.length());
 
@@ -359,14 +361,14 @@ public class OperacionesArchivo {
 
         
         RandomAccessFile raf = null;
-        File fichero = new File(Logica.rutaEmpleados);
+        File fichero = new File(Control.rutaEmpleados);
         try {
             //acceso a archivo
             raf = new RandomAccessFile(fichero, "rw");//Lectura y Escritura
             long lo = raf.length();
             //actualizar numero de trabajos
             raf.seek(0);
-            raf.writeInt(Logica.getEmpleados().size());
+            raf.writeInt(Control.getEmpleados().size());
             //ir al final
             raf.seek(raf.length());
 
@@ -402,8 +404,8 @@ public class OperacionesArchivo {
         }    }
 
     static void resetArchivos() {
-                File ft = new File(Logica.rutaTrabajos);
-        File fe = new File(Logica.rutaEmpleados);
+                File ft = new File(Control.rutaTrabajos);
+        File fe = new File(Control.rutaEmpleados);
             ft.delete();
             fe.delete();
             try {
@@ -416,4 +418,109 @@ public class OperacionesArchivo {
             } catch (IOException ex) {
                 Logger.getLogger(OperacionesArchivo.class.getName()).log(Level.SEVERE, null, ex);
             }    }
+
+    static void borrarTrabajo(int idTrabajo) {
+        long inicioTrabajo = 4+((idTrabajo-1)*Trabajo.longitudBytes);
+        RandomAccessFile raf = null;
+        File fichero = new File(Control.rutaTrabajos);
+        try {
+            //acceso a archivo
+            raf = new RandomAccessFile(fichero, "rw");//Lectura y Escritura
+             //actualizar numero de trabajos
+            raf.seek(inicioTrabajo);
+            raf.writeInt(-idTrabajo);
+        } catch (FileNotFoundException ex) {
+            msgError("Archivo no encontrado "+fichero.getAbsolutePath());
+        } catch (IOException ex) {
+            msgError("Error accediendo a "+fichero.getAbsolutePath());
+        } finally {
+            try {
+                if (raf != null) {
+                    raf.close();
+                }
+            } catch (IOException ex) {
+                msgError("Error accediendo a "+fichero.getAbsolutePath());
+            }
+        }   
+    }
+
+    static void actualizarTrabajosDeEmpleado(Empleado e) {
+        int id = Math.abs(e.getId());
+        long inicioTrabajos = 4+((id-1)*Empleado.longitudBytes)+Empleado.longitudBytesHastaTrabajos;
+         RandomAccessFile raf = null;
+        File fichero = new File(Control.rutaEmpleados);
+        try {
+            //acceso a archivo
+            raf = new RandomAccessFile(fichero, "rw");//Lectura y Escritura
+             //actualizar numero de trabajos
+            raf.seek(inicioTrabajos);
+            for (int trabajo:e.getTrabajos())
+            raf.writeInt(trabajo);
+        } catch (FileNotFoundException ex) {
+            msgError("Archivo no encontrado "+fichero.getAbsolutePath());
+        } catch (IOException ex) {
+            msgError("Error accediendo a "+fichero.getAbsolutePath());
+        } finally {
+            try {
+                if (raf != null) {
+                    raf.close();
+                }
+            } catch (IOException ex) {
+                msgError("Error accediendo a "+fichero.getAbsolutePath());
+            }
+        }  
+    }
+
+    static void borrarEmpleado(int idEmpleado) {
+        long inicioEmpleado = 4+((idEmpleado-1)*Empleado.longitudBytes);    
+         RandomAccessFile raf = null;
+        File fichero = new File(Control.rutaEmpleados);
+        try {
+            //acceso a archivo
+            raf = new RandomAccessFile(fichero, "rw");//Lectura y Escritura
+             //actualizar numero de trabajos
+            raf.seek(inicioEmpleado);
+            raf.writeInt(-idEmpleado);
+        } catch (FileNotFoundException ex) {
+            msgError("Archivo no encontrado "+fichero.getAbsolutePath());
+        } catch (IOException ex) {
+            msgError("Error accediendo a "+fichero.getAbsolutePath());
+        } finally {
+            try {
+                if (raf != null) {
+                    raf.close();
+                }
+            } catch (IOException ex) {
+                msgError("Error accediendo a "+fichero.getAbsolutePath());
+            }
+        }   
+    }
+
+    static void actualizarEmpleadosDeTrabajo(Trabajo t) {
+
+        int id = Math.abs(t.getId());
+        long inicioEmpleados = 4+((id-1)*Empleado.longitudBytes)+Empleado.longitudBytesHastaTrabajos;
+         RandomAccessFile raf = null;
+        File fichero = new File(Control.rutaEmpleados);
+        try {
+            //acceso a archivo
+            raf = new RandomAccessFile(fichero, "rw");//Lectura y Escritura
+             //actualizar numero de trabajos
+            raf.seek(inicioEmpleados);
+            for (int empleado:t.getEmpleados())
+            raf.writeInt(empleado);
+        } catch (FileNotFoundException ex) {
+            msgError("Archivo no encontrado "+fichero.getAbsolutePath());
+        } catch (IOException ex) {
+            msgError("Error accediendo a "+fichero.getAbsolutePath());
+        } finally {
+            try {
+                if (raf != null) {
+                    raf.close();
+                }
+            } catch (IOException ex) {
+                msgError("Error accediendo a "+fichero.getAbsolutePath());
+            }
+        }      
+    }
 }

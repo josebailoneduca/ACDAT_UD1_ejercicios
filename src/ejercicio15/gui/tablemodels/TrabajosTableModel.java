@@ -45,7 +45,7 @@ public class TrabajosTableModel extends AbstractTableModel{
         Object value = null;
         switch (columnIndex) {
             case 0:
-                value = listaTrabajos.get(rowIndex).getId();
+                value = Math.abs(listaTrabajos.get(rowIndex).getId());
                 break;
             case 1:
                 value = listaTrabajos.get(rowIndex).getNombre();

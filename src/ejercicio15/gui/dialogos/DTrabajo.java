@@ -8,7 +8,7 @@ Lista de paquetes:
 package ejercicio15.gui.dialogos;
 
 import ejercicio15.dto.Trabajo;
-import ejercicio15.logica.Logica;
+import ejercicio15.logica.Control;
 import java.util.Date;
 import javax.swing.JOptionPane;
 
@@ -196,7 +196,7 @@ public class DTrabajo extends javax.swing.JDialog {
             return;
         } 
         Trabajo t = new Trabajo(id, nombre, fecha, new int[Trabajo.limiteEmpleados]);
-        Logica.agregarTrabajo(t);
+        Control.agregarTrabajo(t);
         JOptionPane.showMessageDialog(this, this.tipo==Tipo.CREAR?"Trabajo añadido":"Trabajo editado");
         this.dispose();
     }//GEN-LAST:event_btnGuardarActionPerformed

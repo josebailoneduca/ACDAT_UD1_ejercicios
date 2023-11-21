@@ -8,6 +8,8 @@ package ejercicio15.dto;
 
 
 
+
+
 /**
  *
  * @author Jose Javier BO
@@ -23,7 +25,8 @@ public class Empleado {
     public static int limiteTrabajos=2;
     public static int limiteNombre=20;
     public static int limiteApellidos=30;
-
+    public static int longitudBytes = 4+2*limiteNombre+2*limiteApellidos+4+4*limiteTrabajos;
+    public static int longitudBytesHastaTrabajos = 4+2*limiteNombre+2*limiteApellidos+4;
     public Empleado(int id, String nombre, String apellidos, int sueldo,int[]trabajos) {
         this.id = id;
         this.nombre = nombre;

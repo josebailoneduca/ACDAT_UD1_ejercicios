@@ -38,7 +38,9 @@ public class Trabajo{
     public static int limiteEmpleados=5;
     
     public static int limiteNombre=20;
-
+    
+   public static int longitudBytes = 4+2*limiteNombre+8+4*limiteEmpleados;
+    public static int longitudBytesHastaEmpleados = 4+2*limiteNombre+8;
     public Trabajo(int id, String nombre, Long fecha,int[]empleados) {
         this.id = id;
         this.nombre = nombre;
