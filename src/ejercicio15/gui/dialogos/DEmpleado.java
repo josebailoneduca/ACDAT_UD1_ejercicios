@@ -43,12 +43,14 @@ public class DEmpleado extends javax.swing.JDialog {
     private void inicializaCrear() {
         this.lbId.setVisible(false);
         this.inputId.setVisible(false);
-        this.lbTitulo.setText("CREAR EMPLEADO");    }
+        this.lbTitulo.setText("AÑADIR EMPLEADO");    }
 
     private void inicializaEditar(Empleado empleado) {
         inputId.setText(""+empleado.getId());
-        inputNombre.setText(empleado.getNombre());
-        //inputApellidos.setText(empleado.getNombre());
+        inputNombre.setText(empleado.getNombre().replace("\0",""));
+        inputApellidos.setText(empleado.getApellidos().replace("\0",""));
+        inputSueldo.setValue(empleado.getSueldo());
+        this.lbTitulo.setText("EDITAR EMPLEADO");  
     }
     /** This method is called from within the constructor to
      * initialize the form.
@@ -105,12 +107,12 @@ public class DEmpleado extends javax.swing.JDialog {
                         .addComponent(lbApellidos, javax.swing.GroupLayout.DEFAULT_SIZE, 72, Short.MAX_VALUE))
                     .addComponent(lbSueldo, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 78, Short.MAX_VALUE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(inputNombre, javax.swing.GroupLayout.DEFAULT_SIZE, 247, Short.MAX_VALUE)
-                    .addComponent(inputId)
-                    .addComponent(inputApellidos, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 247, Short.MAX_VALUE)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                    .addComponent(inputNombre, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 229, Short.MAX_VALUE)
+                    .addComponent(inputId, javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(inputApellidos)
                     .addComponent(inputSueldo))
-                .addContainerGap())
+                .addContainerGap(24, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -211,7 +213,16 @@ public class DEmpleado extends javax.swing.JDialog {
         
         Empleado e = new Empleado(id, nombre, apellidos, sueldo, new int[Empleado.limiteTrabajos]);
        
-        Control.agregarEmpleado(e);
+                switch (this.tipo) {
+            case EDITAR:
+                    Control.editarEmpleado(e);
+                break;
+            case CREAR:
+                   Control.agregarEmpleado(e);
+                break;
+            default:
+                throw new AssertionError();
+        }
         JOptionPane.showMessageDialog(this, this.tipo==Tipo.CREAR?"Empleado añadido":"Empleado editado");
         this.dispose();
     }//GEN-LAST:event_btnGuardarActionPerformed

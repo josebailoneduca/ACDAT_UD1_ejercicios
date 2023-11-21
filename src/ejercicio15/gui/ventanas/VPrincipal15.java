@@ -7,7 +7,9 @@ Lista de paquetes:
 
 package ejercicio15.gui.ventanas;
 
+import ejercicio15.dto.Empleado;
 import ejercicio15.dto.ResultadoOperacion;
+import ejercicio15.dto.Trabajo;
 import ejercicio15.gui.dialogos.DEmpleado;
 import ejercicio15.gui.dialogos.DTrabajo;
 import ejercicio15.gui.tablemodels.EmpleadosTableModel;
@@ -71,27 +73,24 @@ public class VPrincipal15 extends javax.swing.JFrame {
         btnEliminarEmpleado = new javax.swing.JButton();
         btnVerEmpleado = new javax.swing.JButton();
         btnAsignacionTrabajos = new javax.swing.JButton();
-        panelTrabajo = new javax.swing.JPanel();
-        jLabel1 = new javax.swing.JLabel();
-        panelEmpleado = new javax.swing.JPanel();
         barraMenu = new javax.swing.JMenuBar();
         mArchivo = new javax.swing.JMenu();
-        miResetDatosIniciales = new javax.swing.JMenuItem();
+        miCargarDatosTxt = new javax.swing.JMenuItem();
         miSalir = new javax.swing.JMenuItem();
         mTrabajo = new javax.swing.JMenu();
         miVerTodosTrabajos = new javax.swing.JMenuItem();
+        miVerUnTrabajo = new javax.swing.JMenuItem();
         miAnadirTrabajo = new javax.swing.JMenuItem();
         miEditarTrabajo = new javax.swing.JMenuItem();
-        miEliminarTrabajo = new javax.swing.JMenuItem();
-        miVerUnTrabajo = new javax.swing.JMenuItem();
         miAsignarEmpleados = new javax.swing.JMenuItem();
+        miEliminarTrabajo = new javax.swing.JMenuItem();
         mEmpleados = new javax.swing.JMenu();
         miVerTodosEmpleados = new javax.swing.JMenuItem();
+        miVerEmpleado = new javax.swing.JMenuItem();
         miAnadirEmpleado = new javax.swing.JMenuItem();
         miEditarEmpleado = new javax.swing.JMenuItem();
-        miEliminarEmpleado = new javax.swing.JMenuItem();
-        miVerEmpleado = new javax.swing.JMenuItem();
         miAsignarTrabajos = new javax.swing.JMenuItem();
+        miEliminarEmpleado = new javax.swing.JMenuItem();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -140,8 +139,18 @@ public class VPrincipal15 extends javax.swing.JFrame {
         });
 
         btnEditarTrabajo.setText("Editar trabajo");
+        btnEditarTrabajo.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnEditarTrabajoActionPerformed(evt);
+            }
+        });
 
         btnEliminarTrabajo.setText("Eliminar trabajo");
+        btnEliminarTrabajo.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnEliminarTrabajoActionPerformed(evt);
+            }
+        });
 
         btnVerTrabajo.setText("Ver trabajo");
 
@@ -155,25 +164,25 @@ public class VPrincipal15 extends javax.swing.JFrame {
                 .addContainerGap()
                 .addGroup(panelTrabajosOperacionesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(btnVerTrabajo, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(btnAnadirTrabajo, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(btnEditarTrabajo, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(btnEliminarTrabajo, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(btnAsignacionEmpleados, javax.swing.GroupLayout.DEFAULT_SIZE, 176, Short.MAX_VALUE))
+                    .addComponent(btnAsignacionEmpleados, javax.swing.GroupLayout.DEFAULT_SIZE, 176, Short.MAX_VALUE)
+                    .addComponent(btnAnadirTrabajo, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap())
         );
         panelTrabajosOperacionesLayout.setVerticalGroup(
             panelTrabajosOperacionesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(panelTrabajosOperacionesLayout.createSequentialGroup()
                 .addContainerGap()
+                .addComponent(btnVerTrabajo)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(btnAnadirTrabajo)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(btnEditarTrabajo)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(btnEliminarTrabajo)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(btnVerTrabajo)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(btnAsignacionEmpleados)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(btnEliminarTrabajo)
                 .addContainerGap(30, Short.MAX_VALUE))
         );
 
@@ -182,21 +191,20 @@ public class VPrincipal15 extends javax.swing.JFrame {
         panelTrabajosLayout.setHorizontalGroup(
             panelTrabajosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(panelTrabajosLayout.createSequentialGroup()
+                .addContainerGap()
                 .addGroup(panelTrabajosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, panelTrabajosLayout.createSequentialGroup()
-                        .addGroup(panelTrabajosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(scrollTrabajosEliminados, javax.swing.GroupLayout.DEFAULT_SIZE, 356, Short.MAX_VALUE)
+                    .addGroup(panelTrabajosLayout.createSequentialGroup()
+                        .addGroup(panelTrabajosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(scrollTrabajosEliminados, javax.swing.GroupLayout.DEFAULT_SIZE, 350, Short.MAX_VALUE)
                             .addComponent(scrollTrabajos, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(panelTrabajosOperaciones, javax.swing.GroupLayout.PREFERRED_SIZE, 190, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(panelTrabajosLayout.createSequentialGroup()
-                        .addComponent(lbTrabajosEliminados)
+                        .addGroup(panelTrabajosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(lbTrabajos)
+                            .addComponent(lbTrabajosEliminados))
                         .addGap(0, 0, Short.MAX_VALUE)))
                 .addContainerGap())
-            .addGroup(panelTrabajosLayout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(lbTrabajos)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         panelTrabajosLayout.setVerticalGroup(
             panelTrabajosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -212,7 +220,8 @@ public class VPrincipal15 extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(lbTrabajosEliminados)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(scrollTrabajosEliminados, javax.swing.GroupLayout.DEFAULT_SIZE, 187, Short.MAX_VALUE))
+                .addComponent(scrollTrabajosEliminados, javax.swing.GroupLayout.DEFAULT_SIZE, 181, Short.MAX_VALUE)
+                .addContainerGap())
         );
 
         panelPrincipal.add(panelTrabajos, "panelTrabajos");
@@ -260,8 +269,18 @@ public class VPrincipal15 extends javax.swing.JFrame {
         });
 
         btnEditarEmpleado.setText("Editar empleado");
+        btnEditarEmpleado.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnEditarEmpleadoActionPerformed(evt);
+            }
+        });
 
         btnEliminarEmpleado.setText("Eliminar empleado");
+        btnEliminarEmpleado.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnEliminarEmpleadoActionPerformed(evt);
+            }
+        });
 
         btnVerEmpleado.setText("Ver empleado");
 
@@ -285,15 +304,15 @@ public class VPrincipal15 extends javax.swing.JFrame {
             panelEmpleadosOperacionesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(panelEmpleadosOperacionesLayout.createSequentialGroup()
                 .addContainerGap()
+                .addComponent(btnVerEmpleado)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(btnAnadirEmpleado)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(btnEditarEmpleado)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(btnEliminarEmpleado)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(btnVerEmpleado)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(btnAsignacionTrabajos)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(btnEliminarEmpleado)
                 .addContainerGap(30, Short.MAX_VALUE))
         );
 
@@ -302,15 +321,15 @@ public class VPrincipal15 extends javax.swing.JFrame {
         panelEmpleadosLayout.setHorizontalGroup(
             panelEmpleadosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(panelEmpleadosLayout.createSequentialGroup()
+                .addContainerGap()
                 .addGroup(panelEmpleadosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(panelEmpleadosLayout.createSequentialGroup()
-                        .addGroup(panelEmpleadosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(scrollEmpleadosEliminados, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
-                            .addComponent(scrollEmpleados, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE))
+                        .addGroup(panelEmpleadosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(scrollEmpleados, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
+                            .addComponent(scrollEmpleadosEliminados, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(panelEmpleadosOperaciones, javax.swing.GroupLayout.PREFERRED_SIZE, 190, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(panelEmpleadosLayout.createSequentialGroup()
-                        .addContainerGap()
                         .addGroup(panelEmpleadosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(lbEmpleados)
                             .addComponent(lbEmpleadosEliminados))
@@ -325,58 +344,25 @@ public class VPrincipal15 extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(panelEmpleadosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(panelEmpleadosOperaciones, javax.swing.GroupLayout.PREFERRED_SIZE, 177, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(scrollEmpleados, javax.swing.GroupLayout.PREFERRED_SIZE, 188, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(scrollEmpleados, javax.swing.GroupLayout.DEFAULT_SIZE, 188, Short.MAX_VALUE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(lbEmpleadosEliminados)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(scrollEmpleadosEliminados, javax.swing.GroupLayout.DEFAULT_SIZE, 187, Short.MAX_VALUE))
+                .addComponent(scrollEmpleadosEliminados, javax.swing.GroupLayout.DEFAULT_SIZE, 181, Short.MAX_VALUE)
+                .addContainerGap())
         );
 
         panelPrincipal.add(panelEmpleados, "panelEmpleados");
 
-        jLabel1.setText("trabajo");
-
-        javax.swing.GroupLayout panelTrabajoLayout = new javax.swing.GroupLayout(panelTrabajo);
-        panelTrabajo.setLayout(panelTrabajoLayout);
-        panelTrabajoLayout.setHorizontalGroup(
-            panelTrabajoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, panelTrabajoLayout.createSequentialGroup()
-                .addContainerGap(493, Short.MAX_VALUE)
-                .addComponent(jLabel1)
-                .addGap(28, 28, 28))
-        );
-        panelTrabajoLayout.setVerticalGroup(
-            panelTrabajoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(panelTrabajoLayout.createSequentialGroup()
-                .addGap(31, 31, 31)
-                .addComponent(jLabel1)
-                .addContainerGap(384, Short.MAX_VALUE))
-        );
-
-        panelPrincipal.add(panelTrabajo, "card4");
-
-        javax.swing.GroupLayout panelEmpleadoLayout = new javax.swing.GroupLayout(panelEmpleado);
-        panelEmpleado.setLayout(panelEmpleadoLayout);
-        panelEmpleadoLayout.setHorizontalGroup(
-            panelEmpleadoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 558, Short.MAX_VALUE)
-        );
-        panelEmpleadoLayout.setVerticalGroup(
-            panelEmpleadoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 431, Short.MAX_VALUE)
-        );
-
-        panelPrincipal.add(panelEmpleado, "panelEmpleado");
-
         mArchivo.setText("Archivo");
 
-        miResetDatosIniciales.setText("Reset a datos iniciales");
-        miResetDatosIniciales.addActionListener(new java.awt.event.ActionListener() {
+        miCargarDatosTxt.setText("Cargar datos desde TXT");
+        miCargarDatosTxt.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                miResetDatosInicialesActionPerformed(evt);
+                miCargarDatosTxtActionPerformed(evt);
             }
         });
-        mArchivo.add(miResetDatosIniciales);
+        mArchivo.add(miCargarDatosTxt);
 
         miSalir.setText("Salir");
         miSalir.addActionListener(new java.awt.event.ActionListener() {
@@ -398,6 +384,14 @@ public class VPrincipal15 extends javax.swing.JFrame {
         });
         mTrabajo.add(miVerTodosTrabajos);
 
+        miVerUnTrabajo.setText("Ver trabajo...");
+        miVerUnTrabajo.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                miVerUnTrabajoActionPerformed(evt);
+            }
+        });
+        mTrabajo.add(miVerUnTrabajo);
+
         miAnadirTrabajo.setText("Añadir trabajo");
         miAnadirTrabajo.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -407,7 +401,20 @@ public class VPrincipal15 extends javax.swing.JFrame {
         mTrabajo.add(miAnadirTrabajo);
 
         miEditarTrabajo.setText("Editar trabajo...");
+        miEditarTrabajo.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                miEditarTrabajoActionPerformed(evt);
+            }
+        });
         mTrabajo.add(miEditarTrabajo);
+
+        miAsignarEmpleados.setText("Asignación de empleados a trabajo...");
+        miAsignarEmpleados.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                miAsignarEmpleadosActionPerformed(evt);
+            }
+        });
+        mTrabajo.add(miAsignarEmpleados);
 
         miEliminarTrabajo.setText("Eliminar trabajo...");
         miEliminarTrabajo.addActionListener(new java.awt.event.ActionListener() {
@@ -416,17 +423,6 @@ public class VPrincipal15 extends javax.swing.JFrame {
             }
         });
         mTrabajo.add(miEliminarTrabajo);
-
-        miVerUnTrabajo.setText("Ver trabajo...");
-        miVerUnTrabajo.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                miVerUnTrabajoActionPerformed(evt);
-            }
-        });
-        mTrabajo.add(miVerUnTrabajo);
-
-        miAsignarEmpleados.setText("Asignación de empleados a trabajo...");
-        mTrabajo.add(miAsignarEmpleados);
 
         barraMenu.add(mTrabajo);
 
@@ -440,6 +436,9 @@ public class VPrincipal15 extends javax.swing.JFrame {
         });
         mEmpleados.add(miVerTodosEmpleados);
 
+        miVerEmpleado.setText("Ver empleado...");
+        mEmpleados.add(miVerEmpleado);
+
         miAnadirEmpleado.setText("Añadir empleado");
         miAnadirEmpleado.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -449,7 +448,15 @@ public class VPrincipal15 extends javax.swing.JFrame {
         mEmpleados.add(miAnadirEmpleado);
 
         miEditarEmpleado.setText("Editar empleado...");
+        miEditarEmpleado.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                miEditarEmpleadoActionPerformed(evt);
+            }
+        });
         mEmpleados.add(miEditarEmpleado);
+
+        miAsignarTrabajos.setText("Asignación de trabajos a empleado...");
+        mEmpleados.add(miAsignarTrabajos);
 
         miEliminarEmpleado.setText("Eliminar empleado...");
         miEliminarEmpleado.addActionListener(new java.awt.event.ActionListener() {
@@ -458,12 +465,6 @@ public class VPrincipal15 extends javax.swing.JFrame {
             }
         });
         mEmpleados.add(miEliminarEmpleado);
-
-        miVerEmpleado.setText("Ver empleado...");
-        mEmpleados.add(miVerEmpleado);
-
-        miAsignarTrabajos.setText("Asignación de trabajos a empleado...");
-        mEmpleados.add(miAsignarTrabajos);
 
         barraMenu.add(mEmpleados);
 
@@ -496,13 +497,13 @@ public class VPrincipal15 extends javax.swing.JFrame {
         verPanel("panelTrabajos");
     }//GEN-LAST:event_miVerTodosTrabajosActionPerformed
 
-    private void miResetDatosInicialesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_miResetDatosInicialesActionPerformed
-        int r = JOptionPane.showConfirmDialog(this, "¿Desea cargar los datos del archivo de texto? Se borrarán los datos actuales","Reset de datos iniciales", JOptionPane.YES_NO_OPTION,JOptionPane.WARNING_MESSAGE);
+    private void miCargarDatosTxtActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_miCargarDatosTxtActionPerformed
+        int r = JOptionPane.showConfirmDialog(this, "¿Desea cargar los datos del archivo de texto? Se borrarán los datos actuales","Cargar datos desde TXT", JOptionPane.YES_NO_OPTION,JOptionPane.WARNING_MESSAGE);
         if (r==JOptionPane.YES_OPTION){
-            Control.resetDatosIniciales();
+            Control.cargarDatosTxt();
             actualizarTablas();
         }
-    }//GEN-LAST:event_miResetDatosInicialesActionPerformed
+    }//GEN-LAST:event_miCargarDatosTxtActionPerformed
 
     private void miVerTodosEmpleadosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_miVerTodosEmpleadosActionPerformed
          verPanel("panelEmpleados");
@@ -540,7 +541,7 @@ public class VPrincipal15 extends javax.swing.JFrame {
         int id=0;
         boolean recogido=false;
         while(!recogido){
-            String idSt = JOptionPane.showInputDialog(this, "Escriba la ID del trabajo", "Eliminar trabajo", JOptionPane.PLAIN_MESSAGE);
+            String idSt = JOptionPane.showInputDialog(this, "Escriba la ID del trabajo a eliminar", "Eliminar trabajo", JOptionPane.PLAIN_MESSAGE);
             if (idSt==null)
                 return;
             try{
@@ -564,7 +565,7 @@ public class VPrincipal15 extends javax.swing.JFrame {
                int id=0;
         boolean recogido=false;
         while(!recogido){
-            String idSt = JOptionPane.showInputDialog(this, "Escriba la ID del empleado", "Eliminar empleado", JOptionPane.PLAIN_MESSAGE);
+            String idSt = JOptionPane.showInputDialog(this, "Escriba la ID del empleado a eliminar", "Eliminar empleado", JOptionPane.PLAIN_MESSAGE);
             if (idSt==null)
                 return;
             try{
@@ -582,6 +583,139 @@ public class VPrincipal15 extends javax.swing.JFrame {
                 JOptionPane.showMessageDialog(this, r.getMsg(), "Error", JOptionPane.ERROR_MESSAGE);
         }
     }//GEN-LAST:event_miEliminarEmpleadoActionPerformed
+
+    private void btnEliminarTrabajoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEliminarTrabajoActionPerformed
+        int idTrabajo = getIdTrabajoSeleccionado();
+        if (idTrabajo==-1)
+            JOptionPane.showMessageDialog(this, "Seleccione un trabajo de la tabla", "Error", JOptionPane.ERROR_MESSAGE);
+        else
+        {
+            int respuesta = JOptionPane.showConfirmDialog(this, "¿Realmente desea elminiar el trabajo "+idTrabajo+"?", "Eliminar trabajo", JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE);
+            if  (respuesta==JOptionPane.YES_OPTION){
+            Control.eliminarTrabajo(idTrabajo);
+            actualizarTablas();
+            }
+        }
+    }//GEN-LAST:event_btnEliminarTrabajoActionPerformed
+
+    private void btnEliminarEmpleadoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEliminarEmpleadoActionPerformed
+       int idEmpleado = getIdEmpleadoSeleccionado();
+        if (idEmpleado==-1)
+            JOptionPane.showMessageDialog(this, "Seleccione un empleado de la tabla", "Error", JOptionPane.ERROR_MESSAGE);
+        else
+        {
+            int respuesta = JOptionPane.showConfirmDialog(this, "¿Realmente desea elminiar el empleado "+idEmpleado+"?", "Eliminar empleado", JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE);
+            if  (respuesta==JOptionPane.YES_OPTION){
+            Control.eliminarEmpleado(idEmpleado);
+            actualizarTablas();
+            }
+        }
+    }//GEN-LAST:event_btnEliminarEmpleadoActionPerformed
+
+    private void miEditarTrabajoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_miEditarTrabajoActionPerformed
+        
+        int id=0;
+        boolean recogido=false;
+        while(!recogido){
+            String idSt = JOptionPane.showInputDialog(this, "Escriba la ID del trabajo a editar", "Editar trabajo", JOptionPane.PLAIN_MESSAGE);
+            if (idSt==null)
+                return;
+            try{
+            id = Integer.parseInt(idSt);
+            recogido=true;
+            }catch(NumberFormatException ex){
+            }
+        }
+        Trabajo trabajo = Control.getTrabajo(id);
+        if (trabajo==null||trabajo.getId()<0){
+            JOptionPane.showMessageDialog(this, "El trabajo "+id+" no existe", "Error", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+        DTrabajo dt=new DTrabajo(this,true,trabajo,DTrabajo.Tipo.EDITAR);
+        dt.setLocationRelativeTo(this);
+        dt.setVisible(true);
+        actualizarTablas();
+    }//GEN-LAST:event_miEditarTrabajoActionPerformed
+
+    private void btnEditarTrabajoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEditarTrabajoActionPerformed
+                int idTrabajo = getIdTrabajoSeleccionado();
+        if (idTrabajo==-1)
+            JOptionPane.showMessageDialog(this, "Seleccione un trabajo de la tabla", "Error", JOptionPane.ERROR_MESSAGE);
+        else
+        {
+            Trabajo trabajo = Control.getTrabajo(idTrabajo);
+            if (trabajo==null){
+                JOptionPane.showMessageDialog(this, "El trabajo "+idTrabajo+" no existe", "Error", JOptionPane.ERROR_MESSAGE);
+                return;
+            }
+            DTrabajo dt=new DTrabajo(this,true,trabajo,DTrabajo.Tipo.EDITAR);
+            dt.setLocationRelativeTo(this);
+            dt.setVisible(true);
+            actualizarTablas();
+        }
+    }//GEN-LAST:event_btnEditarTrabajoActionPerformed
+
+    private void miEditarEmpleadoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_miEditarEmpleadoActionPerformed
+        int id=0;
+        boolean recogido=false;
+        while(!recogido){
+            String idSt = JOptionPane.showInputDialog(this, "Escriba la ID del empleado a editar", "Editar empleado", JOptionPane.PLAIN_MESSAGE);
+            if (idSt==null)
+                return;
+            try{
+            id = Integer.parseInt(idSt);
+            recogido=true;
+            }catch(NumberFormatException ex){
+            }
+        }
+        Empleado empleado = Control.getEmpleado(id);
+        if (empleado==null){
+            JOptionPane.showMessageDialog(this, "El empleado "+id+" no existe", "Error", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+        DEmpleado dt=new DEmpleado(this,true,empleado,DEmpleado.Tipo.EDITAR);
+        dt.setLocationRelativeTo(this);
+        dt.setVisible(true);
+        actualizarTablas();
+    }//GEN-LAST:event_miEditarEmpleadoActionPerformed
+
+    private void btnEditarEmpleadoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEditarEmpleadoActionPerformed
+        int idEmpleado = getIdEmpleadoSeleccionado();
+        if (idEmpleado==-1)
+            JOptionPane.showMessageDialog(this, "Seleccione un empleado de la tabla", "Error", JOptionPane.ERROR_MESSAGE);
+        else
+        {
+            Empleado empleado = Control.getEmpleado(idEmpleado);
+            if (empleado==null){
+                JOptionPane.showMessageDialog(this, "El empleado "+idEmpleado+" no existe", "Error", JOptionPane.ERROR_MESSAGE);
+                return;
+            }
+            DEmpleado dt=new DEmpleado(this,true,empleado,DEmpleado.Tipo.EDITAR);
+            dt.setLocationRelativeTo(this);
+            dt.setVisible(true);
+            actualizarTablas();
+        }
+    }//GEN-LAST:event_btnEditarEmpleadoActionPerformed
+
+    private void miAsignarEmpleadosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_miAsignarEmpleadosActionPerformed
+                int id=0;
+        boolean recogido=false;
+        while(!recogido){
+            String idSt = JOptionPane.showInputDialog(this, "Escriba la ID del trabajo", "Asignar empleados a trabajo", JOptionPane.PLAIN_MESSAGE);
+            if (idSt==null)
+                return;
+            try{
+            id = Integer.parseInt(idSt);
+            recogido=true;
+            }catch(NumberFormatException ex){
+            }
+        }
+        Trabajo trabajo = Control.getTrabajo(id);
+        if (trabajo==null||trabajo.getId()<0){
+            JOptionPane.showMessageDialog(this, "El trabajo "+id+" no existe", "Error", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+    }//GEN-LAST:event_miAsignarEmpleadosActionPerformed
 
 
     private void verPanel(String nombre){
@@ -602,7 +736,6 @@ public class VPrincipal15 extends javax.swing.JFrame {
     private javax.swing.JButton btnEliminarTrabajo;
     private javax.swing.JButton btnVerEmpleado;
     private javax.swing.JButton btnVerTrabajo;
-    private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel lbEmpleados;
     private javax.swing.JLabel lbEmpleadosEliminados;
     private javax.swing.JLabel lbTrabajos;
@@ -614,21 +747,19 @@ public class VPrincipal15 extends javax.swing.JFrame {
     private javax.swing.JMenuItem miAnadirTrabajo;
     private javax.swing.JMenuItem miAsignarEmpleados;
     private javax.swing.JMenuItem miAsignarTrabajos;
+    private javax.swing.JMenuItem miCargarDatosTxt;
     private javax.swing.JMenuItem miEditarEmpleado;
     private javax.swing.JMenuItem miEditarTrabajo;
     private javax.swing.JMenuItem miEliminarEmpleado;
     private javax.swing.JMenuItem miEliminarTrabajo;
-    private javax.swing.JMenuItem miResetDatosIniciales;
     private javax.swing.JMenuItem miSalir;
     private javax.swing.JMenuItem miVerEmpleado;
     private javax.swing.JMenuItem miVerTodosEmpleados;
     private javax.swing.JMenuItem miVerTodosTrabajos;
     private javax.swing.JMenuItem miVerUnTrabajo;
-    private javax.swing.JPanel panelEmpleado;
     private javax.swing.JPanel panelEmpleados;
     private javax.swing.JPanel panelEmpleadosOperaciones;
     private javax.swing.JPanel panelPrincipal;
-    private javax.swing.JPanel panelTrabajo;
     private javax.swing.JPanel panelTrabajos;
     private javax.swing.JPanel panelTrabajosOperaciones;
     private javax.swing.JScrollPane scrollEmpleados;
@@ -645,8 +776,9 @@ public class VPrincipal15 extends javax.swing.JFrame {
         //EMPLEADOS ACTIVOS
         EmpleadosTableModel tmEA = new EmpleadosTableModel(Control.getEmpleadosActivos());
         tblEmpleadosActivos.setModel(tmEA);
-         //definir la tabla como no editable
-        tblEmpleadosActivos.setEnabled(false);
+         //definir la tabla como seleccionable
+        tblEmpleadosActivos.setRowSelectionAllowed(true);
+            
         //crear sorter
         TableRowSorter<EmpleadosTableModel> rowSorterEA = new TableRowSorter<>(tmEA);
         tblEmpleadosActivos.setRowSorter(rowSorterEA);
@@ -659,7 +791,7 @@ public class VPrincipal15 extends javax.swing.JFrame {
         //EMPLEADOS BORRADOS
         EmpleadosTableModel tmEB = new EmpleadosTableModel(Control.getEmpleadosBorrados());
         tblEmpleadosBorrados.setModel(tmEB);
-         //definir la tabla como no editable
+         //definir la tabla como  seleccionable
         tblEmpleadosBorrados.setEnabled(false);
         //crear sorter
         TableRowSorter<EmpleadosTableModel> rowSorterEB = new TableRowSorter<>(tmEB);
@@ -675,8 +807,8 @@ public class VPrincipal15 extends javax.swing.JFrame {
         //TRABAJOS ACTIVOS
         TrabajosTableModel tmTA = new TrabajosTableModel(Control.getTrabajosActivos());
         tblTrabajosActivos.setModel(tmTA);
-         //definir la tabla como no editable
-        tblTrabajosActivos.setEnabled(false);
+         //definir la tabla como  seleccionable
+        tblTrabajosActivos.setRowSelectionAllowed(true);
         //crear sorter
         TableRowSorter<TrabajosTableModel> rowSorterTA = new TableRowSorter<>(tmTA);
         tblTrabajosActivos.setRowSorter(rowSorterTA);
@@ -689,7 +821,7 @@ public class VPrincipal15 extends javax.swing.JFrame {
         //TRABAJOS BORRADOS
         TrabajosTableModel tmTB = new TrabajosTableModel(Control.getTrabajosBorrados());
         tblTrabajosBorrados.setModel(tmTB);
-         //definir la tabla como no editable
+         //definir la tabla como seleccionable
         tblTrabajosBorrados.setEnabled(false);
         //crear sorter
         TableRowSorter<TrabajosTableModel> rowSorterTB = new TableRowSorter<>(tmTB);
@@ -716,4 +848,20 @@ public class VPrincipal15 extends javax.swing.JFrame {
         ((TrabajosTableModel) tblTrabajosActivos.getModel()).fireTableDataChanged();
         ((TrabajosTableModel) tblTrabajosBorrados.getModel()).fireTableDataChanged();
     }
+
+    private int getIdTrabajoSeleccionado() {
+        int seleccionado=tblTrabajosActivos.getSelectedRow();
+        if (seleccionado<0)
+            return -1;
+        int indiceSeleccionado=tblTrabajosActivos.convertRowIndexToModel(seleccionado);
+        return (int)tblTrabajosActivos.getModel().getValueAt(indiceSeleccionado, 0);
+
+    }
+
+    private int getIdEmpleadoSeleccionado() {
+        int seleccionado=tblEmpleadosActivos.getSelectedRow();
+        if (seleccionado<0)
+            return -1;
+        int indiceSeleccionado=tblEmpleadosActivos.convertRowIndexToModel(seleccionado);
+        return (int)tblEmpleadosActivos.getModel().getValueAt(indiceSeleccionado, 0);    }
 }//fin VPrincipal15

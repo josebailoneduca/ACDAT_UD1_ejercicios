@@ -68,15 +68,12 @@
                       </Group>
                   </Group>
                   <EmptySpace type="separate" max="-2" attributes="0"/>
-                  <Group type="103" groupAlignment="0" attributes="0">
-                      <Group type="102" attributes="0">
-                          <Component id="inputFecha" min="-2" max="-2" attributes="0"/>
-                          <EmptySpace min="0" pref="36" max="32767" attributes="0"/>
-                      </Group>
-                      <Component id="inputNombre" max="32767" attributes="0"/>
-                      <Component id="inputId" max="32767" attributes="0"/>
+                  <Group type="103" groupAlignment="0" max="-2" attributes="0">
+                      <Component id="inputFecha" min="-2" max="-2" attributes="0"/>
+                      <Component id="inputId" alignment="0" pref="211" max="32767" attributes="0"/>
+                      <Component id="inputNombre" alignment="0" max="32767" attributes="0"/>
                   </Group>
-                  <EmptySpace max="-2" attributes="0"/>
+                  <EmptySpace pref="19" max="32767" attributes="0"/>
               </Group>
           </Group>
         </DimensionLayout>

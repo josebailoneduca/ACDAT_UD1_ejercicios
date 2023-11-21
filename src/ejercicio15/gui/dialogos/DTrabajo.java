@@ -44,11 +44,13 @@ public class DTrabajo extends javax.swing.JDialog {
     private void inicializaCrear() {
         this.lbId.setVisible(false);
         this.inputId.setVisible(false);
-        this.lbTitulo.setText("CREAR TRABAJO");    }
+        this.lbTitulo.setText("AÑADIR TRABAJO");    }
 
     private void inicializaEditar(Trabajo trabajo) {
         inputId.setText(""+trabajo.getId());
-        inputNombre.setText(trabajo.getNombre());
+        inputNombre.setText(trabajo.getNombre().replace("\0",""));
+        inputFecha.setValue(new Date(trabajo.getFecha()));
+        this.lbTitulo.setText("EDITAR TRABAJO");  
     }
     /** This method is called from within the constructor to
      * initialize the form.
@@ -101,13 +103,11 @@ public class DTrabajo extends javax.swing.JDialog {
                         .addGap(6, 6, 6)
                         .addComponent(lbFecha, javax.swing.GroupLayout.DEFAULT_SIZE, 72, Short.MAX_VALUE)))
                 .addGap(18, 18, 18)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addComponent(inputFecha, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(0, 36, Short.MAX_VALUE))
-                    .addComponent(inputNombre)
-                    .addComponent(inputId))
-                .addContainerGap())
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(inputFecha, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(inputId, javax.swing.GroupLayout.DEFAULT_SIZE, 211, Short.MAX_VALUE)
+                    .addComponent(inputNombre))
+                .addContainerGap(19, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -195,8 +195,21 @@ public class DTrabajo extends javax.swing.JDialog {
             JOptionPane.showMessageDialog(this, "Sueldo no válido", "Error", JOptionPane.ERROR_MESSAGE);
             return;
         } 
+        
+        
         Trabajo t = new Trabajo(id, nombre, fecha, new int[Trabajo.limiteEmpleados]);
-        Control.agregarTrabajo(t);
+        switch (this.tipo) {
+            case EDITAR:
+                    Control.editarTrabajo(t);
+                break;
+            case CREAR:
+                   Control.agregarTrabajo(t);
+                break;
+            default:
+                throw new AssertionError();
+        }
+                
+        
         JOptionPane.showMessageDialog(this, this.tipo==Tipo.CREAR?"Trabajo añadido":"Trabajo editado");
         this.dispose();
     }//GEN-LAST:event_btnGuardarActionPerformed

@@ -100,7 +100,7 @@ public class Trabajo{
         }
     }
 
-    private int nEmpleadosAsignados() {
+    public int nEmpleadosAsignados() {
         int total = 0;
         for (int empleado : empleados) {
             if (empleado != 0) {

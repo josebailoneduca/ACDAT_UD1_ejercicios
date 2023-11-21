@@ -136,7 +136,7 @@ public class Control {
         Control.trabajos = trabajos;
     }
 
-    public static void resetDatosIniciales() {
+    public static void cargarDatosTxt() {
         empleados.clear();
         empleadosActivos.clear();
         empleadosBorrados.clear();
@@ -146,16 +146,16 @@ public class Control {
         OperacionesArchivo.resetArchivos();
         ArrayList<Empleado> empleadosLeidos =  OperacionesArchivo.leerEmpleadosInicialesTXT();
         for (Empleado empleado : empleadosLeidos) {
-            OperacionesArchivo.agregarEmpleado(empleado);
             empleados.add(empleado);
             empleadosActivos.add(empleado);
+            OperacionesArchivo.agregarEmpleado(empleado);
         }
 
         ArrayList<Trabajo> trabajosLeidos =  OperacionesArchivo.leerTrabajosInicialesTXT();
         for (Trabajo trabajo : trabajosLeidos) {
-                        OperacionesArchivo.agregarTrabajo(trabajo);
                         trabajos.add(trabajo);
                         trabajosActivos.add(trabajo);
+                        OperacionesArchivo.agregarTrabajo(trabajo);
         }
     }
     
@@ -226,7 +226,7 @@ public class Control {
         
         //actualizar empleados que tenian el trabajo asignado
         for (int idTrabajo : e.getTrabajos()){
-            if (idEmpleado!=0)
+            if (idTrabajo!=0)
             desactivarEmpleadoEnTrabajo(idTrabajo,idEmpleado);
         }
         
@@ -238,7 +238,6 @@ public class Control {
      * @param idEmpleado Id del empleado
      */
     private static void desactivarEmpleadoEnTrabajo(int idTtrabajo, int idEmpleado) {
-        System.out.println(idTtrabajo);
         Trabajo t = trabajos.get(idTtrabajo-1);
         int[] empleados=t.getEmpleados();
         for (int i = 0; i<empleados.length;i++){
@@ -247,6 +246,36 @@ public class Control {
         }
         //actualizar los datos en el archivo
         OperacionesArchivo.actualizarEmpleadosDeTrabajo(t);
+    }
+
+    public static Trabajo getTrabajo(int id) {
+        Trabajo trabajo= OperacionesArchivo.getTrabajo(id);
+        if (trabajo==null||trabajo.getId()<1)
+            return null;
+        else 
+            return trabajo;
+    }
+
+    public static void editarTrabajo(Trabajo t) {
+        Trabajo trabajo = trabajos.get(t.getId()-1);
+        trabajo.setNombre(t.getNombre());
+        trabajo.setFecha(t.getFecha());
+        OperacionesArchivo.editarTrabajo(trabajo);
+    }
+
+    public static Empleado getEmpleado(int id) {
+        Empleado empleado= OperacionesArchivo.getEmpleado(id);
+        if (empleado==null||empleado.getId()<1)
+            return null;
+        else 
+            return empleado;    }
+
+    public static void editarEmpleado(Empleado e) {
+        Empleado empleado = empleados.get(e.getId()-1);
+        empleado.setNombre(e.getNombre());
+        empleado.setApellidos(e.getApellidos());
+        empleado.setSueldo(e.getSueldo());
+        OperacionesArchivo.editarEmpleado(empleado);    
     }
  
 }//end LogicaEjercicio15
