@@ -79,7 +79,6 @@ public class Ejercicio13 {
         if (alumnosExistentes == 0) {
             preguntarInsercionAlumnosTexto();
         }
-
         //lanzar el menu
         menu();
     }
@@ -397,7 +396,7 @@ public class Ejercicio13 {
 
         try {
             //PREPARAR STREAMS
-            fos = new FileOutputStream(f, false);
+            fos = new FileOutputStream(f, true);
             //Comprobar si ya hay alumnos  para decidir que tipo de objectOutputStream crear
             if (alumnosExistentes == 0) {
                 //SI NO HAY ALUMNOS CREA UN OBJECTOUTPUTSTREAM NORMAL
@@ -473,6 +472,7 @@ public class Ejercicio13 {
             //tratamiento de excepciones y cierre de streams
         } catch (EOFException eofe) {
         } catch (IOException ex) {
+            System.out.println(ex.getMessage());
         } catch (ClassNotFoundException ex) {
             Logger.getLogger(Ejercicio13.class.getName()).log(Level.SEVERE, null, ex);
         } finally {
@@ -553,7 +553,7 @@ public class Ejercicio13 {
             System.out.println("-------------------------");
             
             //mostrar nota media
-            System.out.printf("      Total: %.2f", alumno.getNotaMedia());
+            System.out.printf("      MEDIA: %.2f", alumno.getNotaMedia());
             
             System.out.println("");
             pedirIntro("");
@@ -704,7 +704,7 @@ public class Ejercicio13 {
      */
     private int mostrarMenu() {
         int opcion = -1;
-        while (opcion < 1 || opcion > 5) {
+        while (opcion < 1 || opcion > 6) {
             this.pasarPagina();
             System.out.println("**************************************************");
             System.out.println("*                    OPCIONES                    *");

@@ -12,7 +12,7 @@ import java.io.FilenameFilter;
 
 /**
  * Clase que filtra si la extensión del archivo es XML
- * @author Jose Javier Bailón Ortiz
+ * @author Jose Javier Bail�n Ortiz
  */
 class FiltroXML implements FilenameFilter{
 

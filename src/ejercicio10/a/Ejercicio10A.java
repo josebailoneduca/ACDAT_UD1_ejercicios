@@ -39,8 +39,7 @@ public class Ejercicio10A {
      * Constructor
      */
     public Ejercicio10A() {
-        //pedir el limite
-
+        //pedir el limite al que se quiere llegar
         while (true) {
             System.out.println("Introduzca el limite hasta el que quiere calcular los primos (max 100)");
             try {

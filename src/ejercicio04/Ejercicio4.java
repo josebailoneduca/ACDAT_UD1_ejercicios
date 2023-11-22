@@ -81,8 +81,10 @@ public class Ejercicio4 {
      * @param archivo File a manejar
      */
     private static void listarContenido(File archivo) {
+        //comprobar si es directorio
         if (!archivo.isDirectory())
             return;
+        //mostrar contenido de la carpeta
         System.out.println("Contenido de la carpeta: "+archivo.getName());
         File[] archivos = archivo.listFiles();
         if (archivos.length==0)

@@ -299,23 +299,21 @@ public class Ejercicio12 {
     }
 
     /**
-     * Lee los trabajos y empleados de disco. Conforme los lee puede imprimirlos
-     * o no segun se seleccione. Se puede especificar un nombre de trabajo que
-     * se pretende leer. En ese caso solo se imprimira ese trabajo
+     * Lee los trabajos y empleados de disco. Conforme los lee los imprimira. Si
+     * se especifica n nombre de trabajo solo impimira ese trabajo
      *
      * @param nombreTrabajo Filtro del trabajo a imprimir por su nombre. Null si
-     * no se quiere filtro
+     * no se quiere filtro y que se impriman todos
      *
      * @return el numero de trabajos que ya existen
      */
-    private int imprimirTrabajosDeDisco(String nombreTrabajo) {
-
-        int cantidadDeTrabajos = 0;
+    private void imprimirTrabajosDeDisco(String nombreTrabajo) {
 
         File f = new File(ruta);
         //si no existe el archivo retorna lista vacia
         if (!f.exists()) {
-            return 0;
+            pedirIntro("No existe el archivo " + f.getAbsolutePath());
+            return;
         }
 
         FileInputStream fis = null;
@@ -331,13 +329,12 @@ public class Ejercicio12 {
 
                 //recoger trabajo
                 Trabajo t = (Trabajo) ois.readObject();
-                cantidadDeTrabajos++;
 
                 //filtro para trabajos
-                //True si el nombreTrabajo es null o coincide con el trabajo leido
+                //True si el nombreTrabajo es null o coincide con el trabajo leido. Al pasar el filtro se imprimira
                 boolean filtroTrabajosOK = nombreTrabajo == null || nombreTrabajo.equals(t.getNombre());
 
-                //imprimir trabajo si toca
+                //imprimir trabajo si pasa el filtro
                 if (filtroTrabajosOK) {
                     System.out.println("*********************************************");
                     System.out.println(t);
@@ -362,10 +359,11 @@ public class Ejercicio12 {
 
             //tratamiento de excepciones y cierre de streams
         } catch (EOFException eofe) {
+
         } catch (IOException ex) {
-            return 0;
+            System.out.println("Error accediendo a archivo");
         } catch (ClassNotFoundException ex) {
-            Logger.getLogger(Ejercicio12.class.getName()).log(Level.SEVERE, null, ex);
+
         } finally {
             try {
                 if (ois != null) {
@@ -375,15 +373,12 @@ public class Ejercicio12 {
                     fis.close();
                 }
             } catch (IOException ex) {
-                Logger.getLogger(Ejercicio12.class.getName()).log(Level.SEVERE, null, ex);
+                System.out.println("Error accediendo a archivo");
             }
         }
 
         //pedir pulsar intro tras terminar la impresion
         pedirIntro("");
-
-        //retorna true si hay trabajos y false si no lo hay
-        return cantidadDeTrabajos;
     }
 
     /**
@@ -392,7 +387,7 @@ public class Ejercicio12 {
      * @return el numero de trabajos que ya existen
      */
     private int contarTrabajosEnDisco() {
-        
+
         //cantidad de trabajos que hay en disco
         int cantidadDeTrabajos = 0;
 
@@ -426,7 +421,7 @@ public class Ejercicio12 {
         } catch (IOException ex) {
             return 0;
         } catch (ClassNotFoundException ex) {
-            Logger.getLogger(Ejercicio12.class.getName()).log(Level.SEVERE, null, ex);
+            System.out.println("Error leyendo archivo");
         } finally {
             try {
                 if (ois != null) {
@@ -436,7 +431,7 @@ public class Ejercicio12 {
                     fis.close();
                 }
             } catch (IOException ex) {
-                Logger.getLogger(Ejercicio12.class.getName()).log(Level.SEVERE, null, ex);
+            System.out.println("Error leyendo archivo");
             }
         }
         //retorna true si hay trabajos y false si no lo hay

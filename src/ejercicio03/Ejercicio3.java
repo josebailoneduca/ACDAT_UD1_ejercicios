@@ -10,14 +10,14 @@ package ejercicio03;
 import java.io.File;
 
 /**
- * En el ejercicio anterior, ten√≠amos que mostrar la lista de ficheros del directorio que se pasa como
- * par√°metro desde la l√≠nea de comandos, pero no realizamos ning√∫n tipo de filtro.
- * Queremos filtrar de la lista, s√≥lo aquellos ficheros que sean del tipo .xml.
+ * En el ejercicio anterior, tenÌ≠amos que mostrar la lista de ficheros del directorio que se pasa como
+ * par·metro desde la lÌ≠nea de comandos, pero no realizamos ning˙n tipo de filtro.
+ * Queremos filtrar de la lista, sÛlo aquellos ficheros que sean del tipo .xml.
  * Para ello, vamos a crear y aplicar nosotros un filtro, haciendo uso de la interfaz FilenameFilter vamos a mostrar
  * solo aquellos ficheros que cumplan el requisito.
  * Hemos de crearnos una clase Filtro que implemente la interfaz FilenameFilter y
  * modificaremos su m√©todo accept para indicar el filtro que deben cumplir el nombre de los ficheros.
- * Posteriormente en nuestra aplicaci√≥n principal le pasaremos un objeto de la clase Filtro al
+ * Posteriormente en nuestra aplicaciÛn principal le pasaremos un objeto de la clase Filtro al
  * m√©todo list() de nuestro objeto File para que solo muestre los ficheros que cumplan el filtro indicado.
  * 
  * @author Jose Javier Bail√≥n Ortiz

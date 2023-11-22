@@ -46,12 +46,16 @@ public class Ejercicio6 {
         while (true) {
             int opcionElegida = this.mostrarMenu();
             switch (opcionElegida) {
+                //escribir texto
                 case 1 ->
                     apartado1();
+                //leer archivo escrito segun apartado 1
                 case 2 ->
                     apartado2();
+                //Contar palabras de fichero
                 case 3 ->
                     apartado3();
+                //Comparar ficheros
                 case 4 ->
                     apartado4();
                 default -> //salir del programa
@@ -61,7 +65,7 @@ public class Ejercicio6 {
     }
 
     /**
-     * Inicio del apartado 1 del ejercicio
+     * Inicio del apartado 1 de escritura de un texto en un archivo
      */
     private void apartado1() {
         //instrucciones para el usuario

@@ -31,7 +31,7 @@ import java.util.logging.Logger;
  *
  * @author Jose Javier BO
  */
-public class Ejercicio11A {
+public class Ejercicio11 {
 
     //ATRIBUTOS
     /**
@@ -161,7 +161,7 @@ public class Ejercicio11A {
                     fos.close();
                 }
             } catch (IOException ex) {
-                Logger.getLogger(Ejercicio11A.class.getName()).log(Level.SEVERE, null, ex);
+                Logger.getLogger(Ejercicio11.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
     }
@@ -194,9 +194,9 @@ public class Ejercicio11A {
             }
         } catch (EOFException eofe) {
         } catch (IOException ex) {
-            Logger.getLogger(Ejercicio11A.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(Ejercicio11.class.getName()).log(Level.SEVERE, null, ex);
         } catch (ClassNotFoundException ex) {
-            Logger.getLogger(Ejercicio11A.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(Ejercicio11.class.getName()).log(Level.SEVERE, null, ex);
         } finally {
             try {
                 if (ois != null) {
@@ -206,7 +206,7 @@ public class Ejercicio11A {
                     fis.close();
                 }
             } catch (IOException ex) {
-                Logger.getLogger(Ejercicio11A.class.getName()).log(Level.SEVERE, null, ex);
+                Logger.getLogger(Ejercicio11.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
         return alumnos;
@@ -284,7 +284,7 @@ public class Ejercicio11A {
     }
 
     public static void main(String[] args) {
-        new Ejercicio11A().menu();
+        new Ejercicio11().menu();
     }
 
 }

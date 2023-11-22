@@ -117,7 +117,7 @@ public class Ejercicio10B {
         //Peticion del rango al usuario
         boolean pedido = false;
         int limiteSuperior = 0;
-        //repetir hasta que haya dado un rango valido(que sea numero y mayor que el ultimo primo agregado)
+        //repetir bucle hasta que haya dado un rango valido(que sea numero y sea mayor que el ultimo primo agregado)
         while (!pedido) {
             System.out.println("Introduzca el limite máximo al que llegar con los numeros primos (al menos " + (ultimoPrimoEnArchivo() + 1) + ")");
             String respuesta = s.nextLine();

@@ -95,6 +95,6 @@ import java.io.Serializable;
 
         @Override
         public String toString() {
-            return "Alumno{" + "nombre=" + nombre + ", apellidos=" + apellidos + ", fechaNac=" + fechaNac + ", telefono=" + telefono + ", curso=" + curso + ", notaMediaFinal=" + notaMediaFinal + '}';
+            return "Alumno{" + "Nombre:" + nombre + ", Apellidos:" + apellidos + ", Fecha de Nacimiento:" + fechaNac + ", Telefono:" + telefono + ", Curso:" + curso + ", NotaMediaFinal=" + notaMediaFinal + '}';
         }
     }

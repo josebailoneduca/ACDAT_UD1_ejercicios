@@ -76,7 +76,7 @@ public class Ejercicio5 {
             return;
         }
         
-        //2- GESTIÃ“N DEL FICHERO
+        //2- GESTIÓN DEL FICHERO
         File fichero = new File(ruta);
         this.pedirIntro("Se va a abrir el archivo " + fichero.getAbsolutePath());
         FileReader fr = null;
@@ -122,7 +122,7 @@ public class Ejercicio5 {
             return;
         }
 
-        //- GESTIÃ“N DEL FICHERO
+        //- GESTIÓN DEL FICHERO
         File fichero = new File(ruta);
         //avisar de la apertura del archivo
         this.pedirIntro("Se va a abrir el archivo archivo " + fichero.getAbsolutePath());
