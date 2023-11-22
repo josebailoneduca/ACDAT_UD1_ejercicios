@@ -27,18 +27,179 @@ import javax.swing.SortOrder;
 import javax.swing.table.TableRowSorter;
 
 /**
+ * Ventana principal del programa. Tiene dos paneles, uno para trabajos y otro
+ * para empleados. Se puede acceder a ellos desde el menu: Trabajos->Ver todos
+ * los trabajos Empleados->Ver todos los empleados
+ *
+ * Muestra tablas con los existentes y los borrados y lanza dialogos aparte para
+ * crear, editar, visualizar y asignar
  *
  * @author Jose Javier Bailon Ortiz
  */
 public class VPrincipal15 extends javax.swing.JFrame {
 
     /**
-     * Creates new form VPrincipal15
+     * Constructor
      */
     public VPrincipal15() {
         initComponents();
         //enlaza las tablas con los modelos
         inicializarTablas();
+    }
+
+    /**
+     * Inicializa las tablas de empleados y trabajadores activos y borrados 
+     * recogiendo listas desde control para cada una de ellas
+     * 
+     */
+    private void inicializarTablas() {
+        //EMPLEADOS ACTIVOS
+        EmpleadosTableModel tmEA = new EmpleadosTableModel(Control.getEmpleadosActivos());
+        tblEmpleadosActivos.setModel(tmEA);
+        //seleccionable
+        tblEmpleadosActivos.setRowSelectionAllowed(true);
+        tblEmpleadosActivos.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+
+        //sorter
+        TableRowSorter<EmpleadosTableModel> rowSorterEA = new TableRowSorter<>(tmEA);
+        tblEmpleadosActivos.setRowSorter(rowSorterEA);
+
+        //ordenacion inicial
+        List<SortKey> sortKeysEA = new ArrayList<>();
+        sortKeysEA.add(new SortKey(0, SortOrder.ASCENDING));
+        rowSorterEA.setSortKeys(sortKeysEA);
+
+        //EMPLEADOS BORRADOS
+        EmpleadosTableModel tmEB = new EmpleadosTableModel(Control.getEmpleadosBorrados());
+        tblEmpleadosBorrados.setModel(tmEB);
+        //no seleccionable
+        tblEmpleadosBorrados.setEnabled(false);
+        //sorter
+        TableRowSorter<EmpleadosTableModel> rowSorterEB = new TableRowSorter<>(tmEB);
+        tblTrabajosActivos.setRowSorter(rowSorterEB);
+
+        //ordenacion por defecto
+        List<SortKey> sortKeysEB = new ArrayList<>();
+        sortKeysEB.add(new SortKey(0, SortOrder.ASCENDING));
+        rowSorterEB.setSortKeys(sortKeysEB);
+
+        //TRABAJOS ACTIVOS
+        TrabajosTableModel tmTA = new TrabajosTableModel(Control.getTrabajosActivos());
+        tblTrabajosActivos.setModel(tmTA);
+        //seleccionable
+        tblTrabajosActivos.setRowSelectionAllowed(true);
+        tblTrabajosActivos.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+        //sorter
+        TableRowSorter<TrabajosTableModel> rowSorterTA = new TableRowSorter<>(tmTA);
+        tblTrabajosActivos.setRowSorter(rowSorterTA);
+
+        //ordenacion por defecto
+        List<SortKey> sortKeysTA = new ArrayList<>();
+        sortKeysTA.add(new SortKey(0, SortOrder.ASCENDING));
+        rowSorterTA.setSortKeys(sortKeysTA);
+
+        //TRABAJOS BORRADOS
+        TrabajosTableModel tmTB = new TrabajosTableModel(Control.getTrabajosBorrados());
+        tblTrabajosBorrados.setModel(tmTB);
+        //no seleccionable
+        tblTrabajosBorrados.setEnabled(false);
+        //sorter
+        TableRowSorter<TrabajosTableModel> rowSorterTB = new TableRowSorter<>(tmTB);
+        tblTrabajosBorrados.setRowSorter(rowSorterTB);
+
+        //ordenacion por defecto
+        List<SortKey> sortKeysTB = new ArrayList<>();
+        sortKeysTB.add(new SortKey(0, SortOrder.ASCENDING));
+        rowSorterTB.setSortKeys(sortKeysEB);
+
+    }
+
+    /**
+     * Lanza el refresco de las tablas
+     */
+    private void actualizarTablas() {
+        ((EmpleadosTableModel) tblEmpleadosActivos.getModel()).fireTableDataChanged();
+        ((EmpleadosTableModel) tblEmpleadosBorrados.getModel()).fireTableDataChanged();
+        ((TrabajosTableModel) tblTrabajosActivos.getModel()).fireTableDataChanged();
+        ((TrabajosTableModel) tblTrabajosBorrados.getModel()).fireTableDataChanged();
+    }
+
+
+    /**
+     * Devuelve la id del trabajo seleccionado en la tabla de trabajos activos
+     * @return la id del trabajo o -1 si no hay seleccionados
+     */
+    private int getIdTrabajoSeleccionado() {
+        int seleccionado = tblTrabajosActivos.getSelectedRow();
+        if (seleccionado < 0) {
+            return -1;
+        }
+        //extraer id del trabajo
+        int indiceSeleccionado = tblTrabajosActivos.convertRowIndexToModel(seleccionado);
+        return (int) tblTrabajosActivos.getModel().getValueAt(indiceSeleccionado, 0);
+    }
+
+     /**
+     * Devuelve la id del empleado seleccionado en la tabla de empleados activos
+     * @return la id del empleado o -1 si no hay seleccionados
+     */
+    private int getIdEmpleadoSeleccionado() {
+        int seleccionado = tblEmpleadosActivos.getSelectedRow();
+        if (seleccionado < 0) {
+            return -1;
+        }
+        //extraer la id del empleado 
+        int indiceSeleccionado = tblEmpleadosActivos.convertRowIndexToModel(seleccionado);
+        return (int) tblEmpleadosActivos.getModel().getValueAt(indiceSeleccionado, 0);
+    }
+
+    
+    /**
+     * Muetra un dialogo para recoger una id (un entero)
+     * @param msg Mensaje a mostrar en el dialogo
+     * @param titulo Titulo del dialogo
+     * @return  la id recogida o -1 si se ha pulsado cancelar
+     */
+    private int recogerId(String msg, String titulo) {
+        int id = -1;
+        boolean recogido = false;
+        while (!recogido) {
+            String idSt = JOptionPane.showInputDialog(this, msg, titulo, JOptionPane.PLAIN_MESSAGE);
+            if (idSt == null) {
+                return id;
+            }
+            try {
+                id = Integer.parseInt(idSt);
+                recogido = true;
+            } catch (NumberFormatException ex) {
+            }
+        }
+        return id;
+    }
+
+    /**
+     * Muestra un mensaje de error
+     * @param msg El mensaje
+     */
+    private void mensajeError(String msg) {
+        JOptionPane.showMessageDialog(this, msg, "Error", JOptionPane.ERROR_MESSAGE);
+    }
+
+    /**
+     * Muestra un mensaje de aviso
+     * @param msg  El mensaje
+     */
+    private void mensajeAviso(String msg) {
+        JOptionPane.showMessageDialog(this, msg, "Aviso", JOptionPane.WARNING_MESSAGE);
+    }
+
+    /**
+     * Muestra un mensaje informativo
+     * @param msg  El mensaje
+     */
+    private void mensajeInfo(String msg) {
+
+        JOptionPane.showMessageDialog(this, msg, "", JOptionPane.PLAIN_MESSAGE);
     }
 
     /**
@@ -810,9 +971,9 @@ public class VPrincipal15 extends javax.swing.JFrame {
         }
         Empleado empleado = Control.getEmpleado(id);
         if (empleado == null) {
-                mensajeError("El empleado " + id + " no existe");
-                return;
-            }
+            mensajeError("El empleado " + id + " no existe");
+            return;
+        }
         ArrayList<Trabajo> trabajos = Control.getTrabajosEnEmpleado(empleado);
         DVerEmpleado dve = new DVerEmpleado(this, true, empleado, trabajos);
         dve.setLocationRelativeTo(this);
@@ -889,131 +1050,5 @@ public class VPrincipal15 extends javax.swing.JFrame {
     private javax.swing.JTable tblTrabajosActivos;
     private javax.swing.JTable tblTrabajosBorrados;
     // End of variables declaration//GEN-END:variables
-
-    private void inicializarTablas() {
-        //EMPLEADOS ACTIVOS
-        EmpleadosTableModel tmEA = new EmpleadosTableModel(Control.getEmpleadosActivos());
-        tblEmpleadosActivos.setModel(tmEA);
-        //definir la tabla como seleccionable
-        tblEmpleadosActivos.setRowSelectionAllowed(true);
-        tblEmpleadosActivos.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
-
-        //crear sorter
-        TableRowSorter<EmpleadosTableModel> rowSorterEA = new TableRowSorter<>(tmEA);
-        tblEmpleadosActivos.setRowSorter(rowSorterEA);
-
-        //ordenacion por defecto inicial
-        List<SortKey> sortKeysEA = new ArrayList<>();
-        sortKeysEA.add(new SortKey(0, SortOrder.ASCENDING));
-        rowSorterEA.setSortKeys(sortKeysEA);
-
-        //EMPLEADOS BORRADOS
-        EmpleadosTableModel tmEB = new EmpleadosTableModel(Control.getEmpleadosBorrados());
-        tblEmpleadosBorrados.setModel(tmEB);
-        //definir la tabla como  seleccionable
-        tblEmpleadosBorrados.setEnabled(false);
-        //crear sorter
-        TableRowSorter<EmpleadosTableModel> rowSorterEB = new TableRowSorter<>(tmEB);
-        tblTrabajosActivos.setRowSorter(rowSorterEB);
-
-        //ordenacion por defecto inicial
-        List<SortKey> sortKeysEB = new ArrayList<>();
-        sortKeysEB.add(new SortKey(0, SortOrder.ASCENDING));
-        rowSorterEB.setSortKeys(sortKeysEB);
-
-        //TRABAJOS ACTIVOS
-        TrabajosTableModel tmTA = new TrabajosTableModel(Control.getTrabajosActivos());
-        tblTrabajosActivos.setModel(tmTA);
-        //definir la tabla como  seleccionable
-        tblTrabajosActivos.setRowSelectionAllowed(true);
-        tblTrabajosActivos.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
-        //crear sorter
-        TableRowSorter<TrabajosTableModel> rowSorterTA = new TableRowSorter<>(tmTA);
-        tblTrabajosActivos.setRowSorter(rowSorterTA);
-
-        //ordenacion por defecto inicial
-        List<SortKey> sortKeysTA = new ArrayList<>();
-        sortKeysTA.add(new SortKey(0, SortOrder.ASCENDING));
-        rowSorterTA.setSortKeys(sortKeysTA);
-
-        //TRABAJOS BORRADOS
-        TrabajosTableModel tmTB = new TrabajosTableModel(Control.getTrabajosBorrados());
-        tblTrabajosBorrados.setModel(tmTB);
-        //definir la tabla como seleccionable
-        tblTrabajosBorrados.setEnabled(false);
-        //crear sorter
-        TableRowSorter<TrabajosTableModel> rowSorterTB = new TableRowSorter<>(tmTB);
-        tblTrabajosBorrados.setRowSorter(rowSorterTB);
-
-        //ordenacion por defecto inicial
-        List<SortKey> sortKeysTB = new ArrayList<>();
-        sortKeysTB.add(new SortKey(0, SortOrder.ASCENDING));
-        rowSorterTB.setSortKeys(sortKeysEB);
-
-    }
-
-    private void actualizarTablas() {
-        actualizaTablasTrabajos();
-        actualizaTablasEmpleados();
-    }
-
-    private void actualizaTablasEmpleados() {
-        ((EmpleadosTableModel) tblEmpleadosActivos.getModel()).fireTableDataChanged();
-        ((EmpleadosTableModel) tblEmpleadosBorrados.getModel()).fireTableDataChanged();
-    }
-
-    private void actualizaTablasTrabajos() {
-        ((TrabajosTableModel) tblTrabajosActivos.getModel()).fireTableDataChanged();
-        ((TrabajosTableModel) tblTrabajosBorrados.getModel()).fireTableDataChanged();
-    }
-
-    private int getIdTrabajoSeleccionado() {
-        int seleccionado = tblTrabajosActivos.getSelectedRow();
-        if (seleccionado < 0) {
-            return -1;
-        }
-
-        int indiceSeleccionado = tblTrabajosActivos.convertRowIndexToModel(seleccionado);
-        return (int) tblTrabajosActivos.getModel().getValueAt(indiceSeleccionado, 0);
-    }
-
-    private int getIdEmpleadoSeleccionado() {
-        int seleccionado = tblEmpleadosActivos.getSelectedRow();
-        if (seleccionado < 0) {
-            return -1;
-        }
-
-        int indiceSeleccionado = tblEmpleadosActivos.convertRowIndexToModel(seleccionado);
-        return (int) tblEmpleadosActivos.getModel().getValueAt(indiceSeleccionado, 0);
-    }
-
-    private int recogerId(String msg, String titulo) {
-        int id = -1;
-        boolean recogido = false;
-        while (!recogido) {
-            String idSt = JOptionPane.showInputDialog(this, msg, titulo, JOptionPane.PLAIN_MESSAGE);
-            if (idSt == null) {
-                return id;
-            }
-            try {
-                id = Integer.parseInt(idSt);
-                recogido = true;
-            } catch (NumberFormatException ex) {
-            }
-        }
-        return id;
-    }
-
-    private void mensajeError(String msg) {
-        JOptionPane.showMessageDialog(this, msg, "Error", JOptionPane.ERROR_MESSAGE);
-    }
-    private void mensajeAviso(String msg) {
-        JOptionPane.showMessageDialog(this, msg, "Aviso", JOptionPane.WARNING_MESSAGE);
-    }
-
-    private void mensajeInfo(String msg) {
-
-        JOptionPane.showMessageDialog(this, msg, "", JOptionPane.PLAIN_MESSAGE);
-    }
 
 }//fin VPrincipal15
