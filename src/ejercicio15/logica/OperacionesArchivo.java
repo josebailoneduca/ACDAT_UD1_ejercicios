@@ -580,7 +580,7 @@ public class OperacionesArchivo {
         File fichero = new File(Control.rutaTrabajos);
         try {
             //acceso a archivo
-            raf = new RandomAccessFile(fichero, "rw");//Lectura y Escritura
+            raf = new RandomAccessFile(fichero, "r");//Lectura y Escritura
             //comprobar que el trabajo existe 
             if (inicioTrabajo >= raf.length()) {
                 return null;
@@ -667,7 +667,7 @@ public class OperacionesArchivo {
         File fichero = new File(Control.rutaEmpleados);
         try {
             //acceso a archivo
-            raf = new RandomAccessFile(fichero, "rw");//Lectura y Escritura
+            raf = new RandomAccessFile(fichero, "r");//Lectura y Escritura
             //comprobar que el trabajo existe 
             if (inicioEmpleado >= raf.length()) {
                 return null;
