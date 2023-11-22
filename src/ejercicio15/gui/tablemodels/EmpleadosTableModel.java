@@ -63,5 +63,21 @@ public class EmpleadosTableModel extends AbstractTableModel{
     public String getColumnName(int column) {
         return columnas[column];
     }
+
+    @Override
+    public Class<?> getColumnClass(int columnIndex) {
+        Class<?> value;
+        switch (columnIndex) {
+            case 0 -> value = Integer.class;
+            case 1 -> value = String.class;
+            case 2 -> value = String.class;
+            case 3 -> value = Integer.class;
+            default -> {
+                value = null;
+                throw new AssertionError();
+            }
+        }
+        return value;    
+    }
     
 }

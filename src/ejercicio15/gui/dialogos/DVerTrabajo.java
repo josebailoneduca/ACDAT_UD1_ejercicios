@@ -100,12 +100,15 @@ public class DVerTrabajo extends javax.swing.JDialog {
 
         panelCampos.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(153, 153, 153)));
 
+        lbId.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
         lbId.setHorizontalAlignment(javax.swing.SwingConstants.TRAILING);
         lbId.setText("ID:");
 
+        lbNombre.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
         lbNombre.setHorizontalAlignment(javax.swing.SwingConstants.TRAILING);
         lbNombre.setText("NOMBRE:");
 
+        lbFecha.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
         lbFecha.setHorizontalAlignment(javax.swing.SwingConstants.TRAILING);
         lbFecha.setText("FECHA:");
 

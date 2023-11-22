@@ -47,6 +47,11 @@ public class VPrincipal15 extends javax.swing.JFrame {
         inicializarTablas();
     }
 
+    
+    
+    //METODOS UTILIDADES --------------------------------------------------------------
+    
+    
     /**
      * Inicializa las tablas de empleados y trabajadores activos y borrados 
      * recogiendo listas desde control para cada una de ellas
@@ -122,6 +127,16 @@ public class VPrincipal15 extends javax.swing.JFrame {
         ((EmpleadosTableModel) tblEmpleadosBorrados.getModel()).fireTableDataChanged();
         ((TrabajosTableModel) tblTrabajosActivos.getModel()).fireTableDataChanged();
         ((TrabajosTableModel) tblTrabajosBorrados.getModel()).fireTableDataChanged();
+    }
+
+    /**
+     * Muestra el panel indicado
+     * @param nombre nombre del panel. (panelTrabajos, panelEmpleados)
+     */
+    private void verPanel(String nombre) {
+
+        CardLayout layout = (CardLayout) panelPrincipal.getLayout();
+        layout.show(panelPrincipal, nombre);
     }
 
 
@@ -241,11 +256,11 @@ public class VPrincipal15 extends javax.swing.JFrame {
         barraMenu = new javax.swing.JMenuBar();
         mArchivo = new javax.swing.JMenu();
         miCargarDatosTxt = new javax.swing.JMenuItem();
-        btnBorrarTodo = new javax.swing.JMenuItem();
+        miBorrarTodo = new javax.swing.JMenuItem();
         miSalir = new javax.swing.JMenuItem();
         mTrabajo = new javax.swing.JMenu();
         miVerTodosTrabajos = new javax.swing.JMenuItem();
-        miVerUnTrabajo = new javax.swing.JMenuItem();
+        miVerTrabajo = new javax.swing.JMenuItem();
         miAnadirTrabajo = new javax.swing.JMenuItem();
         miEditarTrabajo = new javax.swing.JMenuItem();
         miAsignarEmpleadosATrabajo = new javax.swing.JMenuItem();
@@ -550,13 +565,13 @@ public class VPrincipal15 extends javax.swing.JFrame {
         });
         mArchivo.add(miCargarDatosTxt);
 
-        btnBorrarTodo.setText("Borrar todo");
-        btnBorrarTodo.addActionListener(new java.awt.event.ActionListener() {
+        miBorrarTodo.setText("Borrar todo");
+        miBorrarTodo.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnBorrarTodoActionPerformed(evt);
+                miBorrarTodoActionPerformed(evt);
             }
         });
-        mArchivo.add(btnBorrarTodo);
+        mArchivo.add(miBorrarTodo);
 
         miSalir.setText("Salir");
         miSalir.addActionListener(new java.awt.event.ActionListener() {
@@ -578,13 +593,13 @@ public class VPrincipal15 extends javax.swing.JFrame {
         });
         mTrabajo.add(miVerTodosTrabajos);
 
-        miVerUnTrabajo.setText("Ver trabajo...");
-        miVerUnTrabajo.addActionListener(new java.awt.event.ActionListener() {
+        miVerTrabajo.setText("Ver trabajo...");
+        miVerTrabajo.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                miVerUnTrabajoActionPerformed(evt);
+                miVerTrabajoActionPerformed(evt);
             }
         });
-        mTrabajo.add(miVerUnTrabajo);
+        mTrabajo.add(miVerTrabajo);
 
         miAnadirTrabajo.setText("Añadir trabajo");
         miAnadirTrabajo.addActionListener(new java.awt.event.ActionListener() {
@@ -688,15 +703,24 @@ public class VPrincipal15 extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void miSalirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_miSalirActionPerformed
-        if (JOptionPane.showConfirmDialog(this, "¿Desea salir?", "Salir del programa", JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION)
-            System.exit(0);
-    }//GEN-LAST:event_miSalirActionPerformed
+    
 
-    private void miVerTodosTrabajosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_miVerTodosTrabajosActionPerformed
-        verPanel("panelTrabajos");
-    }//GEN-LAST:event_miVerTodosTrabajosActionPerformed
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    //METODOS DEL MENU ARCHIVO --------------------------------------------------------
 
+    /**
+     * Ordena la carga de datos iniciales desde el archivo de texto
+     * @param evt 
+     */
     private void miCargarDatosTxtActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_miCargarDatosTxtActionPerformed
         int r = JOptionPane.showConfirmDialog(this, "¿Desea cargar los datos del archivo de texto? Se borrarán los datos actuales", "Cargar datos desde TXT", JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE);
         if (r == JOptionPane.YES_OPTION) {
@@ -705,248 +729,76 @@ public class VPrincipal15 extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_miCargarDatosTxtActionPerformed
 
-    private void miVerTodosEmpleadosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_miVerTodosEmpleadosActionPerformed
-        verPanel("panelEmpleados");
-    }//GEN-LAST:event_miVerTodosEmpleadosActionPerformed
-
-    private void miAnadirTrabajoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_miAnadirTrabajoActionPerformed
-        DCrearEditarTrabajo dt = new DCrearEditarTrabajo(this, true, null, DCrearEditarTrabajo.Tipo.CREAR);
-        dt.setLocationRelativeTo(this);
-        dt.setVisible(true);
-        actualizarTablas();
-    }//GEN-LAST:event_miAnadirTrabajoActionPerformed
-
-    private void btnAnadirTrabajoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAnadirTrabajoActionPerformed
-        DCrearEditarTrabajo dt = new DCrearEditarTrabajo(this, true, null, DCrearEditarTrabajo.Tipo.CREAR);
-        dt.setLocationRelativeTo(this);
-        dt.setVisible(true);
-        actualizarTablas();
-    }//GEN-LAST:event_btnAnadirTrabajoActionPerformed
-
-    private void btnAnadirEmpleadoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAnadirEmpleadoActionPerformed
-        DCrearEditarEmpleado dt = new DCrearEditarEmpleado(this, true, null, DCrearEditarEmpleado.Tipo.CREAR);
-        dt.setLocationRelativeTo(this);
-        dt.setVisible(true);
-        actualizarTablas();
-    }//GEN-LAST:event_btnAnadirEmpleadoActionPerformed
-
-    private void miAnadirEmpleadoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_miAnadirEmpleadoActionPerformed
-        DCrearEditarEmpleado dt = new DCrearEditarEmpleado(this, true, null, DCrearEditarEmpleado.Tipo.CREAR);
-        dt.setLocationRelativeTo(this);
-        dt.setVisible(true);
-        actualizarTablas();
-    }//GEN-LAST:event_miAnadirEmpleadoActionPerformed
-
-    private void miEliminarTrabajoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_miEliminarTrabajoActionPerformed
-
-        int id = recogerId("Escriba la ID del trabajo a eliminar", "Eliminar trabajo");
-        if (id == -1) {
-            return;
-        }
-        boolean borrado = Control.eliminarTrabajo(id);
-        if (borrado) {
-            mensajeInfo("Trabajo eliminado");
-            actualizarTablas();
-        } else {
-            mensajeError("No hay trabajos activos con la id " + id);
-        }
-
-    }//GEN-LAST:event_miEliminarTrabajoActionPerformed
-
-    private void miEliminarEmpleadoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_miEliminarEmpleadoActionPerformed
-        int id = recogerId("Escriba la ID del empleado a eliminar", "Eliminar empleado");
-        if (id == -1) {
-            return;
-        }
-        boolean borrado = Control.eliminarEmpleado(id);
-        if (borrado) {
-            mensajeInfo("Empleado eliminado");
-            actualizarTablas();
-        } else {
-            mensajeError("No hay empleados activos con la id " + id);
-        }
-    }//GEN-LAST:event_miEliminarEmpleadoActionPerformed
-
-    private void btnEliminarTrabajoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEliminarTrabajoActionPerformed
-        int idTrabajo = getIdTrabajoSeleccionado();
-        if (idTrabajo == -1)
-            mensajeAviso("Seleccione un trabajo de la tabla");
-        else {
-            int respuesta = JOptionPane.showConfirmDialog(this, "¿Realmente desea elminiar el trabajo " + idTrabajo + "?", "Eliminar trabajo", JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE);
-            if (respuesta == JOptionPane.YES_OPTION) {
-                Control.eliminarTrabajo(idTrabajo);
-                actualizarTablas();
-            }
-        }
-    }//GEN-LAST:event_btnEliminarTrabajoActionPerformed
-
-    private void btnEliminarEmpleadoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEliminarEmpleadoActionPerformed
-        int idEmpleado = getIdEmpleadoSeleccionado();
-        if (idEmpleado == -1)
-            mensajeAviso("Seleccione un empleado de la tabla");
-        else {
-            int respuesta = JOptionPane.showConfirmDialog(this, "¿Realmente desea elminiar el empleado " + idEmpleado + "?", "Eliminar empleado", JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE);
-            if (respuesta == JOptionPane.YES_OPTION) {
-                Control.eliminarEmpleado(idEmpleado);
-                actualizarTablas();
-            }
-        }
-    }//GEN-LAST:event_btnEliminarEmpleadoActionPerformed
-
-    private void miEditarTrabajoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_miEditarTrabajoActionPerformed
-
-        int id = recogerId("Escriba la ID del trabajo a editar", "Editar trabajo");
-        if (id == -1) {
-            return;
-        }
-        Trabajo trabajo = Control.getTrabajo(id);
-        if (trabajo == null || trabajo.getId() < 0) {
-            mensajeError("El trabajo " + id + " no existe");
-            return;
-        }
-        DCrearEditarTrabajo dt = new DCrearEditarTrabajo(this, true, trabajo, DCrearEditarTrabajo.Tipo.EDITAR);
-        dt.setLocationRelativeTo(this);
-        dt.setVisible(true);
-        actualizarTablas();
-    }//GEN-LAST:event_miEditarTrabajoActionPerformed
-
-    private void btnEditarTrabajoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEditarTrabajoActionPerformed
-        int idTrabajo = getIdTrabajoSeleccionado();
-        if (idTrabajo == -1)
-            mensajeAviso("Seleccione un trabajo de la tabla");
-        else {
-            Trabajo trabajo = Control.getTrabajo(idTrabajo);
-            if (trabajo == null) {
-                mensajeError("El trabajo " + idTrabajo + " no existe");
-                return;
-            }
-            DCrearEditarTrabajo dt = new DCrearEditarTrabajo(this, true, trabajo, DCrearEditarTrabajo.Tipo.EDITAR);
-            dt.setLocationRelativeTo(this);
-            dt.setVisible(true);
-            actualizarTablas();
-        }
-    }//GEN-LAST:event_btnEditarTrabajoActionPerformed
-
-    private void miEditarEmpleadoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_miEditarEmpleadoActionPerformed
-        int id = recogerId("Escriba la ID del empleado a editar", "Editar empleado");
-        if (id == -1) {
-            return;
-        }
-
-        Empleado empleado = Control.getEmpleado(id);
-        if (empleado == null) {
-            mensajeError("El empleado " + id + " no existe");
-            return;
-        }
-        DCrearEditarEmpleado dt = new DCrearEditarEmpleado(this, true, empleado, DCrearEditarEmpleado.Tipo.EDITAR);
-        dt.setLocationRelativeTo(this);
-        dt.setVisible(true);
-        actualizarTablas();
-    }//GEN-LAST:event_miEditarEmpleadoActionPerformed
-
-    private void btnEditarEmpleadoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEditarEmpleadoActionPerformed
-        int idEmpleado = getIdEmpleadoSeleccionado();
-        if (idEmpleado == -1)
-            mensajeAviso("Seleccione un empleado de la tabla");
-        else {
-            Empleado empleado = Control.getEmpleado(idEmpleado);
-            if (empleado == null) {
-                mensajeError("El empleado " + idEmpleado + " no existe");
-                return;
-            }
-            DCrearEditarEmpleado dt = new DCrearEditarEmpleado(this, true, empleado, DCrearEditarEmpleado.Tipo.EDITAR);
-            dt.setLocationRelativeTo(this);
-            dt.setVisible(true);
-            actualizarTablas();
-        }
-    }//GEN-LAST:event_btnEditarEmpleadoActionPerformed
-
-    private void miAsignarEmpleadosATrabajoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_miAsignarEmpleadosATrabajoActionPerformed
-        int id = recogerId("Escriba la ID del trabajo", "Asignar empleados a trabajo");
-        if (id == -1) {
-            return;
-        }
-        Trabajo trabajo = Control.getTrabajo(id);
-        if (trabajo == null || trabajo.getId() < 0) {
-            mensajeError("El trabajo " + id + " no existe");
-            return;
-        }
-        DAsignEmpleadosDeTrabajo dta = new DAsignEmpleadosDeTrabajo(this, true, trabajo);
-        dta.setLocationRelativeTo(this);
-        dta.setVisible(true);
-    }//GEN-LAST:event_miAsignarEmpleadosATrabajoActionPerformed
-
-    private void btnAsignacionEmpleadosATrabajoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAsignacionEmpleadosATrabajoActionPerformed
-        int idTrabajo = getIdTrabajoSeleccionado();
-        if (idTrabajo == -1)
-            mensajeAviso("Seleccione un trabajo de la tabla");
-        else {
-            Trabajo trabajo = Control.getTrabajo(idTrabajo);
-            if (trabajo == null) {
-                mensajeError("El trabajo " + idTrabajo + " no existe");
-                return;
-            }
-            DAsignEmpleadosDeTrabajo dta = new DAsignEmpleadosDeTrabajo(this, true, trabajo);
-            dta.setLocationRelativeTo(this);
-            dta.setVisible(true);
-        }
-    }//GEN-LAST:event_btnAsignacionEmpleadosATrabajoActionPerformed
-
-    private void miAsignarTrabajosAEmpleadoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_miAsignarTrabajosAEmpleadoActionPerformed
-        int id = recogerId("Escriba la ID del empleado", "Asignar trabajos a empleado");
-        if (id == -1) {
-            return;
-        }
-        Empleado empleado = Control.getEmpleado(id);
-        if (empleado == null || empleado.getId() < 0) {
-            mensajeError("El empleado " + id + " no existe");
-            return;
-        }
-        DAsignTrabajosDeEmpleado dea = new DAsignTrabajosDeEmpleado(this, true, empleado);
-        dea.setLocationRelativeTo(this);
-        dea.setVisible(true);
-    }//GEN-LAST:event_miAsignarTrabajosAEmpleadoActionPerformed
-
-    private void btnAsignacionTrabajosAEmpleadoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAsignacionTrabajosAEmpleadoActionPerformed
-        int idEmpleado = getIdEmpleadoSeleccionado();
-        if (idEmpleado == -1)
-            mensajeAviso("Seleccione un empleado de la tabla");
-        else {
-            Empleado empleado = Control.getEmpleado(idEmpleado);
-            if (empleado == null) {
-                mensajeError("El empleado " + idEmpleado + " no existe");
-                return;
-            }
-            DAsignTrabajosDeEmpleado dea = new DAsignTrabajosDeEmpleado(this, true, empleado);
-            dea.setLocationRelativeTo(this);
-            dea.setVisible(true);
-        }
-    }//GEN-LAST:event_btnAsignacionTrabajosAEmpleadoActionPerformed
-
-    private void btnBorrarTodoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBorrarTodoActionPerformed
-        int r = JOptionPane.showConfirmDialog(this, "¿Borrar todos los datos? Se borrarán todos los trabajos y empleados", "Borar todo", JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE);
+    /**
+     * Ordena el borrado de todos los datos resultando en archivos sin trabajos ni empleados
+     * @param evt 
+     */
+    private void miBorrarTodoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_miBorrarTodoActionPerformed
+        int r = JOptionPane.showConfirmDialog(this, "¿Borrar todos los datos? Se borrarán todos los trabajos y empleados", "Borrar todo", JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE);
         if (r == JOptionPane.YES_OPTION) {
             Control.borrarTodo();
             actualizarTablas();
         }
-    }//GEN-LAST:event_btnBorrarTodoActionPerformed
+    }//GEN-LAST:event_miBorrarTodoActionPerformed
 
-    private void miVerUnTrabajoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_miVerUnTrabajoActionPerformed
+    /**
+     * Salir del programa
+     * @param evt 
+     */
+    private void miSalirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_miSalirActionPerformed
+        if (JOptionPane.showConfirmDialog(this, "¿Desea salir?", "Salir del programa", JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION)
+            System.exit(0);
+    }//GEN-LAST:event_miSalirActionPerformed
+
+
+
+
+
+    
+    
+    
+
+
+ //METODOS DEL MENU TRABAJO Y EL PANEL DE TRABAJOS --------------------------------------------------------
+
+    /**
+     * Mostrar el panel de trabajos
+     * @param evt 
+     */
+    private void miVerTodosTrabajosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_miVerTodosTrabajosActionPerformed
+        verPanel("panelTrabajos");
+    }//GEN-LAST:event_miVerTodosTrabajosActionPerformed
+
+    /**
+     * Ver un trabajo pidiendo la ID. Activado desde el menu superior
+     * @param evt 
+     */
+    private void miVerTrabajoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_miVerTrabajoActionPerformed
+        
+        //recoger la id
         int id = recogerId("Escriba la ID del trabajo", "Ver detalles de trabajo");
         if (id == -1) {
             return;
         }
+        //recoger el trabajo y sus empleados
         Trabajo trabajo = Control.getTrabajo(id);
         if (trabajo == null) {
             mensajeError("El trabajo " + id + " no existe");
             return;
         }
         ArrayList<Empleado> empleados = Control.getEmpleadosEnTrabajo(trabajo);
+        
+        //mostrar el dialogo
         DVerTrabajo dvt = new DVerTrabajo(this, true, trabajo, empleados);
         dvt.setLocationRelativeTo(this);
         dvt.setVisible(true);
-    }//GEN-LAST:event_miVerUnTrabajoActionPerformed
+    }//GEN-LAST:event_miVerTrabajoActionPerformed
 
+    
+    /**
+     * Ver un trabajo seleccionandolo en la tabla. Activado desde los botones laterales
+     * @param evt 
+     */
     private void btnVerTrabajoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnVerTrabajoActionPerformed
         int idTrabajo = getIdTrabajoSeleccionado();
         if (idTrabajo == -1)
@@ -964,43 +816,409 @@ public class VPrincipal15 extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_btnVerTrabajoActionPerformed
 
+    
+    /**
+     * Aniadirun trabajo. Activado desde el menu superior. Abre el dialogo de creacion
+     * @param evt 
+     */
+    private void miAnadirTrabajoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_miAnadirTrabajoActionPerformed
+        DCrearEditarTrabajo dt = new DCrearEditarTrabajo(this, true, null, DCrearEditarTrabajo.Tipo.CREAR);
+        dt.setLocationRelativeTo(this);
+        dt.setVisible(true);
+        actualizarTablas();
+    }//GEN-LAST:event_miAnadirTrabajoActionPerformed
+
+    /**
+     * Aniadir un trabajo. Activado desde los botones laterales. Abre el dialogo de creacion
+     * @param evt 
+     */
+    private void btnAnadirTrabajoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAnadirTrabajoActionPerformed
+        DCrearEditarTrabajo dt = new DCrearEditarTrabajo(this, true, null, DCrearEditarTrabajo.Tipo.CREAR);
+        dt.setLocationRelativeTo(this);
+        dt.setVisible(true);
+        actualizarTablas();
+    }//GEN-LAST:event_btnAnadirTrabajoActionPerformed
+
+    /**
+     * Editar un trabajo dada una id. Activado desde el menu superior
+     * @param evt 
+     */
+    private void miEditarTrabajoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_miEditarTrabajoActionPerformed
+        
+        //recoger id
+        int id = recogerId("Escriba la ID del trabajo a editar", "Editar trabajo");
+        if (id == -1) {
+            return;
+        }
+        //recoger trabajo
+        Trabajo trabajo = Control.getTrabajo(id);
+        if (trabajo == null || trabajo.getId() < 0) {
+            mensajeError("El trabajo " + id + " no existe");
+            return;
+        }
+        
+        //abrir dialogo de edicion
+        DCrearEditarTrabajo dt = new DCrearEditarTrabajo(this, true, trabajo, DCrearEditarTrabajo.Tipo.EDITAR);
+        dt.setLocationRelativeTo(this);
+        dt.setVisible(true);
+        actualizarTablas();
+    }//GEN-LAST:event_miEditarTrabajoActionPerformed
+
+    /**
+     * Editar un trabajo seleccionado en la tabla. Activado desde los botones laterales
+     * @param evt 
+     */
+    private void btnEditarTrabajoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEditarTrabajoActionPerformed
+        //detectar trabajo seleccionado
+        int idTrabajo = getIdTrabajoSeleccionado();
+        if (idTrabajo == -1)
+            mensajeAviso("Seleccione un trabajo de la tabla");
+        else {
+            
+            //recoger trabajo
+            Trabajo trabajo = Control.getTrabajo(idTrabajo);
+            if (trabajo == null) {
+                mensajeError("El trabajo " + idTrabajo + " no existe");
+                return;
+            }
+            //abrir dialogo de edicion
+            DCrearEditarTrabajo dt = new DCrearEditarTrabajo(this, true, trabajo, DCrearEditarTrabajo.Tipo.EDITAR);
+            dt.setLocationRelativeTo(this);
+            dt.setVisible(true);
+            actualizarTablas();
+        }
+    }//GEN-LAST:event_btnEditarTrabajoActionPerformed
+
+    /**
+     * Abrir editor de asignaciones para un trabajo segun su id. Activado desde el menu superior
+     * @param evt 
+     */
+    private void miAsignarEmpleadosATrabajoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_miAsignarEmpleadosATrabajoActionPerformed
+        //recoger id
+        int id = recogerId("Escriba la ID del trabajo", "Asignar empleados a trabajo");
+        if (id == -1) {
+            return;
+        }
+        //recoger trabajo
+        Trabajo trabajo = Control.getTrabajo(id);
+        if (trabajo == null || trabajo.getId() < 0) {
+            mensajeError("El trabajo " + id + " no existe");
+            return;
+        }
+        
+        //abrir dialogo de asignacion
+        DAsignEmpleadosDeTrabajo dta = new DAsignEmpleadosDeTrabajo(this, true, trabajo);
+        dta.setLocationRelativeTo(this);
+        dta.setVisible(true);
+    }//GEN-LAST:event_miAsignarEmpleadosATrabajoActionPerformed
+
+    /**
+     * Abrir editor de asignaciones par aun trabajo segun seleccion en la tabla. Activado desde botones laterales
+     * @param evt 
+     */
+    private void btnAsignacionEmpleadosATrabajoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAsignacionEmpleadosATrabajoActionPerformed
+        //detectar trabajo seleccionado
+        int idTrabajo = getIdTrabajoSeleccionado();
+        if (idTrabajo == -1)
+            mensajeAviso("Seleccione un trabajo de la tabla");
+        else {
+            //recoger trabajo
+            Trabajo trabajo = Control.getTrabajo(idTrabajo);
+            if (trabajo == null) {
+                mensajeError("El trabajo " + idTrabajo + " no existe");
+                return;
+            }
+            //abrir dialogo de asignacion
+            DAsignEmpleadosDeTrabajo dta = new DAsignEmpleadosDeTrabajo(this, true, trabajo);
+            dta.setLocationRelativeTo(this);
+            dta.setVisible(true);
+        }
+    }//GEN-LAST:event_btnAsignacionEmpleadosATrabajoActionPerformed
+
+    /**
+     * Eliminar trabajo setun su id. Activado desde menu superior
+     * @param evt 
+     */
+    private void miEliminarTrabajoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_miEliminarTrabajoActionPerformed
+        //recoger id
+        int id = recogerId("Escriba la ID del trabajo a eliminar", "Eliminar trabajo");
+        if (id == -1) {
+            return;
+        }
+        //borrar
+        boolean borrado = Control.eliminarTrabajo(id);
+        if (borrado) {
+            mensajeInfo("Trabajo eliminado");
+            actualizarTablas();
+        } else {
+            mensajeError("No hay trabajos activos con la id " + id);
+        }
+
+    }//GEN-LAST:event_miEliminarTrabajoActionPerformed
+
+    /**
+     * Eliminar trabajo seleccionado en la tabla. Activado desde botones laterales
+     * @param evt 
+     */
+    private void btnEliminarTrabajoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEliminarTrabajoActionPerformed
+        
+        //detectar seleccionado
+        int idTrabajo = getIdTrabajoSeleccionado();
+        if (idTrabajo == -1)
+            mensajeAviso("Seleccione un trabajo de la tabla");
+        else {
+            //pedir confirmacion
+            int respuesta = JOptionPane.showConfirmDialog(this, "¿Realmente desea elminiar el trabajo " + idTrabajo + "?", "Eliminar trabajo", JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE);
+            if (respuesta == JOptionPane.YES_OPTION) {
+                //ejecutar borrado
+                Control.eliminarTrabajo(idTrabajo);
+                actualizarTablas();
+            }
+        }
+    }//GEN-LAST:event_btnEliminarTrabajoActionPerformed
+
+
+
+
+
+    
+    
+    
+    
+    
+    
+    
+    
+    //METODOS DEL MENU EMPLEADOS Y EL PANEL DE EMPLEADOS --------------------------------------------------------
+
+    /**
+     * Mostrar panel de empleados
+     * @param evt 
+     */
+    private void miVerTodosEmpleadosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_miVerTodosEmpleadosActionPerformed
+        verPanel("panelEmpleados");
+    }//GEN-LAST:event_miVerTodosEmpleadosActionPerformed
+
+    /**
+     * Ver empleado por su ID. Activado desde el menu superior
+     * @param evt 
+     */
     private void miVerEmpleadoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_miVerEmpleadoActionPerformed
+        //recoger id
         int id = recogerId("Escriba la ID del empleado", "Ver detalles de empleado");
         if (id == -1) {
             return;
         }
+        //recoger empleado
         Empleado empleado = Control.getEmpleado(id);
         if (empleado == null) {
             mensajeError("El empleado " + id + " no existe");
             return;
         }
+        //recoger trabajos del empleado
         ArrayList<Trabajo> trabajos = Control.getTrabajosEnEmpleado(empleado);
+        
+        //mostrar dialogo 
         DVerEmpleado dve = new DVerEmpleado(this, true, empleado, trabajos);
         dve.setLocationRelativeTo(this);
         dve.setVisible(true);
     }//GEN-LAST:event_miVerEmpleadoActionPerformed
 
+    
+    /**
+     * Ver empleado segun este seleccionado en la tabla. Activado por botones laterales
+     * @param evt 
+     */
     private void btnVerEmpleadoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnVerEmpleadoActionPerformed
+        
+        //detectar empleado seleccionado
         int idEmpleado = getIdEmpleadoSeleccionado();
         if (idEmpleado == -1)
             mensajeAviso("Seleccione un empleado de la tabla");
         else {
+            //recoger empleado
             Empleado empleado = Control.getEmpleado(idEmpleado);
             if (empleado == null) {
                 mensajeError("El empleado " + idEmpleado + " no existe");
                 return;
             }
+            //recoger trabajos de empleado
             ArrayList<Trabajo> trabajos = Control.getTrabajosEnEmpleado(empleado);
+            
+            //abrir dialogo
             DVerEmpleado dve = new DVerEmpleado(this, true, empleado, trabajos);
             dve.setLocationRelativeTo(this);
             dve.setVisible(true);
         }    }//GEN-LAST:event_btnVerEmpleadoActionPerformed
 
-    private void verPanel(String nombre) {
+    /**
+     * Agregar empleado. Activado desde el menu superior
+     * @param evt 
+     */
+    private void miAnadirEmpleadoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_miAnadirEmpleadoActionPerformed
+        DCrearEditarEmpleado dt = new DCrearEditarEmpleado(this, true, null, DCrearEditarEmpleado.Tipo.CREAR);
+        dt.setLocationRelativeTo(this);
+        dt.setVisible(true);
+        actualizarTablas();
+    }//GEN-LAST:event_miAnadirEmpleadoActionPerformed
 
-        CardLayout layout = (CardLayout) panelPrincipal.getLayout();
-        layout.show(panelPrincipal, nombre);
-    }
+    /**
+     * Agregar empleado. Activado desde el menu lateral
+     * @param evt 
+     */
+    private void btnAnadirEmpleadoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAnadirEmpleadoActionPerformed
+        DCrearEditarEmpleado dt = new DCrearEditarEmpleado(this, true, null, DCrearEditarEmpleado.Tipo.CREAR);
+        dt.setLocationRelativeTo(this);
+        dt.setVisible(true);
+        actualizarTablas();
+    }//GEN-LAST:event_btnAnadirEmpleadoActionPerformed
+
+    
+    /**
+     * Editar empleado segu ID. Activado desde el menu superior
+     * @param evt 
+     */
+    private void miEditarEmpleadoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_miEditarEmpleadoActionPerformed
+        
+        //recoger id
+        int id = recogerId("Escriba la ID del empleado a editar", "Editar empleado");
+        if (id == -1) {
+            return;
+        }
+        
+        //recoger empleado
+        Empleado empleado = Control.getEmpleado(id);
+        if (empleado == null) {
+            mensajeError("El empleado " + id + " no existe");
+            return;
+        }
+        
+        //abrir dialogo de eidicion
+        DCrearEditarEmpleado dt = new DCrearEditarEmpleado(this, true, empleado, DCrearEditarEmpleado.Tipo.EDITAR);
+        dt.setLocationRelativeTo(this);
+        dt.setVisible(true);
+        actualizarTablas();
+    }//GEN-LAST:event_miEditarEmpleadoActionPerformed
+
+    /**
+     * Editar empleado seleccionado en la tabla. Activado por los botones laterales
+     * @param evt 
+     */
+    private void btnEditarEmpleadoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEditarEmpleadoActionPerformed
+        
+        //recoger id
+        int idEmpleado = getIdEmpleadoSeleccionado();
+        if (idEmpleado == -1)
+            mensajeAviso("Seleccione un empleado de la tabla");
+        else {
+            //recoger empleado
+            Empleado empleado = Control.getEmpleado(idEmpleado);
+            if (empleado == null) {
+                mensajeError("El empleado " + idEmpleado + " no existe");
+                return;
+            }
+            
+            //abrir dialogo de edicion
+            DCrearEditarEmpleado dt = new DCrearEditarEmpleado(this, true, empleado, DCrearEditarEmpleado.Tipo.EDITAR);
+            dt.setLocationRelativeTo(this);
+            dt.setVisible(true);
+            actualizarTablas();
+        }
+    }//GEN-LAST:event_btnEditarEmpleadoActionPerformed
+
+    /**
+     * Abrir panel de asignaciones de trabajos a empleado segun su id. Activado desde el menu superior
+     * @param evt 
+     */
+    private void miAsignarTrabajosAEmpleadoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_miAsignarTrabajosAEmpleadoActionPerformed
+        
+        //recoger la ID
+        int id = recogerId("Escriba la ID del empleado", "Asignar trabajos a empleado");
+        if (id == -1) {
+            return;
+        }
+        //recoger empleado
+        Empleado empleado = Control.getEmpleado(id);
+        if (empleado == null || empleado.getId() < 0) {
+            mensajeError("El empleado " + id + " no existe");
+            return;
+        }
+        //abrir dialogo de asignaciones
+        DAsignTrabajosDeEmpleado dea = new DAsignTrabajosDeEmpleado(this, true, empleado);
+        dea.setLocationRelativeTo(this);
+        dea.setVisible(true);
+    }//GEN-LAST:event_miAsignarTrabajosAEmpleadoActionPerformed
+
+    /**
+     * Abrir panel de asignaciones de trabajos a empleado segun lo seleccionado en la tabla.
+     * Activado desde los botones laterales
+     * @param evt 
+     */
+    private void btnAsignacionTrabajosAEmpleadoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAsignacionTrabajosAEmpleadoActionPerformed
+        
+        //detectar seleccionado
+        int idEmpleado = getIdEmpleadoSeleccionado();
+        if (idEmpleado == -1)
+            mensajeAviso("Seleccione un empleado de la tabla");
+        else {
+            //recoger empleado
+            Empleado empleado = Control.getEmpleado(idEmpleado);
+            if (empleado == null) {
+                mensajeError("El empleado " + idEmpleado + " no existe");
+                return;
+            }
+            //abrir dialogo de asignaciones
+            DAsignTrabajosDeEmpleado dea = new DAsignTrabajosDeEmpleado(this, true, empleado);
+            dea.setLocationRelativeTo(this);
+            dea.setVisible(true);
+        }
+    }//GEN-LAST:event_btnAsignacionTrabajosAEmpleadoActionPerformed
+
+    /**
+     * Eliminar empleado por su id. Activado desde el menu superior
+     * @param evt 
+     */
+    private void miEliminarEmpleadoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_miEliminarEmpleadoActionPerformed
+        //recoger id
+        int id = recogerId("Escriba la ID del empleado a eliminar", "Eliminar empleado");
+        if (id == -1) {
+            return;
+        }
+        //borrar
+        boolean borrado = Control.eliminarEmpleado(id);
+        if (borrado) {
+            mensajeInfo("Empleado eliminado");
+            actualizarTablas();
+        } else {
+            mensajeError("No hay empleados activos con la id " + id);
+        }
+    }//GEN-LAST:event_miEliminarEmpleadoActionPerformed
+
+    /**
+     * Borrar empleado seleccionado en la tabla
+     * @param evt 
+     */
+    private void btnEliminarEmpleadoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEliminarEmpleadoActionPerformed
+        //detectar seleccionado
+        int idEmpleado = getIdEmpleadoSeleccionado();
+        if (idEmpleado == -1)
+            mensajeAviso("Seleccione un empleado de la tabla");
+        else {
+            //confirmar
+            int respuesta = JOptionPane.showConfirmDialog(this, "ï¿Realmente desea elminiar el empleado " + idEmpleado + "?", "Eliminar empleado", JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE);
+            if (respuesta == JOptionPane.YES_OPTION) {
+                //eliminar
+                Control.eliminarEmpleado(idEmpleado);
+                actualizarTablas();
+            }
+        }
+    }//GEN-LAST:event_btnEliminarEmpleadoActionPerformed
+
+
+
+
+
+    
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JMenuBar barraMenu;
@@ -1008,7 +1226,6 @@ public class VPrincipal15 extends javax.swing.JFrame {
     private javax.swing.JButton btnAnadirTrabajo;
     private javax.swing.JButton btnAsignacionEmpleadosATrabajo;
     private javax.swing.JButton btnAsignacionTrabajosAEmpleado;
-    private javax.swing.JMenuItem btnBorrarTodo;
     private javax.swing.JButton btnEditarEmpleado;
     private javax.swing.JButton btnEditarTrabajo;
     private javax.swing.JButton btnEliminarEmpleado;
@@ -1026,6 +1243,7 @@ public class VPrincipal15 extends javax.swing.JFrame {
     private javax.swing.JMenuItem miAnadirTrabajo;
     private javax.swing.JMenuItem miAsignarEmpleadosATrabajo;
     private javax.swing.JMenuItem miAsignarTrabajosAEmpleado;
+    private javax.swing.JMenuItem miBorrarTodo;
     private javax.swing.JMenuItem miCargarDatosTxt;
     private javax.swing.JMenuItem miEditarEmpleado;
     private javax.swing.JMenuItem miEditarTrabajo;
@@ -1035,7 +1253,7 @@ public class VPrincipal15 extends javax.swing.JFrame {
     private javax.swing.JMenuItem miVerEmpleado;
     private javax.swing.JMenuItem miVerTodosEmpleados;
     private javax.swing.JMenuItem miVerTodosTrabajos;
-    private javax.swing.JMenuItem miVerUnTrabajo;
+    private javax.swing.JMenuItem miVerTrabajo;
     private javax.swing.JPanel panelEmpleados;
     private javax.swing.JPanel panelEmpleadosOperaciones;
     private javax.swing.JPanel panelPrincipal;
