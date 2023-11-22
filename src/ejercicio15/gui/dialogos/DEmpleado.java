@@ -31,24 +31,24 @@ public class DEmpleado extends javax.swing.JDialog {
         this.tipo=tipo;
         switch (tipo) {
            case EDITAR:
-                inicializaEditar(empleado);
+                inicializaParaEditar(empleado);
                 break;
             case CREAR:
-                inicializaCrear();
+                inicializaParaCrear();
                 break;
             default:
                 throw new AssertionError();
         }
     }
-    private void inicializaCrear() {
+    private void inicializaParaCrear() {
         this.lbId.setVisible(false);
         this.inputId.setVisible(false);
         this.lbTitulo.setText("AÑADIR EMPLEADO");    }
 
-    private void inicializaEditar(Empleado empleado) {
+    private void inicializaParaEditar(Empleado empleado) {
         inputId.setText(""+empleado.getId());
-        inputNombre.setText(empleado.getNombre().replace("\0",""));
-        inputApellidos.setText(empleado.getApellidos().replace("\0",""));
+        inputNombre.setText(empleado.getNombre());
+        inputApellidos.setText(empleado.getApellidos());
         inputSueldo.setValue(empleado.getSueldo());
         this.lbTitulo.setText("EDITAR EMPLEADO");  
     }

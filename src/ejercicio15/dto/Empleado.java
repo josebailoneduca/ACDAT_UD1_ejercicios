@@ -25,19 +25,19 @@ public class Empleado {
     public static int limiteTrabajos=2;
     public static int limiteNombre=20;
     public static int limiteApellidos=30;
-    public static int longitudBytes = 4+2*limiteNombre+2*limiteApellidos+4+4*limiteTrabajos;
-    public static int longitudBytesHastaTrabajos = 4+2*limiteNombre+2*limiteApellidos+4;
+    public static int longitudBytes = 4+2*limiteNombre+2*limiteApellidos+4+4*limiteTrabajos;//id+nombre+apellido+sueldo+trabajos
+    public static int longitudBytesHastaTrabajos = 4+2*limiteNombre+2*limiteApellidos+4;//id+nombre+apellido+sueldo+trabajos
     public Empleado(int id, String nombre, String apellidos, int sueldo,int[]trabajos) {
         this.id = id;
         this.nombre = nombre;
         this.apellidos = apellidos;
         this.sueldo = sueldo;
-        this.trabajos = new int[limiteTrabajos];
+        this.trabajos = trabajos;
     }
 
     //GETTERS Y SETTERS
     public String getNombre() {
-        return nombre;
+        return nombre.replace("\0","");
     }
 
     public void setNombre(String nombre) {
@@ -45,7 +45,7 @@ public class Empleado {
     }
 
     public String getApellidos() {
-        return apellidos;
+        return apellidos.replace("\0","");
     }
 
     public void setApellidos(String apellidos) {

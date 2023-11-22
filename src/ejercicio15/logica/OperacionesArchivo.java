@@ -319,9 +319,7 @@ public class OperacionesArchivo {
 
             raf.writeInt(t.getId());//id trabajo
             //Usamos clase StringBuffer para controlar tamaño de los String
-            StringBuffer sb = null;
-            //Limitamos el tamaño del nombre:
-            sb = new StringBuffer(t.getNombre());
+            StringBuffer sb = new StringBuffer(t.getNombre());
             sb.setLength(Trabajo.limiteNombre);//15 caracteres máximo para el nombre
             String nombre = sb.toString();
             raf.writeChars(nombre);//nombre
@@ -344,14 +342,7 @@ public class OperacionesArchivo {
         }
     }
 
-    /**
-     * Lanza una ventana de mensaje de error
-     *
-     * @param msg El mensaje a mostrar
-     */
-    private static void msgError(String msg) {
-        JOptionPane.showMessageDialog(null, msg, "Error", JOptionPane.ERROR_MESSAGE);
-    }
+  
 
     static void agregarEmpleado(Empleado e) {
 
@@ -369,15 +360,12 @@ public class OperacionesArchivo {
 
             raf.writeInt(e.getId());//id empleado
             //Usamos clase StringBuffer para controlar tamaño de los String
-            StringBuffer sbn = null;
-            //Limitamos el tamaño del nombre:
-            sbn = new StringBuffer(e.getNombre());
+            StringBuffer sbn = new StringBuffer(e.getNombre());
             sbn.setLength(Empleado.limiteNombre);//limite de longitud nombre
             String nombre = sbn.toString();
             raf.writeChars(nombre);//nombre
             //Limitamos el tamaño de apellidos:
-            StringBuffer sba = null;
-            sba = new StringBuffer(e.getApellidos());
+            StringBuffer sba = new StringBuffer(e.getApellidos());
             sba.setLength(Empleado.limiteApellidos);//limite de longitud nombre
             String apellidos = sba.toString();
             raf.writeChars(apellidos);//nombre
@@ -498,9 +486,9 @@ public class OperacionesArchivo {
     static void actualizarEmpleadosDeTrabajo(Trabajo t) {
 
         int id = Math.abs(t.getId());
-        long inicioEmpleados = 4 + ((id - 1) * Empleado.longitudBytes) + Empleado.longitudBytesHastaTrabajos;
+        long inicioEmpleados = 4 + ((id - 1) * Trabajo.longitudBytes) + Trabajo.longitudBytesHastaEmpleados;
         RandomAccessFile raf = null;
-        File fichero = new File(Control.rutaEmpleados);
+        File fichero = new File(Control.rutaTrabajos);
         try {
             //acceso a archivo
             raf = new RandomAccessFile(fichero, "rw");//Lectura y Escritura
@@ -579,9 +567,7 @@ public class OperacionesArchivo {
             //actualizar numero de trabajos
             raf.seek(inicioTrabajo);
             //Usamos clase StringBuffer para controlar tamaño de los String
-            StringBuffer sb = null;
-            //Limitamos el tamaño del nombre:
-            sb = new StringBuffer(trabajo.getNombre());
+            StringBuffer sb = new StringBuffer(trabajo.getNombre());
             sb.setLength(Trabajo.limiteNombre);//15 caracteres máximo para el nombre
             String nombre = sb.toString();
             raf.writeChars(nombre);//nombre
@@ -661,17 +647,13 @@ public class OperacionesArchivo {
             //actualizar numero de trabajos
             raf.seek(inicioEmpleado);
             //Usamos clase StringBuffer para controlar tamaño de los String
-            StringBuffer sb = null;
-            //Limitamos el tamaño del nombre:
-            sb = new StringBuffer(empleado.getNombre());
+            StringBuffer sb = new StringBuffer(empleado.getNombre());
             sb.setLength(Trabajo.limiteNombre);//15 caracteres máximo para el nombre
             String nombre = sb.toString();
             raf.writeChars(nombre);//nombre
             
             //Usamos clase StringBuffer para controlar tamaño de los String
-            StringBuffer sba = null;
-            //Limitamos el tamaño del nombre:
-            sba = new StringBuffer(empleado.getApellidos());
+            StringBuffer sba = new StringBuffer(empleado.getApellidos());
             sba.setLength(Empleado.limiteApellidos);//15 caracteres máximo para el nombre
             String apellidos = sba.toString();
             raf.writeChars(apellidos);//nombre
@@ -689,5 +671,15 @@ public class OperacionesArchivo {
             } catch (IOException ex) {
                 msgError("Error accediendo a " + fichero.getAbsolutePath());
             }
-        }    }
+        }    
+    }
+    
+      /**
+     * Lanza una ventana de mensaje de error
+     *
+     * @param msg El mensaje a mostrar
+     */
+    private static void msgError(String msg) {
+        JOptionPane.showMessageDialog(null, msg, "Error", JOptionPane.ERROR_MESSAGE);
+    }
 }

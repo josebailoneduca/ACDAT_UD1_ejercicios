@@ -58,7 +58,7 @@ public class Trabajo{
     }
 
     public String getNombre() {
-        return nombre;
+        return nombre.replace("\0","");
     }
 
     public void setNombre(String nombre) {

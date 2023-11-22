@@ -17,6 +17,14 @@
                 <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="miCargarDatosTxtActionPerformed"/>
               </Events>
             </MenuItem>
+            <MenuItem class="javax.swing.JMenuItem" name="btnBorrarTodo">
+              <Properties>
+                <Property name="text" type="java.lang.String" value="Borrar todo"/>
+              </Properties>
+              <Events>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnBorrarTodoActionPerformed"/>
+              </Events>
+            </MenuItem>
             <MenuItem class="javax.swing.JMenuItem" name="miSalir">
               <Properties>
                 <Property name="text" type="java.lang.String" value="Salir"/>
@@ -44,9 +52,6 @@
               <Properties>
                 <Property name="text" type="java.lang.String" value="Ver trabajo..."/>
               </Properties>
-              <Events>
-                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="miVerUnTrabajoActionPerformed"/>
-              </Events>
             </MenuItem>
             <MenuItem class="javax.swing.JMenuItem" name="miAnadirTrabajo">
               <Properties>
@@ -64,12 +69,12 @@
                 <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="miEditarTrabajoActionPerformed"/>
               </Events>
             </MenuItem>
-            <MenuItem class="javax.swing.JMenuItem" name="miAsignarEmpleados">
+            <MenuItem class="javax.swing.JMenuItem" name="miAsignarEmpleadosATrabajo">
               <Properties>
                 <Property name="text" type="java.lang.String" value="Asignaci&#xf3;n de empleados a trabajo..."/>
               </Properties>
               <Events>
-                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="miAsignarEmpleadosActionPerformed"/>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="miAsignarEmpleadosATrabajoActionPerformed"/>
               </Events>
             </MenuItem>
             <MenuItem class="javax.swing.JMenuItem" name="miEliminarTrabajo">
@@ -116,10 +121,13 @@
                 <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="miEditarEmpleadoActionPerformed"/>
               </Events>
             </MenuItem>
-            <MenuItem class="javax.swing.JMenuItem" name="miAsignarTrabajos">
+            <MenuItem class="javax.swing.JMenuItem" name="miAsignarTrabajosAEmpleado">
               <Properties>
                 <Property name="text" type="java.lang.String" value="Asignaci&#xf3;n de trabajos a empleado..."/>
               </Properties>
+              <Events>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="miAsignarTrabajosAEmpleadoActionPerformed"/>
+              </Events>
             </MenuItem>
             <MenuItem class="javax.swing.JMenuItem" name="miEliminarEmpleado">
               <Properties>
@@ -308,7 +316,7 @@
                               <Component id="btnVerTrabajo" alignment="1" max="32767" attributes="0"/>
                               <Component id="btnEditarTrabajo" alignment="0" max="32767" attributes="0"/>
                               <Component id="btnEliminarTrabajo" alignment="0" max="32767" attributes="0"/>
-                              <Component id="btnAsignacionEmpleados" alignment="0" pref="176" max="32767" attributes="0"/>
+                              <Component id="btnAsignacionEmpleadosATrabajo" alignment="0" pref="176" max="32767" attributes="0"/>
                               <Component id="btnAnadirTrabajo" alignment="1" max="32767" attributes="0"/>
                           </Group>
                           <EmptySpace max="-2" attributes="0"/>
@@ -325,7 +333,7 @@
                           <EmptySpace max="-2" attributes="0"/>
                           <Component id="btnEditarTrabajo" min="-2" max="-2" attributes="0"/>
                           <EmptySpace max="-2" attributes="0"/>
-                          <Component id="btnAsignacionEmpleados" min="-2" max="-2" attributes="0"/>
+                          <Component id="btnAsignacionEmpleadosATrabajo" min="-2" max="-2" attributes="0"/>
                           <EmptySpace max="-2" attributes="0"/>
                           <Component id="btnEliminarTrabajo" min="-2" max="-2" attributes="0"/>
                           <EmptySpace pref="30" max="32767" attributes="0"/>
@@ -363,10 +371,13 @@
                     <Property name="text" type="java.lang.String" value="Ver trabajo"/>
                   </Properties>
                 </Component>
-                <Component class="javax.swing.JButton" name="btnAsignacionEmpleados">
+                <Component class="javax.swing.JButton" name="btnAsignacionEmpleadosATrabajo">
                   <Properties>
                     <Property name="text" type="java.lang.String" value="Asignaci&#xf3;n de empleados"/>
                   </Properties>
+                  <Events>
+                    <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnAsignacionEmpleadosATrabajoActionPerformed"/>
+                  </Events>
                 </Component>
               </SubComponents>
             </Container>
@@ -507,7 +518,7 @@
                               <Component id="btnAnadirEmpleado" alignment="0" max="32767" attributes="0"/>
                               <Component id="btnEditarEmpleado" alignment="0" max="32767" attributes="0"/>
                               <Component id="btnEliminarEmpleado" alignment="0" max="32767" attributes="0"/>
-                              <Component id="btnAsignacionTrabajos" alignment="0" pref="176" max="32767" attributes="0"/>
+                              <Component id="btnAsignacionTrabajosAEmpleado" alignment="0" pref="176" max="32767" attributes="0"/>
                           </Group>
                           <EmptySpace max="-2" attributes="0"/>
                       </Group>
@@ -523,7 +534,7 @@
                           <EmptySpace max="-2" attributes="0"/>
                           <Component id="btnEditarEmpleado" min="-2" max="-2" attributes="0"/>
                           <EmptySpace max="-2" attributes="0"/>
-                          <Component id="btnAsignacionTrabajos" min="-2" max="-2" attributes="0"/>
+                          <Component id="btnAsignacionTrabajosAEmpleado" min="-2" max="-2" attributes="0"/>
                           <EmptySpace max="-2" attributes="0"/>
                           <Component id="btnEliminarEmpleado" min="-2" max="-2" attributes="0"/>
                           <EmptySpace pref="30" max="32767" attributes="0"/>
@@ -561,10 +572,13 @@
                     <Property name="text" type="java.lang.String" value="Ver empleado"/>
                   </Properties>
                 </Component>
-                <Component class="javax.swing.JButton" name="btnAsignacionTrabajos">
+                <Component class="javax.swing.JButton" name="btnAsignacionTrabajosAEmpleado">
                   <Properties>
                     <Property name="text" type="java.lang.String" value="Asignaci&#xf3;n de trabajos"/>
                   </Properties>
+                  <Events>
+                    <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnAsignacionTrabajosAEmpleadoActionPerformed"/>
+                  </Events>
                 </Component>
               </SubComponents>
             </Container>

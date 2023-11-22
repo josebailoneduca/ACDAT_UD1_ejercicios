@@ -32,23 +32,23 @@ public class DTrabajo extends javax.swing.JDialog {
         this.tipo=tipo;
         switch (tipo) {
            case EDITAR:
-                inicializaEditar(trabajo);
+                inicializaParaEditar(trabajo);
                 break;
             case CREAR:
-                inicializaCrear();
+                inicializaParaCrear();
                 break;
             default:
                 throw new AssertionError();
         }
     }
-    private void inicializaCrear() {
+    private void inicializaParaCrear() {
         this.lbId.setVisible(false);
         this.inputId.setVisible(false);
         this.lbTitulo.setText("AÑADIR TRABAJO");    }
 
-    private void inicializaEditar(Trabajo trabajo) {
+    private void inicializaParaEditar(Trabajo trabajo) {
         inputId.setText(""+trabajo.getId());
-        inputNombre.setText(trabajo.getNombre().replace("\0",""));
+        inputNombre.setText(trabajo.getNombre());
         inputFecha.setValue(new Date(trabajo.getFecha()));
         this.lbTitulo.setText("EDITAR TRABAJO");  
     }
