@@ -19,8 +19,8 @@ public class EmpleadosTableModel extends AbstractTableModel{
     
 
     //ATRIBUTOS:
-    private List<Empleado> listaEmpleados;//lista actual de encuestas
-    private String[] columnas = new String[]{"ID", "Nombre", "Apellidos", "Sueldo"};
+    private final List<Empleado> listaEmpleados;//lista actual de encuestas
+    private final String[] columnas = new String[]{"ID", "Nombre", "Apellidos", "Sueldo"};
 
     //METODOS:
     //Constructor
@@ -40,23 +40,16 @@ public class EmpleadosTableModel extends AbstractTableModel{
 
     @Override
     public Object getValueAt(int rowIndex, int columnIndex) {
-        Object value = null;
+        Object value;
         switch (columnIndex) {
-            case 0:
-                value = Math.abs(listaEmpleados.get(rowIndex).getId());
-                break;
-            case 1:
-                value = listaEmpleados.get(rowIndex).getNombre();
-                break;
-            case 2:
-                value = listaEmpleados.get(rowIndex).getApellidos();
-                break;
-            case 3:
-                value = listaEmpleados.get(rowIndex).getSueldo();
-                break;
-            default:
+            case 0 -> value = Math.abs(listaEmpleados.get(rowIndex).getId());
+            case 1 -> value = listaEmpleados.get(rowIndex).getNombre();
+            case 2 -> value = listaEmpleados.get(rowIndex).getApellidos();
+            case 3 -> value = listaEmpleados.get(rowIndex).getSueldo();
+            default -> {
                 value = null;
                 throw new AssertionError();
+            }
         }
         return value;
     }

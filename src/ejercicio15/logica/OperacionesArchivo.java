@@ -47,7 +47,7 @@ public class OperacionesArchivo {
     public static ArrayList<Trabajo> leerTrabajosInicialesTXT() {
 
         //Lista de los leidos
-        ArrayList<Trabajo> trabajos = new ArrayList<Trabajo>();
+        ArrayList<Trabajo> trabajos = new ArrayList<>();
 
         //PREAPARAR READERS
         File f = new File(Control.rutaTrabajosIniciales);
@@ -58,7 +58,7 @@ public class OperacionesArchivo {
             fr = new FileReader(f);
             bis = new BufferedReader(fr);
             //LEER LINEAS CON LA SECUENCIA DE TRABAJOS
-            String idSt = "";
+            String idSt;
             while ((idSt = bis.readLine()) != null) {
                 int id = Integer.parseInt(idSt);
                 String nombre = bis.readLine();
@@ -72,9 +72,8 @@ public class OperacionesArchivo {
             }
         } catch (FileNotFoundException ex) {
             //TODO
-        } catch (IOException | ParseException ex) {
+        } catch (IOException | ParseException | NumberFormatException ex) {
             //TODO
-        } catch (NumberFormatException ex) {
         } finally {
             try {
                 if (bis != null) {
@@ -96,7 +95,7 @@ public class OperacionesArchivo {
     public static ArrayList<Empleado> leerEmpleadosInicialesTXT() {
 
         //Lista de los leidos
-        ArrayList<Empleado> empleados = new ArrayList<Empleado>();
+        ArrayList<Empleado> empleados = new ArrayList<>();
 
         //PREAPARAR READERS
         File f = new File(Control.rutaEmpleadosIniciales);
@@ -107,7 +106,7 @@ public class OperacionesArchivo {
             fr = new FileReader(f);
             bis = new BufferedReader(fr);
             //LEER LINEAS CON LA SECUENCIA DE EMPLEADOS
-            String idSt = "";
+            String idSt;
             while ((idSt = bis.readLine()) != null) {
                 int id = Integer.parseInt(idSt);
                 String nombre = bis.readLine();
@@ -120,9 +119,8 @@ public class OperacionesArchivo {
                 //GENERAR EL EMPPLEADOS CON LOS DATOS RECOGIDOS
                 empleados.add(new Empleado(id, nombre, apellidos, sueldo, trabajos));
             }
-        } catch (FileNotFoundException ex) {
+        } catch (FileNotFoundException | NumberFormatException ex) {
             //TODO
-        } catch (NumberFormatException ex) {
         } catch (IOException ex) {
             Logger.getLogger(OperacionesArchivo.class.getName()).log(Level.SEVERE, null, ex);
         } finally {
@@ -197,14 +195,14 @@ public class OperacionesArchivo {
      * Cargar empleados del disco
      */
     static ArrayList<Empleado> cargarEmpleados() {
-        ArrayList<Empleado> lista = new ArrayList<Empleado>();
+        ArrayList<Empleado> lista = new ArrayList<>();
         File fichero = new File(Control.rutaEmpleados);
 
         //3-PREPARACIÓN LECTURA: streams y datos        
         //Clases necesarias para envío de datos binarios:
         FileInputStream fis = null;
         DataInputStream dis = null;
-        int cantidadEmpleados = 0;
+        int cantidadEmpleados;
         try {
             fis = new FileInputStream(fichero);
             dis = new DataInputStream(fis);
@@ -255,14 +253,14 @@ public class OperacionesArchivo {
      * Cargar trabajos del disco
      */
     static ArrayList<Trabajo> cargarTrabajos() {
-        ArrayList<Trabajo> lista = new ArrayList<Trabajo>();
+        ArrayList<Trabajo> lista = new ArrayList<>();
         File fichero = new File(Control.rutaTrabajos);
 
         //3-PREPARACIÓN LECTURA: streams y datos        
         //Clases necesarias para envío de datos binarios:
         FileInputStream fis = null;
         DataInputStream dis = null;
-        int cantidadTrabajos = 0;
+        int cantidadTrabajos;
         try {
             fis = new FileInputStream(fichero);
             dis = new DataInputStream(fis);
@@ -310,13 +308,13 @@ public class OperacionesArchivo {
         try {
             //acceso a archivo
             raf = new RandomAccessFile(fichero, "rw");//Lectura y Escritura
-            long lo = raf.length();
             //actualizar numero de trabajos
             raf.seek(0);
             raf.writeInt(Control.getTrabajos().size());
             //ir al final
             raf.seek(raf.length());
 
+            //ESCRIBIR TRABAJO
             raf.writeInt(t.getId());//id trabajo
             //Usamos clase StringBuffer para controlar tamaño de los String
             StringBuffer sb = new StringBuffer(t.getNombre());
@@ -351,7 +349,6 @@ public class OperacionesArchivo {
         try {
             //acceso a archivo
             raf = new RandomAccessFile(fichero, "rw");//Lectura y Escritura
-            long lo = raf.length();
             //actualizar numero de trabajos
             raf.seek(0);
             raf.writeInt(Control.getEmpleados().size());

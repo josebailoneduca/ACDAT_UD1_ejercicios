@@ -8,10 +8,12 @@ package ejercicio15.gui.ventanas;
 
 import ejercicio15.dto.Empleado;
 import ejercicio15.dto.Trabajo;
-import ejercicio15.gui.dialogos.DEmpleado;
+import ejercicio15.gui.dialogos.DCrearEditarEmpleado;
 import ejercicio15.gui.dialogos.DAsignTrabajosDeEmpleado;
-import ejercicio15.gui.dialogos.DTrabajo;
+import ejercicio15.gui.dialogos.DCrearEditarTrabajo;
 import ejercicio15.gui.dialogos.DAsignEmpleadosDeTrabajo;
+import ejercicio15.gui.dialogos.DVerEmpleado;
+import ejercicio15.gui.dialogos.DVerTrabajo;
 import ejercicio15.gui.tablemodels.EmpleadosTableModel;
 import ejercicio15.gui.tablemodels.TrabajosTableModel;
 import ejercicio15.logica.Control;
@@ -156,6 +158,11 @@ public class VPrincipal15 extends javax.swing.JFrame {
         });
 
         btnVerTrabajo.setText("Ver trabajo");
+        btnVerTrabajo.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnVerTrabajoActionPerformed(evt);
+            }
+        });
 
         btnAsignacionEmpleadosATrabajo.setText("Asignación de empleados");
         btnAsignacionEmpleadosATrabajo.addActionListener(new java.awt.event.ActionListener() {
@@ -291,6 +298,11 @@ public class VPrincipal15 extends javax.swing.JFrame {
         });
 
         btnVerEmpleado.setText("Ver empleado");
+        btnVerEmpleado.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnVerEmpleadoActionPerformed(evt);
+            }
+        });
 
         btnAsignacionTrabajosAEmpleado.setText("Asignación de trabajos");
         btnAsignacionTrabajosAEmpleado.addActionListener(new java.awt.event.ActionListener() {
@@ -406,6 +418,11 @@ public class VPrincipal15 extends javax.swing.JFrame {
         mTrabajo.add(miVerTodosTrabajos);
 
         miVerUnTrabajo.setText("Ver trabajo...");
+        miVerUnTrabajo.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                miVerUnTrabajoActionPerformed(evt);
+            }
+        });
         mTrabajo.add(miVerUnTrabajo);
 
         miAnadirTrabajo.setText("Añadir trabajo");
@@ -453,6 +470,11 @@ public class VPrincipal15 extends javax.swing.JFrame {
         mEmpleados.add(miVerTodosEmpleados);
 
         miVerEmpleado.setText("Ver empleado...");
+        miVerEmpleado.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                miVerEmpleadoActionPerformed(evt);
+            }
+        });
         mEmpleados.add(miVerEmpleado);
 
         miAnadirEmpleado.setText("Añadir empleado");
@@ -527,28 +549,28 @@ public class VPrincipal15 extends javax.swing.JFrame {
     }//GEN-LAST:event_miVerTodosEmpleadosActionPerformed
 
     private void miAnadirTrabajoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_miAnadirTrabajoActionPerformed
-        DTrabajo dt = new DTrabajo(this, true, null, DTrabajo.Tipo.CREAR);
+        DCrearEditarTrabajo dt = new DCrearEditarTrabajo(this, true, null, DCrearEditarTrabajo.Tipo.CREAR);
         dt.setLocationRelativeTo(this);
         dt.setVisible(true);
         actualizarTablas();
     }//GEN-LAST:event_miAnadirTrabajoActionPerformed
 
     private void btnAnadirTrabajoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAnadirTrabajoActionPerformed
-        DTrabajo dt = new DTrabajo(this, true, null, DTrabajo.Tipo.CREAR);
+        DCrearEditarTrabajo dt = new DCrearEditarTrabajo(this, true, null, DCrearEditarTrabajo.Tipo.CREAR);
         dt.setLocationRelativeTo(this);
         dt.setVisible(true);
         actualizarTablas();
     }//GEN-LAST:event_btnAnadirTrabajoActionPerformed
 
     private void btnAnadirEmpleadoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAnadirEmpleadoActionPerformed
-        DEmpleado dt = new DEmpleado(this, true, null, DEmpleado.Tipo.CREAR);
+        DCrearEditarEmpleado dt = new DCrearEditarEmpleado(this, true, null, DCrearEditarEmpleado.Tipo.CREAR);
         dt.setLocationRelativeTo(this);
         dt.setVisible(true);
         actualizarTablas();
     }//GEN-LAST:event_btnAnadirEmpleadoActionPerformed
 
     private void miAnadirEmpleadoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_miAnadirEmpleadoActionPerformed
-        DEmpleado dt = new DEmpleado(this, true, null, DEmpleado.Tipo.CREAR);
+        DCrearEditarEmpleado dt = new DCrearEditarEmpleado(this, true, null, DCrearEditarEmpleado.Tipo.CREAR);
         dt.setLocationRelativeTo(this);
         dt.setVisible(true);
         actualizarTablas();
@@ -572,8 +594,9 @@ public class VPrincipal15 extends javax.swing.JFrame {
 
     private void miEliminarEmpleadoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_miEliminarEmpleadoActionPerformed
         int id = recogerId("Escriba la ID del empleado a eliminar", "Eliminar empleado");
-        if (id == -1) 
+        if (id == -1) {
             return;
+        }
         boolean borrado = Control.eliminarEmpleado(id);
         if (borrado) {
             mensajeInfo("Empleado eliminado");
@@ -586,7 +609,7 @@ public class VPrincipal15 extends javax.swing.JFrame {
     private void btnEliminarTrabajoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEliminarTrabajoActionPerformed
         int idTrabajo = getIdTrabajoSeleccionado();
         if (idTrabajo == -1)
-            mensajeError("Seleccione un trabajo de la tabla");
+            mensajeAviso("Seleccione un trabajo de la tabla");
         else {
             int respuesta = JOptionPane.showConfirmDialog(this, "¿Realmente desea elminiar el trabajo " + idTrabajo + "?", "Eliminar trabajo", JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE);
             if (respuesta == JOptionPane.YES_OPTION) {
@@ -599,7 +622,7 @@ public class VPrincipal15 extends javax.swing.JFrame {
     private void btnEliminarEmpleadoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEliminarEmpleadoActionPerformed
         int idEmpleado = getIdEmpleadoSeleccionado();
         if (idEmpleado == -1)
-            mensajeError("Seleccione un empleado de la tabla");
+            mensajeAviso("Seleccione un empleado de la tabla");
         else {
             int respuesta = JOptionPane.showConfirmDialog(this, "¿Realmente desea elminiar el empleado " + idEmpleado + "?", "Eliminar empleado", JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE);
             if (respuesta == JOptionPane.YES_OPTION) {
@@ -612,14 +635,15 @@ public class VPrincipal15 extends javax.swing.JFrame {
     private void miEditarTrabajoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_miEditarTrabajoActionPerformed
 
         int id = recogerId("Escriba la ID del trabajo a editar", "Editar trabajo");
-        if (id==-1)
+        if (id == -1) {
             return;
+        }
         Trabajo trabajo = Control.getTrabajo(id);
         if (trabajo == null || trabajo.getId() < 0) {
             mensajeError("El trabajo " + id + " no existe");
             return;
         }
-        DTrabajo dt = new DTrabajo(this, true, trabajo, DTrabajo.Tipo.EDITAR);
+        DCrearEditarTrabajo dt = new DCrearEditarTrabajo(this, true, trabajo, DCrearEditarTrabajo.Tipo.EDITAR);
         dt.setLocationRelativeTo(this);
         dt.setVisible(true);
         actualizarTablas();
@@ -628,14 +652,14 @@ public class VPrincipal15 extends javax.swing.JFrame {
     private void btnEditarTrabajoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEditarTrabajoActionPerformed
         int idTrabajo = getIdTrabajoSeleccionado();
         if (idTrabajo == -1)
-            mensajeError("Seleccione un trabajo de la tabla");
+            mensajeAviso("Seleccione un trabajo de la tabla");
         else {
             Trabajo trabajo = Control.getTrabajo(idTrabajo);
             if (trabajo == null) {
                 mensajeError("El trabajo " + idTrabajo + " no existe");
                 return;
             }
-            DTrabajo dt = new DTrabajo(this, true, trabajo, DTrabajo.Tipo.EDITAR);
+            DCrearEditarTrabajo dt = new DCrearEditarTrabajo(this, true, trabajo, DCrearEditarTrabajo.Tipo.EDITAR);
             dt.setLocationRelativeTo(this);
             dt.setVisible(true);
             actualizarTablas();
@@ -644,15 +668,16 @@ public class VPrincipal15 extends javax.swing.JFrame {
 
     private void miEditarEmpleadoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_miEditarEmpleadoActionPerformed
         int id = recogerId("Escriba la ID del empleado a editar", "Editar empleado");
-        if (id==-1)
+        if (id == -1) {
             return;
-        
+        }
+
         Empleado empleado = Control.getEmpleado(id);
         if (empleado == null) {
             mensajeError("El empleado " + id + " no existe");
             return;
         }
-        DEmpleado dt = new DEmpleado(this, true, empleado, DEmpleado.Tipo.EDITAR);
+        DCrearEditarEmpleado dt = new DCrearEditarEmpleado(this, true, empleado, DCrearEditarEmpleado.Tipo.EDITAR);
         dt.setLocationRelativeTo(this);
         dt.setVisible(true);
         actualizarTablas();
@@ -661,14 +686,14 @@ public class VPrincipal15 extends javax.swing.JFrame {
     private void btnEditarEmpleadoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEditarEmpleadoActionPerformed
         int idEmpleado = getIdEmpleadoSeleccionado();
         if (idEmpleado == -1)
-            mensajeError("Seleccione un empleado de la tabla");
+            mensajeAviso("Seleccione un empleado de la tabla");
         else {
             Empleado empleado = Control.getEmpleado(idEmpleado);
             if (empleado == null) {
                 mensajeError("El empleado " + idEmpleado + " no existe");
                 return;
             }
-            DEmpleado dt = new DEmpleado(this, true, empleado, DEmpleado.Tipo.EDITAR);
+            DCrearEditarEmpleado dt = new DCrearEditarEmpleado(this, true, empleado, DCrearEditarEmpleado.Tipo.EDITAR);
             dt.setLocationRelativeTo(this);
             dt.setVisible(true);
             actualizarTablas();
@@ -677,8 +702,9 @@ public class VPrincipal15 extends javax.swing.JFrame {
 
     private void miAsignarEmpleadosATrabajoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_miAsignarEmpleadosATrabajoActionPerformed
         int id = recogerId("Escriba la ID del trabajo", "Asignar empleados a trabajo");
-        if(id==-1)
+        if (id == -1) {
             return;
+        }
         Trabajo trabajo = Control.getTrabajo(id);
         if (trabajo == null || trabajo.getId() < 0) {
             mensajeError("El trabajo " + id + " no existe");
@@ -692,7 +718,7 @@ public class VPrincipal15 extends javax.swing.JFrame {
     private void btnAsignacionEmpleadosATrabajoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAsignacionEmpleadosATrabajoActionPerformed
         int idTrabajo = getIdTrabajoSeleccionado();
         if (idTrabajo == -1)
-            mensajeError("Seleccione un trabajo de la tabla");
+            mensajeAviso("Seleccione un trabajo de la tabla");
         else {
             Trabajo trabajo = Control.getTrabajo(idTrabajo);
             if (trabajo == null) {
@@ -707,8 +733,9 @@ public class VPrincipal15 extends javax.swing.JFrame {
 
     private void miAsignarTrabajosAEmpleadoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_miAsignarTrabajosAEmpleadoActionPerformed
         int id = recogerId("Escriba la ID del empleado", "Asignar trabajos a empleado");
-        if(id==-1)
+        if (id == -1) {
             return;
+        }
         Empleado empleado = Control.getEmpleado(id);
         if (empleado == null || empleado.getId() < 0) {
             mensajeError("El empleado " + id + " no existe");
@@ -722,7 +749,7 @@ public class VPrincipal15 extends javax.swing.JFrame {
     private void btnAsignacionTrabajosAEmpleadoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAsignacionTrabajosAEmpleadoActionPerformed
         int idEmpleado = getIdEmpleadoSeleccionado();
         if (idEmpleado == -1)
-            mensajeError("Seleccione un empleado de la tabla");
+            mensajeAviso("Seleccione un empleado de la tabla");
         else {
             Empleado empleado = Control.getEmpleado(idEmpleado);
             if (empleado == null) {
@@ -742,6 +769,71 @@ public class VPrincipal15 extends javax.swing.JFrame {
             actualizarTablas();
         }
     }//GEN-LAST:event_btnBorrarTodoActionPerformed
+
+    private void miVerUnTrabajoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_miVerUnTrabajoActionPerformed
+        int id = recogerId("Escriba la ID del trabajo", "Ver detalles de trabajo");
+        if (id == -1) {
+            return;
+        }
+        Trabajo trabajo = Control.getTrabajo(id);
+        if (trabajo == null) {
+            mensajeError("El trabajo " + id + " no existe");
+            return;
+        }
+        ArrayList<Empleado> empleados = Control.getEmpleadosEnTrabajo(trabajo);
+        DVerTrabajo dvt = new DVerTrabajo(this, true, trabajo, empleados);
+        dvt.setLocationRelativeTo(this);
+        dvt.setVisible(true);
+    }//GEN-LAST:event_miVerUnTrabajoActionPerformed
+
+    private void btnVerTrabajoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnVerTrabajoActionPerformed
+        int idTrabajo = getIdTrabajoSeleccionado();
+        if (idTrabajo == -1)
+            mensajeAviso("Seleccione un trabajo de la tabla");
+        else {
+            Trabajo trabajo = Control.getTrabajo(idTrabajo);
+            if (trabajo == null) {
+                mensajeError("El trabajo " + idTrabajo + " no existe");
+                return;
+            }
+            ArrayList<Empleado> empleados = Control.getEmpleadosEnTrabajo(trabajo);
+            DVerTrabajo dvt = new DVerTrabajo(this, true, trabajo, empleados);
+            dvt.setLocationRelativeTo(this);
+            dvt.setVisible(true);
+        }
+    }//GEN-LAST:event_btnVerTrabajoActionPerformed
+
+    private void miVerEmpleadoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_miVerEmpleadoActionPerformed
+        int id = recogerId("Escriba la ID del empleado", "Ver detalles de empleado");
+        if (id == -1) {
+            return;
+        }
+        Empleado empleado = Control.getEmpleado(id);
+        if (empleado == null) {
+                mensajeError("El empleado " + id + " no existe");
+                return;
+            }
+        ArrayList<Trabajo> trabajos = Control.getTrabajosEnEmpleado(empleado);
+        DVerEmpleado dve = new DVerEmpleado(this, true, empleado, trabajos);
+        dve.setLocationRelativeTo(this);
+        dve.setVisible(true);
+    }//GEN-LAST:event_miVerEmpleadoActionPerformed
+
+    private void btnVerEmpleadoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnVerEmpleadoActionPerformed
+        int idEmpleado = getIdEmpleadoSeleccionado();
+        if (idEmpleado == -1)
+            mensajeAviso("Seleccione un empleado de la tabla");
+        else {
+            Empleado empleado = Control.getEmpleado(idEmpleado);
+            if (empleado == null) {
+                mensajeError("El empleado " + idEmpleado + " no existe");
+                return;
+            }
+            ArrayList<Trabajo> trabajos = Control.getTrabajosEnEmpleado(empleado);
+            DVerEmpleado dve = new DVerEmpleado(this, true, empleado, trabajos);
+            dve.setLocationRelativeTo(this);
+            dve.setVisible(true);
+        }    }//GEN-LAST:event_btnVerEmpleadoActionPerformed
 
     private void verPanel(String nombre) {
 
@@ -877,17 +969,19 @@ public class VPrincipal15 extends javax.swing.JFrame {
 
     private int getIdTrabajoSeleccionado() {
         int seleccionado = tblTrabajosActivos.getSelectedRow();
-        if (seleccionado < 0) 
+        if (seleccionado < 0) {
             return -1;
-        
+        }
+
         int indiceSeleccionado = tblTrabajosActivos.convertRowIndexToModel(seleccionado);
         return (int) tblTrabajosActivos.getModel().getValueAt(indiceSeleccionado, 0);
     }
 
     private int getIdEmpleadoSeleccionado() {
         int seleccionado = tblEmpleadosActivos.getSelectedRow();
-        if (seleccionado < 0) 
+        if (seleccionado < 0) {
             return -1;
+        }
 
         int indiceSeleccionado = tblEmpleadosActivos.convertRowIndexToModel(seleccionado);
         return (int) tblEmpleadosActivos.getModel().getValueAt(indiceSeleccionado, 0);
@@ -912,6 +1006,9 @@ public class VPrincipal15 extends javax.swing.JFrame {
 
     private void mensajeError(String msg) {
         JOptionPane.showMessageDialog(this, msg, "Error", JOptionPane.ERROR_MESSAGE);
+    }
+    private void mensajeAviso(String msg) {
+        JOptionPane.showMessageDialog(this, msg, "Aviso", JOptionPane.WARNING_MESSAGE);
     }
 
     private void mensajeInfo(String msg) {

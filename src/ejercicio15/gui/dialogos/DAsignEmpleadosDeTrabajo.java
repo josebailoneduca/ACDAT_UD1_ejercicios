@@ -29,7 +29,12 @@ public class DAsignEmpleadosDeTrabajo extends javax.swing.JDialog {
     ArrayList<Empleado> eSeleccionados;
     ArrayList<Empleado> eNoSeleccionados;
     
-    /** Creates new form DTrabajoAsignaciones */
+    /**
+     * 
+     * @param parent
+     * @param modal
+     * @param trabajo 
+     */
     public DAsignEmpleadosDeTrabajo(java.awt.Frame parent, boolean modal, Trabajo trabajo) {
         super(parent, modal);
         initComponents();
@@ -231,7 +236,7 @@ public class DAsignEmpleadosDeTrabajo extends javax.swing.JDialog {
     private void btnQuitarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnQuitarActionPerformed
         int seleccionado=tblAsignados.getSelectedRow();
         if (seleccionado<0){
-            JOptionPane.showMessageDialog(this, "Seleccione un empleado de la tabla de asignados", "Error", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(this, "Seleccione un empleado de la tabla de asignados", "Aviso", JOptionPane.WARNING_MESSAGE);
             return;
         }
         int idEmpleadoSeleccionado=tblAsignados.convertRowIndexToModel(seleccionado);
@@ -256,7 +261,7 @@ public class DAsignEmpleadosDeTrabajo extends javax.swing.JDialog {
     private void btnAsignarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAsignarActionPerformed
         int seleccionado=tblNoAsignados.getSelectedRow();
         if (seleccionado<0){
-            JOptionPane.showMessageDialog(this, "Seleccione un empleado de la tabla de no asignados", "Error", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(this, "Seleccione un empleado de la tabla de no asignados", "Aviso", JOptionPane.WARNING_MESSAGE);
             return;
         }
         int idEmpleadoSeleccionado=tblNoAsignados.convertRowIndexToModel(seleccionado);

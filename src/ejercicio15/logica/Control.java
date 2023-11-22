@@ -23,12 +23,12 @@ public class Control {
     public static String rutaTrabajos = ".\\src\\ejercicio15\\recursos\\Trabajos.dat";
     public static String rutaEmpleadosIniciales = ".\\src\\ejercicio15\\recursos\\EmpleadosIni.txt";
     public static String rutaTrabajosIniciales = ".\\src\\ejercicio15\\recursos\\TrabajosIni.txt";
-    private static ArrayList<Empleado> empleados = new ArrayList<Empleado>();
-    private static ArrayList<Empleado> empleadosActivos = new ArrayList<Empleado>();
-    private static ArrayList<Empleado> empleadosBorrados = new ArrayList<Empleado>();
-    private static ArrayList<Trabajo> trabajos = new ArrayList<Trabajo>();
-    private static ArrayList<Trabajo> trabajosActivos = new ArrayList<Trabajo>();
-    private static ArrayList<Trabajo> trabajosBorrados = new ArrayList<Trabajo>();
+    private static ArrayList<Empleado> empleados = new ArrayList<>();
+    private static final ArrayList<Empleado> empleadosActivos = new ArrayList<>();
+    private static final ArrayList<Empleado> empleadosBorrados = new ArrayList<>();
+    private static ArrayList<Trabajo> trabajos = new ArrayList<>();
+    private static final ArrayList<Trabajo> trabajosActivos = new ArrayList<>();
+    private static final ArrayList<Trabajo> trabajosBorrados = new ArrayList<>();
 
     public static void borrarTodo() {
         empleados.clear();
@@ -80,24 +80,18 @@ public class Control {
                     break;
                 }
             }
-        } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(VPrincipal15.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(VPrincipal15.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(VPrincipal15.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
+        } catch (ClassNotFoundException | InstantiationException | IllegalAccessException | javax.swing.UnsupportedLookAndFeelException ex) {
             java.util.logging.Logger.getLogger(VPrincipal15.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
         //</editor-fold>
+        
+        //</editor-fold>
 
         /* Create and display the form */
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                ventanaPrincipal = new VPrincipal15();
-                ventanaPrincipal.setLocationRelativeTo(null);
-                ventanaPrincipal.setVisible(true);
-            }
+        java.awt.EventQueue.invokeLater(() -> {
+            ventanaPrincipal = new VPrincipal15();
+            ventanaPrincipal.setLocationRelativeTo(null);
+            ventanaPrincipal.setVisible(true);
         });
     }
 
@@ -206,10 +200,10 @@ public class Control {
      */
     public static void desasignarTrabajoEnEmpleado(int idEmpleado, int idTrabajo) {
         Empleado e = empleados.get(idEmpleado - 1);
-        int[] trabajos = e.getTrabajos();
-        for (int i = 0; i < trabajos.length; i++) {
-            if (trabajos[i] == idTrabajo) {
-                trabajos[i] = 0;
+        int[] trabajosE = e.getTrabajos();
+        for (int i = 0; i < trabajosE.length; i++) {
+            if (trabajosE[i] == idTrabajo) {
+                trabajosE[i] = 0;
             }
         }
         //actualizar los datos en el archivo
@@ -253,10 +247,10 @@ public class Control {
      */
     public static void desasignarEmpleadoEnTrabajo(int idTrabajo, int idEmpleado) {
         Trabajo t = trabajos.get(idTrabajo - 1);
-        int[] empleados = t.getEmpleados();
-        for (int i = 0; i < empleados.length; i++) {
-            if (empleados[i] == idEmpleado) {
-                empleados[i] = 0;
+        int[] empleadosT = t.getEmpleados();
+        for (int i = 0; i < empleadosT.length; i++) {
+            if (empleadosT[i] == idEmpleado) {
+                empleadosT[i] = 0;
             }
         }
         //actualizar los datos en el archivo
@@ -297,7 +291,7 @@ public class Control {
     }
 
     public static ArrayList<Empleado> getEmpleadosEnTrabajo(Trabajo trabajo) {
-        ArrayList<Empleado> seleccion = new ArrayList<Empleado>();
+        ArrayList<Empleado> seleccion = new ArrayList<>();
         for (int idEmp : trabajo.getEmpleados()) {
             if (idEmp != 0) {
                 seleccion.add(OperacionesArchivo.getEmpleado(idEmp));
@@ -307,7 +301,7 @@ public class Control {
     }
 
     public static ArrayList<Empleado> getEmpleadosFueraDeTrabajo(Trabajo trabajo) {
-        ArrayList<Empleado> seleccion = new ArrayList<Empleado>();
+        ArrayList<Empleado> seleccion = new ArrayList<>();
         for (Empleado empleado : empleados) {
             int idEmp = empleado.getId();
             if (idEmp > 0 && empleado.nTrabajosAsignados() < Empleado.limiteTrabajos) {
@@ -328,10 +322,10 @@ public class Control {
 
     public static void asignarEmpleadoEnTrabajo(int idTrabajo, int idEmpleado) {
         Trabajo t = trabajos.get(idTrabajo - 1);
-        int[] empleados = t.getEmpleados();
-        for (int i = 0; i < empleados.length; i++) {
-            if (empleados[i] == 0) {
-                empleados[i] = idEmpleado;
+        int[] empleadosT = t.getEmpleados();
+        for (int i = 0; i < empleadosT.length; i++) {
+            if (empleadosT[i] == 0) {
+                empleadosT[i] = idEmpleado;
                 break;
             }
         }
@@ -341,10 +335,10 @@ public class Control {
 
     public static void asignarTrabajoEnEmpleado(int idEmpleado, int idTrabajo) {
         Empleado e = empleados.get(idEmpleado - 1);
-        int[] trabajos = e.getTrabajos();
-        for (int i = 0; i < trabajos.length; i++) {
-            if (trabajos[i] == 0) {
-                trabajos[i] = idTrabajo;
+        int[] trabajosE = e.getTrabajos();
+        for (int i = 0; i < trabajosE.length; i++) {
+            if (trabajosE[i] == 0) {
+                trabajosE[i] = idTrabajo;
                 break;
             }
 
@@ -354,7 +348,7 @@ public class Control {
     }
 
     public static ArrayList<Trabajo> getTrabajosEnEmpleado(Empleado empleado) {
-        ArrayList<Trabajo> seleccion = new ArrayList<Trabajo>();
+        ArrayList<Trabajo> seleccion = new ArrayList<>();
         for (int idTrab : empleado.getTrabajos()) {
             if (idTrab != 0) {
                 seleccion.add(OperacionesArchivo.getTrabajo(idTrab));
@@ -364,7 +358,7 @@ public class Control {
     }
 
     public static ArrayList<Trabajo> getTrabajosFueraDeEmpleado(Empleado empleado) {
-        ArrayList<Trabajo> seleccion = new ArrayList<Trabajo>();
+        ArrayList<Trabajo> seleccion = new ArrayList<>();
         for (Trabajo trabajo : trabajos) {
             int idTrab = trabajo.getId();
             if (idTrab > 0 && trabajo.nEmpleadosAsignados() < Trabajo.limiteEmpleados) {

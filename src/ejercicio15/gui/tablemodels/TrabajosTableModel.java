@@ -21,9 +21,9 @@ public class TrabajosTableModel extends AbstractTableModel{
     
 
     //ATRIBUTOS:
-    private List<Trabajo> listaTrabajos;//lista actual de encuestas
-    private String[] columnas = new String[]{"ID", "Nombre", "Fecha"};
-    private SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyy");
+    private final List<Trabajo> listaTrabajos;//lista actual de encuestas
+    private final String[] columnas = new String[]{"ID", "Nombre", "Fecha"};
+    private final SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyy");
     //METODOS:
     //Constructor
     public TrabajosTableModel(List<Trabajo> listaTrabajos) {
@@ -42,20 +42,15 @@ public class TrabajosTableModel extends AbstractTableModel{
 
     @Override
     public Object getValueAt(int rowIndex, int columnIndex) {
-        Object value = null;
+        Object value;
         switch (columnIndex) {
-            case 0:
-                value = Math.abs(listaTrabajos.get(rowIndex).getId());
-                break;
-            case 1:
-                value = listaTrabajos.get(rowIndex).getNombre();
-                break;
-            case 2:
-                value = sdf.format(new Date(listaTrabajos.get(rowIndex).getFecha()));
-                break;
-            default:
+            case 0 -> value = Math.abs(listaTrabajos.get(rowIndex).getId());
+            case 1 -> value = listaTrabajos.get(rowIndex).getNombre();
+            case 2 -> value = sdf.format(new Date(listaTrabajos.get(rowIndex).getFecha()));
+            default -> {
                 value = null;
                 throw new AssertionError();
+            }
         }
         return value;
     }

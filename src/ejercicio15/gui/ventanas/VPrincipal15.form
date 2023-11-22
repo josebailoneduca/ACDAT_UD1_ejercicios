@@ -52,6 +52,9 @@
               <Properties>
                 <Property name="text" type="java.lang.String" value="Ver trabajo..."/>
               </Properties>
+              <Events>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="miVerUnTrabajoActionPerformed"/>
+              </Events>
             </MenuItem>
             <MenuItem class="javax.swing.JMenuItem" name="miAnadirTrabajo">
               <Properties>
@@ -104,6 +107,9 @@
               <Properties>
                 <Property name="text" type="java.lang.String" value="Ver empleado..."/>
               </Properties>
+              <Events>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="miVerEmpleadoActionPerformed"/>
+              </Events>
             </MenuItem>
             <MenuItem class="javax.swing.JMenuItem" name="miAnadirEmpleado">
               <Properties>
@@ -370,6 +376,9 @@
                   <Properties>
                     <Property name="text" type="java.lang.String" value="Ver trabajo"/>
                   </Properties>
+                  <Events>
+                    <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnVerTrabajoActionPerformed"/>
+                  </Events>
                 </Component>
                 <Component class="javax.swing.JButton" name="btnAsignacionEmpleadosATrabajo">
                   <Properties>
@@ -571,6 +580,9 @@
                   <Properties>
                     <Property name="text" type="java.lang.String" value="Ver empleado"/>
                   </Properties>
+                  <Events>
+                    <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnVerEmpleadoActionPerformed"/>
+                  </Events>
                 </Component>
                 <Component class="javax.swing.JButton" name="btnAsignacionTrabajosAEmpleado">
                   <Properties>
