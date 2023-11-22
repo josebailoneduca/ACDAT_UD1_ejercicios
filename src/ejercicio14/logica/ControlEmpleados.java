@@ -14,25 +14,79 @@ import java.util.List;
 import javax.swing.JDialog;
 
 /**
- *
+ * CONTROL de la aplicacion. Guarda los valores necesarios para mantener el programa
+ * e interactua con ventanas y dialogos recogiendo y suministrando informacion
  * @author Jose Javier BO
  */
 public class ControlEmpleados {
 
-
+    //ATRIBUTOS
+    //ruta del archivo binario
     public static String ruta = ".\\src\\ejercicio14\\recursos\\AleatoPersonas.dat";
+    
+    //referencia a la libreria de operciones. En general operaciones de disco
     private static OperacionesLib operaciones = new OperacionesLib();
+    
+    //numero de empleados actual
     public static int numeroEmpleados = 0;
+    
+    //referencia a la ventana principal
     public static VPrincipal ventanaPrincipal;
-    public static List<Empleado> listaPersonas;
     
+    //lista de empleados actuales
+    public static List<Empleado> listaEmpleados;
     
+    /**
+     * Resetea el fiechero binario
+     */
     public static void resetearFichero() {
         operaciones.resetearFichero();
     }
 
- 
-    public static void main(String[] args) {
+    /**
+     * Lee los empleados del fichero
+     */
+    public static void leerFichero() {
+        //recoger lista de empleados
+        listaEmpleados = operaciones.leerEmpleados();
+       if (listaEmpleados==null)
+           listaEmpleados=new ArrayList<Empleado>();
+       //mostrar dialogo con la tabla de empleados
+        JDialog dialogoPersonas = new DListaEmpleados(ventanaPrincipal, true);
+        dialogoPersonas.setLocationRelativeTo(null);
+        dialogoPersonas.setVisible(true);
+    }
+
+    /**
+     * Devuelve un empleado o null si no existe
+     * @param id La id del empleado
+     * @return  El empleado o null is no existe
+     */
+    public static Empleado getEmpleado(int id) {
+        if (id>ControlEmpleados.numeroEmpleados+1)
+            return null;
+        else
+          return operaciones.leerEmpleado(id);
+    }
+
+    /**
+     * Guarda un empleado a disco
+     * @param empleado Empleado a guardar. Empleado con id negativa supone añadir, si su id es positiva lo modifica
+     */
+   public static void guardarEmpleado(Empleado empleado){
+       if (empleado.getId()<0){
+           empleado.setId(numeroEmpleados+1);
+           operaciones.insertarEmpleado(empleado);
+       }else{
+           operaciones.actualizarEmpleado(empleado);
+       }
+   }
+
+        /**
+         * INICIO DEL PROGRAMA
+         * @param args 
+         */
+       public static void main(String[] args) {
      
         /* Set the Nimbus look and feel */
         //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
@@ -71,36 +125,4 @@ public class ControlEmpleados {
         //inicializar fichero
         operaciones.inicializarFichero();
     }
-
-    public static void leerFichero() {
-        listaPersonas = operaciones.leerEmpleados();
-       if (listaPersonas==null)
-           listaPersonas=new ArrayList<Empleado>();
-        JDialog dialogoPersonas = new DListaEmpleados(ventanaPrincipal, true);
-        dialogoPersonas.setLocationRelativeTo(null);
-        dialogoPersonas.setVisible(true);
-    }
-
-    /**
-     * Devuelve un empleado  null si no existe
-     * @param id La id del empleado
-     * @return  El empleado o null is no existe
-     */
-    public static Empleado getEmpleado(int id) {
-        if (id>ControlEmpleados.numeroEmpleados+1)
-            return null;
-        else
-          return operaciones.leerEmpleado(id);
-    }
-
-   public static void guardarEmpleado(Empleado e){
-       if (e.getId()<0){
-           e.setId(numeroEmpleados+1);
-           operaciones.insertarEmpleado(e);
-       }else{
-           operaciones.actualizarEmpleado(e);
-       }
-       
-       
-   }
 }

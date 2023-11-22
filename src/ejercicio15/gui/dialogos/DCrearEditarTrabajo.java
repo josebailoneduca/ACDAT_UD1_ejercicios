@@ -12,29 +12,37 @@ import java.util.Date;
 import javax.swing.JOptionPane;
 
 /**
- *
+ * Dialogo para crear y editar trabajos
  * @author Jose Javier Bailon Ortiz
  */
 public class DCrearEditarTrabajo extends javax.swing.JDialog {
 
+    /**
+     * Posibles usos del dialogo
+     */
     public enum Tipo {
         EDITAR,
         CREAR
     }
-
+    
+    //tipo de uso del dialogo (crear,editar)
     private Tipo tipo;
 
     /**
-     *
+     * Constructor 
      * @param parent
      * @param modal
-     * @param trabajo
-     * @param tipo
+     * @param trabajo Trabajo a editar o null si es para crear
+     * @param tipo Tipo de uso (crear, editar)
      */
     public DCrearEditarTrabajo(java.awt.Frame parent, boolean modal, Trabajo trabajo, DCrearEditarTrabajo.Tipo tipo) {
         super(parent, modal);
         initComponents();
+        
+        //guardar referencia al tipo de uso
         this.tipo = tipo;
+        
+        //inicializar segun el tipo de uso
         switch (tipo) {
             case EDITAR ->
                 inicializaParaEditar(trabajo);
@@ -44,13 +52,23 @@ public class DCrearEditarTrabajo extends javax.swing.JDialog {
                 throw new AssertionError();
         }
     }
-
+    
+    
+    /**
+     * Inicializacion para la creacion. Oculta el campo id y ajusta el texto
+     * del boto de guardar
+     */   
     private void inicializaParaCrear() {
         this.lbId.setVisible(false);
         this.inputId.setVisible(false);
         this.lbTitulo.setText("AÑADIR TRABAJO");
     }
 
+     /**
+     * Inicializacion para la edicion. Rellena los campos y ajusta el texto
+     * del boto de guardar
+     * @param empleado  Empleado a usar para rellenar los campos
+     */
     private void inicializaParaEditar(Trabajo trabajo) {
         inputId.setText("" + trabajo.getId());
         inputNombre.setText(trabajo.getNombre());
@@ -180,14 +198,25 @@ public class DCrearEditarTrabajo extends javax.swing.JDialog {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    
+     /**
+     * Acciones para el boton de guardar. Recoge los datos y dependiendo del 
+     * tipo de uso ordena a Control la creacion de un nuemo empleado o la actualizacion
+     * de uno existente
+     * @param evt 
+     */
     private void btnGuardarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGuardarActionPerformed
+
+        //recoger valores y validar
         int id = -1;
         String nombre;
         long fecha;
+        //id
         try {
             id = Integer.parseInt(this.inputId.getText());
         } catch (NumberFormatException e) {
         }
+        //nombre
         nombre = inputNombre.getText();
         if (nombre.length() < 1) {
             JOptionPane.showMessageDialog(this, "No puede dejar el nombre vacío", "Error", JOptionPane.ERROR_MESSAGE);
@@ -198,25 +227,34 @@ public class DCrearEditarTrabajo extends javax.swing.JDialog {
                 return;
             }
         }
-
+        //fecha
         try {
             fecha = ((Date) this.inputFecha.getValue()).getTime();
         } catch (NumberFormatException e) {
             JOptionPane.showMessageDialog(this, "Sueldo no válido", "Error", JOptionPane.ERROR_MESSAGE);
             return;
         }
-
+        //crear trabajo
         Trabajo t = new Trabajo(id, nombre, fecha, new int[Trabajo.limiteEmpleados]);
+        
+        //actuar segun el tipo de uso ordenando a control editar o crear
         switch (this.tipo) {
             case EDITAR -> Control.editarTrabajo(t);
             case CREAR -> Control.agregarTrabajo(t);
             default -> throw new AssertionError();
         }
 
+        //aviso de resultado y cierre
         JOptionPane.showMessageDialog(this, this.tipo == Tipo.CREAR ? "Trabajo añadido" : "Trabajo editado");
         this.dispose();
     }//GEN-LAST:event_btnGuardarActionPerformed
 
+    
+      
+    /**
+     * Cerrar diaologo
+     * @param evt 
+     */
     private void btnCancelarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCancelarActionPerformed
         this.dispose();
     }//GEN-LAST:event_btnCancelarActionPerformed

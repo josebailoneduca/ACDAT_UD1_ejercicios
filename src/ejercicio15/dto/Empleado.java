@@ -12,21 +12,40 @@ package ejercicio15.dto;
 
 /**
  *
+ * DTO de empleado.
+ * 
+ * 
  * @author Jose Javier BO
  */
 public class Empleado {
 
-
+    //VALORES DE CONFIGURACION
+    //limite de trabajos asignados
+    public static int limiteTrabajos=2;
+    //limite de longitud del nombre
+    public static int limiteNombre=20;
+    //limite de longitud de apellidos
+    public static int limiteApellidos=30;
+    //calculo de la longitud en bytes total para un registro de empleado
+    public static int longitudBytes = 4+2*limiteNombre+2*limiteApellidos+4+4*limiteTrabajos;//id+nombre+apellido+sueldo+trabajos
+    //calculo de la longitud desde el inicio del registro hasta el inicio de trabajos asignados
+    public static int longitudBytesHastaTrabajos = 4+2*limiteNombre+2*limiteApellidos+4;//id+nombre+apellido+sueldo+trabajos
+    
+    //CAMPOS DE EMPLEADO
     private int id;
     private String nombre;
     private String apellidos;
     private int sueldo;
     private int[] trabajos;
-    public static int limiteTrabajos=2;
-    public static int limiteNombre=20;
-    public static int limiteApellidos=30;
-    public static int longitudBytes = 4+2*limiteNombre+2*limiteApellidos+4+4*limiteTrabajos;//id+nombre+apellido+sueldo+trabajos
-    public static int longitudBytesHastaTrabajos = 4+2*limiteNombre+2*limiteApellidos+4;//id+nombre+apellido+sueldo+trabajos
+    
+    /**
+     * Constructor
+     * @param id
+     * @param nombre
+     * @param apellidos
+     * @param sueldo
+     * @param trabajos 
+     */
     public Empleado(int id, String nombre, String apellidos, int sueldo,int[]trabajos) {
         this.id = id;
         this.nombre = nombre;
@@ -37,7 +56,7 @@ public class Empleado {
 
     //GETTERS Y SETTERS
     public String getNombre() {
-        return nombre.replace("\0","");
+        return nombre.replace("\0","");//limpieza de caracteres nulos
     }
 
     public void setNombre(String nombre) {
@@ -45,7 +64,7 @@ public class Empleado {
     }
 
     public String getApellidos() {
-        return apellidos.replace("\0","");
+        return apellidos.replace("\0","");//limpieza de caracteres nulos
     }
 
     public void setApellidos(String apellidos) {
@@ -82,20 +101,11 @@ public class Empleado {
         return "Empleado: " + nombre + " " + apellidos + ", sueldo: " + sueldo;
     }
 
-    public boolean addTrabajo(int idTrabajo) {
-         for (int trabajo : trabajos) {
-            if (trabajo==idTrabajo)
-                return true;
-        }
-        int nTrabajos = nTrabajosAsignados();
-        if (nTrabajos < limiteTrabajos) {
-            trabajos[nTrabajos] = idTrabajo;
-            return true;
-        } else {
-            return false;
-        }
-    }
-
+ 
+    /**
+     * Devuelve el numero de trabajos asignados
+     * @return El numero de trabajos
+     */
     public int nTrabajosAsignados() {
         int total = 0;
         for (int trabajo : trabajos) {
@@ -106,12 +116,6 @@ public class Empleado {
         return total;
     }
     
-    public void deleteTrabajo(int idTrabajo){
-        for (int i=0;i<limiteTrabajos;i++) {
-            if (trabajos[i]==idTrabajo)
-                trabajos[i]=-trabajos[i];
-        }
-    }
 
     @Override
     public int hashCode() {

@@ -12,7 +12,8 @@ import ejercicio14.logica.ControlEmpleados;
 import javax.swing.JOptionPane;
 
 /**
- *
+ * Ventana principal de la aplicacion. Muestra un listado de botones a modmo de
+ * menu con las opciones ofrecidas al usuario
  * @author Jose Javier BO
  */
 public class VPrincipal extends javax.swing.JFrame {
@@ -115,42 +116,71 @@ public class VPrincipal extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    /**
+     * Boton resetear
+     * @param evt 
+     */
     private void btnResetearActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnResetearActionPerformed
         ControlEmpleados.resetearFichero();
     }//GEN-LAST:event_btnResetearActionPerformed
 
+    /**
+     * Boton listar empleados
+     * @param evt 
+     */
     private void btnListarEmpleadosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnListarEmpleadosActionPerformed
         ControlEmpleados.leerFichero();
     }//GEN-LAST:event_btnListarEmpleadosActionPerformed
 
+    /**
+     * Boton ver empleado. Recoge la id de un empleado y abre un dialogo para visualizar 
+     * sus datos
+     * @param evt 
+     */
     private void btnVerEmpleadoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnVerEmpleadoActionPerformed
+        //pedir id empleado
         int id = pedirIdTrabajador("Obtener información de empleado");
         if (id<0)
             return;
-        Empleado e = ControlEmpleados.getEmpleado(id);
-        if (e == null) {
+        
+        //recoger empleado desde control
+        Empleado empleado = ControlEmpleados.getEmpleado(id);
+        if (empleado == null) {
             JOptionPane.showMessageDialog(this, "No existe el empleado buscado: "+id, "Error", JOptionPane.ERROR_MESSAGE);
         } else {
-            DEmpleado dialogo = new DEmpleado(this, true, e,DEmpleado.Tipo.VER);
+            //abrir dialogo de visualizacion
+            DEmpleado dialogo = new DEmpleado(this, true, empleado,DEmpleado.Tipo.VER);
             dialogo.setLocationRelativeTo(this);
             dialogo.setVisible(true);
         }
     }//GEN-LAST:event_btnVerEmpleadoActionPerformed
 
+    /**
+     * Boton añadir empleado. Abre el dialogo en modo crear
+     * @param evt 
+     */
     private void btnAnadirEmpleadoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAnadirEmpleadoActionPerformed
         DEmpleado dialogo = new DEmpleado(this, true, null,DEmpleado.Tipo.CREAR);
         dialogo.setLocationRelativeTo(this);
         dialogo.setVisible(true);
     }//GEN-LAST:event_btnAnadirEmpleadoActionPerformed
 
+    /**
+     * Boton editar empleado. Recoge la id de un empleado y abre el dialogo en 
+     * modo edicion
+     * @param evt 
+     */
     private void btnEditarEmpleadoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEditarEmpleadoActionPerformed
+        //recoger id empleado
         int id = pedirIdTrabajador("Editar empleado");
         if (id<0)
             return;
+        //recoger empleado desde control
         Empleado e = ControlEmpleados.getEmpleado(id);
         if (e == null) {
             JOptionPane.showMessageDialog(this, "No existe el empleado buscado: "+id, "Error", JOptionPane.ERROR_MESSAGE);
         } else {
+        //mostrar dialogo en modo edicion    
         DEmpleado dialogo = new DEmpleado(this, true, e,DEmpleado.Tipo.EDITAR);
         dialogo.setLocationRelativeTo(this);
         dialogo.setVisible(true);
@@ -166,6 +196,13 @@ public class VPrincipal extends javax.swing.JFrame {
     private javax.swing.JButton btnVerEmpleado;
     // End of variables declaration//GEN-END:variables
 
+    /**
+     * Pide una id de trabajador al usuario usando un joptionpane asegurandose
+     * de que introduce un entero.
+     * 
+     * @param titulo Titulo del joptionpane
+     * @return el entero introducido
+     */
     private int pedirIdTrabajador(String titulo) {
 
         boolean recogida = false;

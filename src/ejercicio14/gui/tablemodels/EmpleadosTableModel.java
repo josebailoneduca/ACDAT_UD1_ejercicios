@@ -11,7 +11,8 @@ import java.util.List;
 import javax.swing.table.AbstractTableModel;
 
 /**
- *
+ * Table model para tablas que muestren empleados
+ * 
  * @author Jose Javier BO
  */
 public class EmpleadosTableModel extends AbstractTableModel{
@@ -19,7 +20,7 @@ public class EmpleadosTableModel extends AbstractTableModel{
     
 
     //ATRIBUTOS:
-    private List<Empleado> listaEmpleados;//lista actual de encuestas
+    private List<Empleado> listaEmpleados;//lista actual de empleados
     private String[] columnas = new String[]{"ID", "Nombre", "Departamento", "Sueldo"};
 
     //METODOS:

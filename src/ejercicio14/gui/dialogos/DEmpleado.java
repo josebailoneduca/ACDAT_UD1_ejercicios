@@ -9,31 +9,42 @@ package ejercicio14.gui.dialogos;
 import ejercicio14.dto.Empleado;
 import ejercicio14.logica.ControlEmpleados;
 import javax.swing.JOptionPane;
- 
+
 /**
  *
  * @author Jose Javier BO
  */
 public class DEmpleado extends javax.swing.JDialog {
 
-
-
-    public enum Tipo{
-        VER,
-        EDITAR,
-        CREAR
-    }
-    
-    
-    private Tipo tipo;
-    
     /**
-     * Creates new form DEmpleado
+     * Tipos de uso del dialogo
      */
-    public DEmpleado(java.awt.Frame parent, boolean modal, Empleado empleado, DEmpleado.Tipo tipo ) {
+    public enum Tipo {
+        VER,//para ver un empleado
+        EDITAR,//para editar un empleado
+        CREAR//para crear un empleado
+    }
+
+    private Tipo tipo;
+
+    /**
+     * Dialogo multifuncion para hacer operaciones sobre un empleado. Puede ser
+     * usado crear un usuario, mostrar uno existente o editarlo.
+     *
+     * @param parent El Component padre
+     * @param modal Si es modal o no
+     * @param empleado Empleado a mostrar/editar. Si el tipo es crear no se
+     * tendra en cuenta
+     * @param tipo Tipo de uso del dialogo
+     */
+    public DEmpleado(java.awt.Frame parent, boolean modal, Empleado empleado, DEmpleado.Tipo tipo) {
         super(parent, modal);
         initComponents();
-        this.tipo=tipo;
+
+        //almacenar el tipo
+        this.tipo = tipo;
+
+        //inicializar segun el tipo
         switch (tipo) {
             case VER:
                 inicializaVer(empleado);
@@ -47,7 +58,70 @@ public class DEmpleado extends javax.swing.JDialog {
             default:
                 throw new AssertionError();
         }
-       
+
+    }
+
+    
+    
+    /**
+     * Inicializacion del uso de crear empleado. 
+     * Configura la interface ocultando los campos de id
+     * haciendo editables los campos
+     * y ajustando el texto del boton de guardar
+     */
+    private void inicializaCrear() {
+        this.lbId.setVisible(false);
+        this.campoId.setVisible(false);
+        this.campoNombre.setEditable(true);
+        this.campoDepartamento.setEditable(true);
+        this.campoSueldo.setEditable(true);
+        this.lbTitulo.setText("CREAR EMPLEADO");
+    }
+
+    
+    
+    /**
+     * Inicializacion del uso de editar empleado. 
+     * Configura la interface rellenando el formulario
+     * haciendo editables los campos
+     * y ajustando el texto del boton de guardar
+     * 
+     * @param empleado  Empleado a editar
+     */
+    private void inicializaEditar(Empleado empleado) {
+        this.rellenarForumlario(empleado);
+        this.campoNombre.setEditable(true);
+        this.campoDepartamento.setEditable(true);
+        this.campoSueldo.setEditable(true);
+        this.lbTitulo.setText("EDITAR EMPLEADO");
+    }
+
+    
+    /**
+     * Inicializacion del uso de editar empleado. 
+     * Configura la interface rellenando el formulario
+     * haciendo NO editables los campos
+     * y ajustando la visibilidad de botones
+     * 
+     * @param empleado Empleado a visualizar
+     */
+    private void inicializaVer(Empleado empleado) {
+        this.rellenarForumlario(empleado);
+        this.btnGuardar.setVisible(false);
+        this.btnCancelar.setText("Cerrar");
+        this.lbTitulo.setText("VER EMPLEADO");
+    }
+
+    
+    /**
+     * Rellena los campos con los datos de un empleado
+     * @param empleado  El empleado a usar para rellenar los campos
+     */
+    private void rellenarForumlario(Empleado empleado) {
+        campoId.setText("" + empleado.getId());
+        campoNombre.setText(empleado.getNombre());
+        campoDepartamento.setText("" + empleado.getDepartamento());
+        campoSueldo.setText("" + empleado.getSueldo());
     }
 
     /**
@@ -185,40 +259,72 @@ public class DEmpleado extends javax.swing.JDialog {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    /**
+     * Accion realizada al pulsar el boton de GUARDAR.
+     * Recoge la informacion y la manda a ControlEmpleados
+     *
+     * @param evt
+     */
     private void btnGuardarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGuardarActionPerformed
-        int id=-1;
-        String nombre="";
-        int departamento=0;
+        int id = -1;
+        String nombre = "";
+        int departamento = 0;
         double sueldo = 0;
-        try{id = Integer.parseInt(this.campoId.getText());} catch(NumberFormatException e){} 
-        nombre=campoNombre.getText();
-        if (nombre.length()<1){
-            JOptionPane.showMessageDialog(this, "No puede dejar el nombre vacío", "Error", JOptionPane.ERROR_MESSAGE);
-        }else if(nombre.length()>15){
-            int opcion = JOptionPane.showConfirmDialog(this, "El nombre se recortará a 15 caracteres. ¿Está de acuerdo?", "Aviso", JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE);
-            if (opcion==JOptionPane.NO_OPTION)
-            return;
+        
+        //RECOGER ID. Si esta en modo editar no se habra rellenado
+        //y la variable id se queda como -1
+        try {
+            id = Integer.parseInt(this.campoId.getText());
+        } catch (NumberFormatException e) {
         }
-        try{departamento = Integer.parseInt(this.campoDepartamento.getText());} 
-        catch(NumberFormatException e){ 
+        
+        //RECOGER NOMBRE CON LIMITACION A 15 CARACTERES
+        nombre = campoNombre.getText();
+        if (nombre.length() < 1) {
+            JOptionPane.showMessageDialog(this, "No puede dejar el nombre vacío", "Error", JOptionPane.ERROR_MESSAGE);
+        } else if (nombre.length() > 15) {
+            int opcion = JOptionPane.showConfirmDialog(this, "El nombre se recortará a 15 caracteres. ¿Está de acuerdo?", "Aviso", JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE);
+            if (opcion == JOptionPane.NO_OPTION) {
+                return;
+            }
+        }
+        
+        //RECOGER DEPARTAMENTO
+        try {
+            departamento = Integer.parseInt(this.campoDepartamento.getText());
+        } catch (NumberFormatException e) {
             JOptionPane.showMessageDialog(this, "Departamento no válido", "Error", JOptionPane.ERROR_MESSAGE);
             return;
-        } 
-        try{sueldo = Double.parseDouble(this.campoSueldo.getText());} 
-        catch(NumberFormatException e){ 
+        }
+        
+        //RECOGER SUELDO
+        try {
+            sueldo = Double.parseDouble(this.campoSueldo.getText());
+        } catch (NumberFormatException e) {
             JOptionPane.showMessageDialog(this, "Sueldo no válido", "Error", JOptionPane.ERROR_MESSAGE);
             return;
-        } 
+        }
+        
+        //CREAR OBJETO EMPLEADO
         Empleado e = new Empleado(id, nombre, departamento, sueldo);
+        
+        //GUARDAR EMPLEADO
         ControlEmpleados.guardarEmpleado(e);
-        JOptionPane.showMessageDialog(this, this.tipo==Tipo.CREAR?"Empleado añadido":"Empleado editado");
+        
+        //AVISO Y CIERRE
+        JOptionPane.showMessageDialog(this, this.tipo == Tipo.CREAR ? "Empleado añadido" : "Empleado editado");
         this.dispose();
     }//GEN-LAST:event_btnGuardarActionPerformed
 
+    /**
+     * Cierra el dialogo sin ejecutar ninguna accion
+     *
+     * @param evt
+     */
     private void btnCancelarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCancelarActionPerformed
         this.dispose();
     }//GEN-LAST:event_btnCancelarActionPerformed
- 
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnCancelar;
@@ -236,33 +342,4 @@ public class DEmpleado extends javax.swing.JDialog {
     private javax.swing.JLabel lbTitulo;
     // End of variables declaration//GEN-END:variables
 
-    private void inicializaCrear() {
-        this.lbId.setVisible(false);
-        this.campoId.setVisible(false);
-        this.campoNombre.setEditable(true);
-        this.campoDepartamento.setEditable(true);
-        this.campoSueldo.setEditable(true);
-        this.lbTitulo.setText("CREAR EMPLEADO");
-    }
-    
-    private void inicializaEditar(Empleado empleado) {
-        this.rellenarForumlario(empleado);
-        this.campoNombre.setEditable(true);
-        this.campoDepartamento.setEditable(true);
-        this.campoSueldo.setEditable(true);
-        this.lbTitulo.setText("EDITAR EMPLEADO");
-    }
-
-    private void inicializaVer(Empleado empleado) {
-        this.rellenarForumlario(empleado);
-            this.btnGuardar.setVisible(false);
-            this.btnCancelar.setText("Cerrar");
-            this.lbTitulo.setText("VER EMPLEADO");
-    }
-    
-    private void rellenarForumlario(Empleado empleado){
-                campoId.setText(""+empleado.getId());
-            campoNombre.setText(empleado.getNombre());
-            campoDepartamento.setText(""+empleado.getDepartamento());
-            campoSueldo.setText(""+empleado.getSueldo());}
 }

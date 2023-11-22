@@ -21,6 +21,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.ListIterator;
 import java.util.Scanner;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -80,7 +81,7 @@ public class Ejercicio13 {
             preguntarInsercionAlumnosTexto();
         }
         //lanzar el menu
-        menu();
+        menu(); 
     }
 
     
@@ -149,10 +150,11 @@ public class Ejercicio13 {
                 indice++;
             }
         } catch (FileNotFoundException ex) {
-            Logger.getLogger(Ejercicio13.class.getName()).log(Level.SEVERE, null, ex);
+            System.out.println("No se encuentra el archivo "+f.getAbsolutePath());
         } catch (IOException | ParseException ex) {
-            Logger.getLogger(Ejercicio13.class.getName()).log(Level.SEVERE, null, ex);
+            System.out.println("Error leyendo archivo "+f.getAbsolutePath());
         } catch (NumberFormatException ex) {
+            System.out.println("Problema leyendo "+f.getAbsolutePath()+": "+ex.getMessage());
         } finally {
             try {
                 if (bis != null) {
@@ -472,9 +474,9 @@ public class Ejercicio13 {
             //tratamiento de excepciones y cierre de streams
         } catch (EOFException eofe) {
         } catch (IOException ex) {
-            System.out.println(ex.getMessage());
+            System.out.println("Error leyendo "+f.getAbsolutePath());
         } catch (ClassNotFoundException ex) {
-            Logger.getLogger(Ejercicio13.class.getName()).log(Level.SEVERE, null, ex);
+            System.out.println("Problema interpretando alumno de "+f.getAbsolutePath()+": "+ex.getMessage());
         } finally {
             try {
                 if (ois != null) {
@@ -498,7 +500,7 @@ public class Ejercicio13 {
         //RECOGER ALUMNO 
         Alumno alumno = buscarAlumnoPorId();
         
-        //SI EXISTE MOSTRARLO
+        //SI EXISTE EL ALUMNO SE MUESTRA
         if (alumno != null) {
             pasarPagina();
             System.out.println("*************************");
@@ -572,7 +574,7 @@ public class Ejercicio13 {
             return null;
         }
         
-        //RECOGER LA ID
+        //RECOGER LA ID DESDE CONSOLA
         int idBuscada = 0;
         boolean idRecogida = false;
         while (!idRecogida) {

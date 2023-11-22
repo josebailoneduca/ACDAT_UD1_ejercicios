@@ -15,7 +15,8 @@ import javax.swing.SortOrder;
 import javax.swing.table.TableRowSorter;
 
 /**
- *
+ * Dialogo para visualizar una tabla de empleados
+ * 
  * @author Jose Javier BO
  */
 public class DListaEmpleados extends javax.swing.JDialog {
@@ -27,7 +28,8 @@ public class DListaEmpleados extends javax.swing.JDialog {
         super(parent, modal);
         initComponents();
         
-        EmpleadosTableModel tm = new EmpleadosTableModel(ControlEmpleados.listaPersonas);
+        //ajuste de la tabla mostrando la lista de empleados del Control
+        EmpleadosTableModel tm = new EmpleadosTableModel(ControlEmpleados.listaEmpleados);
         tblPersonas.setModel(tm);
          //definir la tabla como no editable
         tblPersonas.setEnabled(false);

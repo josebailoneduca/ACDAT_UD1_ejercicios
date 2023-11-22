@@ -13,7 +13,7 @@ import java.util.List;
 import javax.swing.table.AbstractTableModel;
 
 /**
- *
+ * Table model para tablas que muestren trabajos
  * @author Jose Javier BO
  */
 public class TrabajosTableModel extends AbstractTableModel{
@@ -21,7 +21,7 @@ public class TrabajosTableModel extends AbstractTableModel{
     
 
     //ATRIBUTOS:
-    private final List<Trabajo> listaTrabajos;//lista actual de encuestas
+    private final List<Trabajo> listaTrabajos;//lista actual de trabajos
     private final String[] columnas = new String[]{"ID", "Nombre", "Fecha"};
     private final SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyy");
     //METODOS:

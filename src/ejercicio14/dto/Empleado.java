@@ -7,7 +7,8 @@ Lista de paquetes:
 package ejercicio14.dto;
 
 /**
- *
+ * DTO de empleado
+ * 
  * @author Jose Javier BO
  */
 public class Empleado {

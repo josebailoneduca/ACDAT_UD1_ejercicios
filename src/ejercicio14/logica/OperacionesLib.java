@@ -22,19 +22,17 @@ import javax.swing.JDesktopPane;
 import javax.swing.JOptionPane;
 
 /**
- *
+ * Libreria de operaciones del programa con el disco
+ * 
  * @author Jose Javier BO
  */
 public class OperacionesLib {
 
-    public static void mostrarError(String msg) {
-        JOptionPane.showMessageDialog(null, "Error", msg, JDesktopPane.ERROR);
-    }
 
-    public static Object pedirDato(String msg, String titulo) {
-        return JOptionPane.showInputDialog(null, msg, titulo, JOptionPane.PLAIN_MESSAGE);
-    }
 
+    /**
+     * Inicializa el fichero binario creandolo si no existe
+     */
     public void inicializarFichero() {
         File f = new File(ControlEmpleados.ruta);
             if (!f.exists())
@@ -44,26 +42,35 @@ public class OperacionesLib {
     /**
      * Lee los empleados que hay en el archivo
      *
-     * @return
+     * @return Lista con los empleados leidos o null si el fichero no existe
      */
     public List<Empleado> leerEmpleados() {
+        
+        //inicializacion de la lista devuelta
         ArrayList<Empleado> lista = new ArrayList<Empleado>();
+        
         File fichero = new File(ControlEmpleados.ruta);
         //si el fichero no existe devuelve null
         if (!fichero.exists()) {
             return null;
         }
 
-        //3-PREPARACIÓN LECTURA: streams y datos        
-        //Clases necesarias para envío de datos binarios:
+        //PREPARACIÓN LECTURA: streams y datos        
+        //Clases necesarias para leer de datos binarios:
         FileInputStream fis = null;
         DataInputStream dis = null;
         int cantidadEmpleados = 0;
         try {
             fis = new FileInputStream(fichero);
             dis = new DataInputStream(fis);
+            
+            //leer la cantidad de empleados
             cantidadEmpleados = dis.readInt();
+            
+            //bucle leyendo empleados
             for (int i = 0; i < cantidadEmpleados; i++) {
+                
+                //recoger datos de empleado
                 int id = dis.readInt();
                 char[] nombreCh = new char[15];
                 for (int j = 0; j < 15; j++) {
@@ -72,6 +79,8 @@ public class OperacionesLib {
                 int departamento = dis.readInt();
                 double sueldo = dis.readDouble();
                 String nombre = new String(nombreCh);
+                
+                //agregar empleado leido a la lista
                 lista.add(new Empleado(id, nombre, departamento, sueldo));
             }
         } catch (FileNotFoundException ex) {
@@ -94,20 +103,27 @@ public class OperacionesLib {
 
         //actualizar el valor de empleados leido
         ControlEmpleados.numeroEmpleados = cantidadEmpleados;
-
+        
+        //devolver la lista
         return lista;
     }
 
     /**
-     * Resetea el fichero de datos
+     * Resetea el fichero de datos agregando datos iniciales
      */
     public void resetearFichero() {
+        
         File fichero = new File(ControlEmpleados.ruta);
+        
+        //borrar si existe
         if (fichero.exists()) 
                fichero.delete();
         
+        //establecer el numero de empleados a 0
         ControlEmpleados.numeroEmpleados = 0;
         actulizarNumeroEmpleadosEndisco();
+        
+        //datos iniciales
         String nombres[] = {"Ana", "Luis", "Mario", "Pepe", "Alejandro", "Sara"};
         int departamentos[] = {10, 20, 20, 10, 30, 10};
         double sueldos[] = {1500, 1800.75, 2200, 3000.0, 1500.56, 2400.60};
@@ -118,20 +134,27 @@ public class OperacionesLib {
             Empleado e = new Empleado((id + 1), nombres[id], departamentos[id], sueldos[id]);
             insertarEmpleado(e);
         }
-
     }
 
+    /**
+     * Actualiza la cantidad de empleados que hay en disco escribiendo el numero
+     * al inicio del archivo
+     */
     public void actulizarNumeroEmpleadosEndisco() {
+        
         File fichero = new File(ControlEmpleados.ruta);
         RandomAccessFile raf = null;
+        
         try {
-            raf = new RandomAccessFile(fichero, "rw");//Lectura y Escritura
+        
+            raf = new RandomAccessFile(fichero, "rw"); 
             raf.seek(0);
             raf.writeInt(ControlEmpleados.numeroEmpleados);
+        
         } catch (FileNotFoundException ex) {
-            Logger.getLogger(OperacionesLib.class.getName()).log(Level.SEVERE, null, ex);
+            mostrarError("Archivo no encontrado "+fichero.getAbsolutePath());
         } catch (IOException ex) {
-            Logger.getLogger(OperacionesLib.class.getName()).log(Level.SEVERE, null, ex);
+            mostrarError( "Error escribiendo "+fichero.getAbsolutePath());
         } finally {
             try {
                 if (raf != null) {
@@ -143,6 +166,12 @@ public class OperacionesLib {
         }
     }
 
+    /**
+     * Lee un empleado de disco
+     * @param idBusqueda Id del empleado a buscar
+     * 
+     * @return el empleado leido o null si no existe
+     */
     public Empleado leerEmpleado(int idBusqueda) {
         Empleado salida = null;
         RandomAccessFile raf = null;
@@ -178,13 +207,14 @@ public class OperacionesLib {
                 return null;
             }
         }
+        //devolver empleado leido 
         return salida;
     }
 
     /**
-     * Inserta una nueva perona en el archivo
+     * Inserta un nuevo empleado en el archivo
      *
-     * @param empleado
+     * @param empleado Empleado a insertar
      */
     public void insertarEmpleado(Empleado empleado) {
         RandomAccessFile raf = null;
@@ -192,11 +222,10 @@ public class OperacionesLib {
         try {
             //acceso a archivo
             raf = new RandomAccessFile(fichero, "rw");//Lectura y Escritura
-            long lo = raf.length();
-            //ir al final
+             //ir al final
             raf.seek(raf.length());
-
-            raf.writeInt(empleado.getId());//id Empleado
+            //escribir id empleado
+            raf.writeInt(empleado.getId());
             //Usamos clase StringBuffer para controlar tamaño de los String
             StringBuffer sb = null;
             //Limitamos el tamaño del apellido:
@@ -209,9 +238,9 @@ public class OperacionesLib {
             //actualizar el numero de empleados
             ControlEmpleados.numeroEmpleados++;
         } catch (FileNotFoundException ex) {
-            Logger.getLogger(OperacionesLib.class.getName()).log(Level.SEVERE, null, ex);
+            mostrarError( "Archivo no encontrado "+fichero.getAbsolutePath());
         } catch (IOException ex) {
-            Logger.getLogger(OperacionesLib.class.getName()).log(Level.SEVERE, null, ex);
+            mostrarError("Error escribiendo "+fichero.getAbsolutePath());
         } finally {
             try {
                 if (raf != null) {
@@ -227,7 +256,7 @@ public class OperacionesLib {
     /**
      * Actualiza los datos de un empleado en el archivo
      *
-     * @param empleado
+     * @param empleado Empleado a actualizar
      */
     public void actualizarEmpleado(Empleado empleado) {
         RandomAccessFile raf = null;
@@ -247,9 +276,9 @@ public class OperacionesLib {
             raf.writeInt(empleado.getDepartamento());//Departamento Empleado
             raf.writeDouble(empleado.getSueldo());//Sueldo Empleado
         } catch (FileNotFoundException ex) {
-            Logger.getLogger(OperacionesLib.class.getName()).log(Level.SEVERE, null, ex);
+            mostrarError("Archivo no encontrado "+fichero.getAbsolutePath());
         } catch (IOException ex) {
-            Logger.getLogger(OperacionesLib.class.getName()).log(Level.SEVERE, null, ex);
+            mostrarError( "Error escribiendo "+fichero.getAbsolutePath());
         } finally {
             try {
                 if (raf != null) {
@@ -260,6 +289,24 @@ public class OperacionesLib {
             }
         }
 
+    }
+    
+    /**
+     * Muestra un joptionpane pidiendo un dato al usuario
+     * @param msg Mensaje a mostrar
+     * @param titulo Titulo
+     * @return el valor introducido
+     */
+    public static Object pedirDato(String msg, String titulo) {
+        return JOptionPane.showInputDialog(null, msg, titulo, JOptionPane.PLAIN_MESSAGE);
+    }
+    
+    /**
+     * Muestra un mensaje de error
+     * @param msg 
+     */
+    public static void mostrarError(String msg) {
+        JOptionPane.showMessageDialog(null, "Error", msg, JDesktopPane.ERROR);
     }
 
 }

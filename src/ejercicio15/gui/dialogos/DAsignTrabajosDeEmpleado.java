@@ -20,17 +20,19 @@ import javax.swing.SortOrder;
 import javax.swing.table.TableRowSorter;
 
 /**
- *
+ * Dialogo para la asignaciond de trabajos a un empleado
  * @author Jose Javier Bailon Ortiz
  */
 public class DAsignTrabajosDeEmpleado extends javax.swing.JDialog {
-
+    //empleado al que asignar
     Empleado empleado;
+    //lista de trabajos asignados
     ArrayList<Trabajo> eSeleccionados;
+    //lista de trabajos candidatos para ser asignados
     ArrayList<Trabajo> eNoSeleccionados;
     
     /**
-     * 
+     * Constructor
      * @param parent
      * @param modal
      * @param empleado 
@@ -38,8 +40,11 @@ public class DAsignTrabajosDeEmpleado extends javax.swing.JDialog {
     public DAsignTrabajosDeEmpleado(java.awt.Frame parent, boolean modal, Empleado empleado) {
         super(parent, modal);
         initComponents();
+        //guardar referencia al empleado
         this.empleado=empleado;
+        //ajustar etiqueta de empleado
         lbIdEmpleado.setText("("+empleado.getId()+") "+empleado.getNombre()+" "+empleado.getApellidos());
+        
         inicializarTablas();
         comprobarBotones();
     }
@@ -229,11 +234,20 @@ public class DAsignTrabajosDeEmpleado extends javax.swing.JDialog {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    /**
+     * Boton cerrar
+     * @param evt 
+     */
     private void btnCerrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCerrarActionPerformed
         dispose();
     }//GEN-LAST:event_btnCerrarActionPerformed
 
+    /**
+     * Boton quitar trabajo de empleado
+     * @param evt 
+     */
     private void btnQuitarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnQuitarActionPerformed
+        //recoger fila seleccionada
         int seleccionado=tblAsignados.getSelectedRow();
         if (seleccionado<0){
             JOptionPane.showMessageDialog(this, "Seleccione un trabajo de la tabla de asignados", "Aviso", JOptionPane.WARNING_MESSAGE);
@@ -241,8 +255,12 @@ public class DAsignTrabajosDeEmpleado extends javax.swing.JDialog {
         }
         int idTrabajoSeleccionado=tblAsignados.convertRowIndexToModel(seleccionado);
         idTrabajoSeleccionado= (int)tblAsignados.getModel().getValueAt(idTrabajoSeleccionado, 0);
+        
+        //eliminar la asignacion trabajo-empleado
         Control.desasignarTrabajoEnEmpleado(this.empleado.getId(), idTrabajoSeleccionado);
         Control.desasignarEmpleadoEnTrabajo(idTrabajoSeleccionado, this.empleado.getId());
+        
+       //actualizar listas del dialogo pertenecientes a cada tabla
         Trabajo trabajoAQuitar=null;
         for (Trabajo trabajo : eSeleccionados) {
             if (trabajo.getId()==idTrabajoSeleccionado){
@@ -250,15 +268,25 @@ public class DAsignTrabajosDeEmpleado extends javax.swing.JDialog {
                 break;
             }
         }
-        
         eSeleccionados.remove(trabajoAQuitar);
         eNoSeleccionados.add(trabajoAQuitar);
+        
+        //refrescar referencia al empleado
         empleado=Control.getEmpleado(empleado.getId());
+        
         actualizarTablas();
         comprobarBotones();
     }//GEN-LAST:event_btnQuitarActionPerformed
 
+    
+    
+    /**
+     * Boton asignar trabajo a empleado
+     * @param evt 
+     */
     private void btnAsignarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAsignarActionPerformed
+        
+        //recoger fila seleccionada
         int seleccionado=tblNoAsignados.getSelectedRow();
         if (seleccionado<0){
             JOptionPane.showMessageDialog(this, "Seleccione un trabajo de la tabla de no asignados", "Aviso", JOptionPane.WARNING_MESSAGE);
@@ -266,8 +294,12 @@ public class DAsignTrabajosDeEmpleado extends javax.swing.JDialog {
         }
         int idTrabajoSeleccionado=tblNoAsignados.convertRowIndexToModel(seleccionado);
         idTrabajoSeleccionado= (int)tblNoAsignados.getModel().getValueAt(idTrabajoSeleccionado, 0);
+        
+        //crear la asignacion trabajo-empleado
         Control.asignarTrabajoEnEmpleado(this.empleado.getId(), idTrabajoSeleccionado);
         Control.asignarEmpleadoEnTrabajo(idTrabajoSeleccionado, this.empleado.getId());
+
+        //actualizar listas del dialogo pertenecientes a cada tabla
         Trabajo trabajoAPoner=null;
         for (Trabajo trabajo : eNoSeleccionados) {
             if (trabajo.getId()==idTrabajoSeleccionado){
@@ -275,9 +307,10 @@ public class DAsignTrabajosDeEmpleado extends javax.swing.JDialog {
                 break;
             }
         }
-        
         eNoSeleccionados.remove(trabajoAPoner);
         eSeleccionados.add(trabajoAPoner);
+        
+        //refrescar referencia al empleado
         empleado=Control.getEmpleado(empleado.getId());
         actualizarTablas();
         comprobarBotones();
@@ -302,12 +335,16 @@ public class DAsignTrabajosDeEmpleado extends javax.swing.JDialog {
     private javax.swing.JTable tblNoAsignados;
     // End of variables declaration//GEN-END:variables
 
+    
+     /**
+     * Recoge los datos iniciales necesarios para las tablas y genera los tablemodels
+     */
     private void inicializarTablas() {
         //recoger valores
         eSeleccionados=Control.getTrabajosEnEmpleado(empleado);
         eNoSeleccionados=Control.getTrabajosFueraDeEmpleado(empleado);
         
-        //EMPLEADOS ASIGNADOS
+        //TRABAJOS ASIGNADOS
         TrabajosTableModel tmEA = new TrabajosTableModel(eSeleccionados);
         tblAsignados.setModel(tmEA);
          //definir la tabla como seleccionable
@@ -323,7 +360,7 @@ public class DAsignTrabajosDeEmpleado extends javax.swing.JDialog {
         sortKeysEA.add(new RowSorter.SortKey(0, SortOrder.ASCENDING));
         rowSorterEA.setSortKeys(sortKeysEA);
 
-        //EMPLEADOS NO ASIGNADOS
+        //TRABAJOS NO ASIGNADOS
         TrabajosTableModel tmNA = new TrabajosTableModel(eNoSeleccionados);
         tblNoAsignados.setModel(tmNA);
          //definir la tabla como  seleccionable
@@ -337,18 +374,21 @@ public class DAsignTrabajosDeEmpleado extends javax.swing.JDialog {
         List<RowSorter.SortKey> sortKeysEB = new ArrayList<>();
         sortKeysEB.add(new RowSorter.SortKey(0, SortOrder.ASCENDING));
         rowSorterEB.setSortKeys(sortKeysEB);
-
-
-
-
-
     }
 
+    /**
+     * Refresca las tablas
+     */
     private void actualizarTablas() {
         ((TrabajosTableModel) tblAsignados.getModel()).fireTableDataChanged();
         ((TrabajosTableModel) tblNoAsignados.getModel()).fireTableDataChanged();
     }
 
+    
+     /**
+     * Comprueba si el empleado ha llegado a su límite de trabajos para en funcion
+     * de eso habilitar o deshabilitar el boton de asignar
+     */
     private void comprobarBotones() {
         if (empleado.nTrabajosAsignados()<Empleado.limiteTrabajos)
             btnAsignar.setEnabled(true);
